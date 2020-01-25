@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Collections.Generic;
 using System.IO;
@@ -143,99 +143,99 @@ namespace PetProject
 
             context.Database.EnsureCreated();
 
-            var petStatusAdoptionReady = new PetStatus {Status = "AdoptionReady"};
-            var petStatusNotReady = new PetStatus { Status = "NotReady" };
-            var petStatusLost = new PetStatus { Status = "Lost" };
-            var petStatusAdopted = new PetStatus { Status = "Adopted" };
+            var petStatusAdoptionReady = new PetStatus {Status = "Готов к новым хозяевам"};
+            var petStatusNotReady = new PetStatus { Status = "Не готов к новым хозяевам" };
+            var petStatusLost = new PetStatus { Status = "Потерянное животное" };
+            var petStatusAdopted = new PetStatus { Status = "У нового хозяина" };
 
-            AddIfNotExists(context.PetStatuses, petStatusAdoptionReady, petStatus => petStatus.Status == "AdoptionReady");
-            AddIfNotExists(context.PetStatuses, petStatusNotReady, petStatus => petStatus.Status == "NotReady");
-            AddIfNotExists(context.PetStatuses, petStatusLost, petStatus => petStatus.Status == "Lost");
-            AddIfNotExists(context.PetStatuses, petStatusAdopted, petStatus => petStatus.Status == "Adopted");
+            AddIfNotExists(context.PetStatuses, petStatusAdoptionReady, petStatus => petStatus.Status == "Готов к новым хозяевам");
+            AddIfNotExists(context.PetStatuses, petStatusNotReady, petStatus => petStatus.Status == "Не готов к новым хозяевам");
+            AddIfNotExists(context.PetStatuses, petStatusLost, petStatus => petStatus.Status == "Потерянное животное");
+            AddIfNotExists(context.PetStatuses, petStatusAdopted, petStatus => petStatus.Status == "У нового хозяина");
             
             var pet1 = new Pet
             {
-                Name = "Barsik",
-                Description = "Sweet meow.",
+                Name = "Барсик",
+                Description = "Пирожок.",
                 PetStatus = petStatusAdopted
             };
 
             var pet2 = new Pet
             {
-                Name = "Murka",
-                Description = "Poor homeless cat.",
+                Name = "Бэтмен",
+                Description = "Бедный бездомный кот.",
                 PetStatus = petStatusAdoptionReady
             };
 
             var pet3 = new Pet
             {
-                Name = "Pinky",
-                Description = "Lost boi.",
+                Name = "Догго",
+                Description = "Потеряшка.",
                 PetStatus = petStatusLost
             };
 
             var pet4 = new Pet
             {
-                Name = "Bayaderka",
-                Description = "Dangerous cat.",
+                Name = "Лопес",
+                Description = "Нет усов, в остальном - здоровый кот.",
                 PetStatus = petStatusAdopted
             };
 
             var pet5 = new Pet
             {
-                Name = "Snana",
-                Description = "No moustache, otherwise healthy kitty.",
+                Name = "Тина",
+                Description = "Хорошая девочка, чудесная шерстка.",
                 PetStatus = petStatusAdoptionReady
             };
 
             var pet6 = new Pet
             {
-                Name = "Sekopina",
-                Description = "Street cat.",
+                Name = "Тузик",
+                Description = "Цепной пес.",
                 PetStatus = petStatusNotReady
             };
             
-            AddIfNotExists(context.Pets, pet1, pet => pet.Name != "Barsik");
-            AddIfNotExists(context.Pets, pet2, pet => pet.Name != "Murka");
-            AddIfNotExists(context.Pets, pet3, pet => pet.Name != "Pinky");
-            AddIfNotExists(context.Pets, pet4, pet => pet.Name != "Bayaderka");
-            AddIfNotExists(context.Pets, pet5, pet => pet.Name != "Snana");
-            AddIfNotExists(context.Pets, pet6, pet => pet.Name != "Sekopina");
+            AddIfNotExists(context.Pets, pet1, pet => pet.Name != "Барсик");
+            AddIfNotExists(context.Pets, pet2, pet => pet.Name != "Бэтмен");
+            AddIfNotExists(context.Pets, pet3, pet => pet.Name != "Догго");
+            AddIfNotExists(context.Pets, pet4, pet => pet.Name != "Лопес");
+            AddIfNotExists(context.Pets, pet5, pet => pet.Name != "Тина");
+            AddIfNotExists(context.Pets, pet6, pet => pet.Name != "Тузик");
 
             var image1 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Barsik")
-                    ?? context.Pets.FirstOrDefault(pet => pet.Name == "Barsik"),
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Барсик")
+                    ?? context.Pets.FirstOrDefault(pet => pet.Name == "Барсик"),
                 ImagePath = "images/barsik.jpg"
             };
             var image2 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Murka")
-                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Murka"),
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Бэтмен")
+                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Бэтмен"),
                 ImagePath = "images/batman.jpg"
             };
             var image3 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Pinky")
-                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Pinky"),
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Догго")
+                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Догго"),
                 ImagePath = "images/doggo.jpg"
             };
             var image4 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Bayaderka")
-                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Bayaderka"),
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Лопес")
+                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Лопес"),
                 ImagePath = "images/lopes.jpg"
             };
             var image5 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Snana")
-                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Snana"),
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Тина")
+                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Тина"),
                 ImagePath = "images/tina.jpg"
             };
             var image6 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Sekopina")
-                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Sekopina"),
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Тузик")
+                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Тузик"),
                 ImagePath = "images/tuzik.jpg"
             };
 
@@ -246,15 +246,40 @@ namespace PetProject
             AddIfNotExists(context.Images, image5, image => image.ImagePath == "images/tina.jpg");
             AddIfNotExists(context.Images, image6, image => image.ImagePath == "images/tuzik.jpg");
 
+            var petFeature1 = new PetFeature {Category = "Description", Characteristic = "Пёс"};
+            var petFeature2 = new PetFeature {Category = "Description", Characteristic = "Кот"};
+            var petFeature3 = new PetFeature {Category = "Description", Characteristic = "Девочка"};
+            var petFeature4 = new PetFeature {Category = "Description", Characteristic = "Мальчик"};
+            var petFeature5 = new PetFeature {Category = "Age", Characteristic = "До года"};
+            var petFeature6 = new PetFeature {Category = "Age", Characteristic = "До 3 лет"};
+            var petFeature7 = new PetFeature {Category = "Age", Characteristic = "До 10 лет"};
+            var petFeature8 = new PetFeature {Category = "Fur", Characteristic = "Длинная"};
+            var petFeature9 = new PetFeature {Category = "Fur", Characteristic = "Короткая"};
+            var petFeature10 = new PetFeature {Category = "Fur", Characteristic = "Светлая"};
+            var petFeature11 = new PetFeature {Category = "Fur", Characteristic = "Темная"};
+            var petFeature12 = new PetFeature {Category = "Fur", Characteristic = "Цветная"};
+
+            AddIfNotExists(context.PetFeatures, petFeature1, petFeature => petFeature.Characteristic == "Пёс");
+            AddIfNotExists(context.PetFeatures, petFeature2, petFeature => petFeature.Characteristic == "Кот");
+            AddIfNotExists(context.PetFeatures, petFeature3, petFeature => petFeature.Characteristic == "Девочка");
+            AddIfNotExists(context.PetFeatures, petFeature4, petFeature => petFeature.Characteristic == "Мальчик");
+            AddIfNotExists(context.PetFeatures, petFeature5, petFeature => petFeature.Characteristic == "До года");
+            AddIfNotExists(context.PetFeatures, petFeature6, petFeature => petFeature.Characteristic == "До 3 лет");
+            AddIfNotExists(context.PetFeatures, petFeature7, petFeature => petFeature.Characteristic == "До 10 лет");
+            AddIfNotExists(context.PetFeatures, petFeature8, petFeature => petFeature.Characteristic == "Длинная");
+            AddIfNotExists(context.PetFeatures, petFeature9, petFeature => petFeature.Characteristic == "Короткая");
+            AddIfNotExists(context.PetFeatures, petFeature10, petFeature => petFeature.Characteristic == "Светлая");
+            AddIfNotExists(context.PetFeatures, petFeature11, petFeature => petFeature.Characteristic == "Темная");
+            AddIfNotExists(context.PetFeatures, petFeature12, petFeature => petFeature.Characteristic == "Цветная");
+
+
             await context.SaveChangesAsync();
         }
 
-        private static void AddIfNotExists<T>(DbSet<T> dbSet, IEnumerable<T> entities) where T : class, new()
+        private T FetchEntity<T>(DbSet<T> dbSet, Expression<Func<T, bool>> predicate) where T: class, new()
         {
-            foreach (var entity in entities)
-            {
-                AddIfNotExists(dbSet, entity);
-            }
+            return dbSet.Local.FirstOrDefault(predicate.Compile())
+                ?? dbSet.FirstOrDefault(predicate);
         }
 
         private static EntityEntry<T> AddIfNotExists<T>(
