@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Theme, createStyles, WithStyles, withStyles } from '@material-ui/core';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -11,7 +12,24 @@ import { AppState } from '../../store/appState';
 import { Pet } from '../../store/petsList/state';
 import { requestPetsListData } from '../../store/petsList/actions';
 
-interface PetSearchProps {
+const styles = (theme: Theme) => createStyles({
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-around',
+      overflow: 'hidden',
+      backgroundColor: theme.palette.background.paper,
+    },
+    gridList: {
+      width: 500,
+      // height: 450,
+    },
+    icon: {
+      color: 'rgba(255, 255, 255, 0.54)',
+    },
+  });
+
+interface PetSearchProps extends WithStyles<typeof styles> {
     pets: Pet[];
     loadPetsList: () => void;
 };
@@ -20,7 +38,8 @@ interface PetSearchState {
 
 };
 
-export class PetSearchPage extends React.Component<PetSearchProps, PetSearchState> {
+const PetSearchPageStyled = withStyles(styles)(
+class PetSearchPage extends React.Component<PetSearchProps, PetSearchState> {
     constructor(props: PetSearchProps) {
         super(props);
         this.state = {
@@ -32,10 +51,10 @@ export class PetSearchPage extends React.Component<PetSearchProps, PetSearchStat
     }
 
     render() {
-        const { pets } = this.props;
+        const { pets, classes } = this.props;
         return (
-            <div>
-                <GridList cellHeight={180}>
+            <div className={classes.root}>
+                <GridList cellHeight={180} className={classes.gridList}>
                     <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
                         <ListSubheader component="div">Pets list:</ListSubheader>
                     </GridListTile>
@@ -46,7 +65,7 @@ export class PetSearchPage extends React.Component<PetSearchProps, PetSearchStat
                                 title={pet.name}
                                 subtitle={<span>by: {pet.description}</span>}
                                 actionIcon={
-                                    <IconButton aria-label={`info about ${pet.name}`}>
+                                    <IconButton aria-label={`info about ${pet.name}`} className={classes.icon}>
                                         <InfoIcon />
                                     </IconButton>
                                 }
@@ -58,6 +77,7 @@ export class PetSearchPage extends React.Component<PetSearchProps, PetSearchStat
         );
     }
 }
+);
 
 export const PetSearchPageConnected = connect(
     (appState: AppState) => ({
@@ -66,4 +86,4 @@ export const PetSearchPageConnected = connect(
     {
         loadPetsList: requestPetsListData
     }
-)(PetSearchPage);
+)(PetSearchPageStyled);
