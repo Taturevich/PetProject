@@ -1,8 +1,12 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -12,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PetProject.DataAccess;
 using PetProject.Domain;
@@ -60,7 +65,34 @@ namespace PetProject
                 });
                 c.IncludeXmlComments(XmlCommentsFilePath);
             });
-            services.AddCors();
+            var audienceConfig = Configuration.GetSection("Audience");
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(audienceConfig["Secret"]));
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+                })
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, cfg =>
+                {
+                    cfg.SaveToken = true;
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = signingKey,
+                        ValidateIssuer = true,
+                        ValidIssuer = audienceConfig["Iss"],
+                        ValidateAudience = true,
+                        ValidAudience = audienceConfig["Aud"],
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
+                        RequireExpirationTime = true,
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,7 +118,8 @@ namespace PetProject
                 // c.RoutePrefix = string.Empty;
             });
 
-            app.UseRouting();            
+            app.UseRouting();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
@@ -108,33 +141,122 @@ namespace PetProject
 
         private async Task SeedTestData(IServiceCollection serviceCollection)
         {
-            var buildServiceProvider = serviceCollection.BuildServiceProvider();
-            using (var petScope = buildServiceProvider.CreateScope())
-            {
-                await using var scope = petScope.ServiceProvider.GetService<PetContext>();
-                var barsik = new Pet
-                {
-                    Name = "Barsik",
-                    Description = "Adopted 10 years ago.",
-                    PetStatus = new PetStatus
-                    {
-                        Status = "Adoption Ready"
-                    }
-                };
-                AddIfNotExists(scope.Pets, barsik, pet => pet.Name != "Barsik" && pet.Description != "Adopted 10 years ago.");
-                await scope.SaveChangesAsync();
-            }
+            await using var context = serviceCollection.BuildServiceProvider().GetService<PetContext>();
 
-            using var imageScope = buildServiceProvider.CreateScope();
-            await using var imagesContext = imageScope.ServiceProvider.GetService<PetContext>();
-            var barsikFromDb = imagesContext.Pets.FirstOrDefault(x => x.Name == "Barsik" && x.Description == "Adopted 10 years ago.");
-            var barsikImage = new Image
+            context.Database.EnsureCreated();
+
+            var petStatusAdoptionReady = new PetStatus {Status = "AdoptionReady"};
+            var petStatusNotReady = new PetStatus { Status = "NotReady" };
+            var petStatusLost = new PetStatus { Status = "Lost" };
+            var petStatusAdopted = new PetStatus { Status = "Adopted" };
+
+            AddIfNotExists(context.PetStatuses, petStatusAdoptionReady, petStatus => petStatus.Status == "AdoptionReady");
+            AddIfNotExists(context.PetStatuses, petStatusNotReady, petStatus => petStatus.Status == "NotReady");
+            AddIfNotExists(context.PetStatuses, petStatusLost, petStatus => petStatus.Status == "Lost");
+            AddIfNotExists(context.PetStatuses, petStatusAdopted, petStatus => petStatus.Status == "Adopted");
+            
+            var pet1 = new Pet
             {
-                PetId = barsikFromDb?.PetId ?? 0,
-                ImagePath = "images/barsik.jpg",
+                Name = "Barsik",
+                Description = "Sweet meow.",
+                PetStatus = petStatusAdopted
             };
-            AddIfNotExists(imagesContext.Images, barsikImage, image => image.ImagePath == "images/barsik.jpg");
-            await imagesContext.SaveChangesAsync();
+
+            var pet2 = new Pet
+            {
+                Name = "Murka",
+                Description = "Poor homeless cat.",
+                PetStatus = petStatusAdoptionReady
+            };
+
+            var pet3 = new Pet
+            {
+                Name = "Pinky",
+                Description = "Lost boi.",
+                PetStatus = petStatusLost
+            };
+
+            var pet4 = new Pet
+            {
+                Name = "Bayaderka",
+                Description = "Dangerous cat.",
+                PetStatus = petStatusAdopted
+            };
+
+            var pet5 = new Pet
+            {
+                Name = "Snana",
+                Description = "No moustache, otherwise healthy kitty.",
+                PetStatus = petStatusAdoptionReady
+            };
+
+            var pet6 = new Pet
+            {
+                Name = "Sekopina",
+                Description = "Street cat.",
+                PetStatus = petStatusNotReady
+            };
+            
+            AddIfNotExists(context.Pets, pet1, pet => pet.Name != "Barsik");
+            AddIfNotExists(context.Pets, pet2, pet => pet.Name != "Murka");
+            AddIfNotExists(context.Pets, pet3, pet => pet.Name != "Pinky");
+            AddIfNotExists(context.Pets, pet4, pet => pet.Name != "Bayaderka");
+            AddIfNotExists(context.Pets, pet5, pet => pet.Name != "Snana");
+            AddIfNotExists(context.Pets, pet6, pet => pet.Name != "Sekopina");
+
+            var image1 = new Image
+            {
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Barsik")
+                    ?? context.Pets.FirstOrDefault(pet => pet.Name == "Barsik"),
+                ImagePath = "images/barsik.jpg"
+            };
+            var image2 = new Image
+            {
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Murka")
+                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Murka"),
+                ImagePath = "images/batman.jpg"
+            };
+            var image3 = new Image
+            {
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Pinky")
+                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Pinky"),
+                ImagePath = "images/doggo.jpg"
+            };
+            var image4 = new Image
+            {
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Bayaderka")
+                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Bayaderka"),
+                ImagePath = "images/lopes.jpg"
+            };
+            var image5 = new Image
+            {
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Snana")
+                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Snana"),
+                ImagePath = "images/tina.jpg"
+            };
+            var image6 = new Image
+            {
+                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Sekopina")
+                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Sekopina"),
+                ImagePath = "images/tuzik.jpg"
+            };
+
+            AddIfNotExists(context.Images, image1, image => image.ImagePath == "images/barsik.jpg");
+            AddIfNotExists(context.Images, image2, image => image.ImagePath == "images/batman.jpg");
+            AddIfNotExists(context.Images, image3, image => image.ImagePath == "images/doggo.jpg");
+            AddIfNotExists(context.Images, image4, image => image.ImagePath == "images/lopes.jpg");
+            AddIfNotExists(context.Images, image5, image => image.ImagePath == "images/tina.jpg");
+            AddIfNotExists(context.Images, image6, image => image.ImagePath == "images/tuzik.jpg");
+
+            await context.SaveChangesAsync();
+        }
+
+        private static void AddIfNotExists<T>(DbSet<T> dbSet, IEnumerable<T> entities) where T : class, new()
+        {
+            foreach (var entity in entities)
+            {
+                AddIfNotExists(dbSet, entity);
+            }
         }
 
         private static EntityEntry<T> AddIfNotExists<T>(
