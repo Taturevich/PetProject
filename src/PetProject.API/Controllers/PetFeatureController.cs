@@ -97,6 +97,7 @@ namespace PetProject.Controllers
                             PetFeatureId = featureId
                         });
 
+                _petContext.Pets.Find(petId).PetFeatureAssignments.Clear();
                 await _petContext.PetFeatureAssignments.AddRangeAsync(assignments);
                 await _petContext.SaveChangesAsync();
 
