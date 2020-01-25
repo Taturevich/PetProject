@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using PetProject.DataAccess;
 using PetProject.Domain;
 using PetProject.DTO;
-using Task = PetProject.Domain.Task;
 
 namespace PetProject.Controllers
 {
@@ -82,17 +81,17 @@ namespace PetProject.Controllers
             return Ok();
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> AssignFeatureToPet([FromBody] (int petId, int featureId)[] petFeaturePairs)
+        [HttpPatch("{petId}")]
+        public async Task<IActionResult> UpdateFeaturesOnPet(int petId, [FromBody] int[] featureIds)
         {
             try
             {
                 var assignments =
-                    petFeaturePairs.Select(pfp =>
+                    featureIds.Select(featureId =>
                         new PetFeatureAssignment
                         {
-                            PetId = pfp.petId,
-                            PetFeatureId = pfp.featureId
+                            PetId = petId,
+                            PetFeatureId = featureId
                         });
 
                 await _petContext.PetFeatureAssignments.AddRangeAsync(assignments);
