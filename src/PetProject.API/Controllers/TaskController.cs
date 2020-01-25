@@ -93,12 +93,15 @@ namespace PetProject.Controllers
                 return BadRequest();
             }
 
+            var taskType = await _petContext.TaskTypes.FindAsync(typeId);
+            
             var task = new Domain.Task
             {
                 PetId = petId,
                 TaskTypeId = typeId,
                 UserId = userId,
                 StartDate = DateTime.UtcNow,
+                EndDate = DateTime.UtcNow.AddDays(taskType.DefaultDurationDays),
                 Status = Domain.TaskStatus.InProgress
             };
 

@@ -55,7 +55,7 @@ namespace PetProject.Controllers
 
             var user = await _petContext
                 .Users
-                .FirstOrDefaultAsync(x => x.Phone == model.Phone && x.Password == model.Password);
+                .FirstOrDefaultAsync(x => x.Phone == model.Phone && x.Password == model.Password && !x.IsBlackListed);
             if (user is null)
             {
                 return BadRequest();
