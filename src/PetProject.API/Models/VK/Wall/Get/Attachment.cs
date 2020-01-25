@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PetProject.Models.VK.Wall.Get
 {
-    public class GetWallResponse
+    public class Attachment
     {
     }
 }
