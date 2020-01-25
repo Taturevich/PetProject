@@ -27,6 +27,8 @@ namespace PetProject.DataAccess
 
         public DbSet<UserSocialNetwork> UserSocialNetworks { get; set; }
 
+        public DbSet<Image> Images { get; set; }
+
         public PetContext(DbContextOptions<PetContext> options)
             : base(options)
         {

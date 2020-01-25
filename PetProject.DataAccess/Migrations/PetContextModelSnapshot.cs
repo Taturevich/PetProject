@@ -16,11 +16,30 @@ namespace PetProject.DataAccess.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1");
 
+            modelBuilder.Entity("PetProject.Domain.Image", b =>
+                {
+                    b.Property<int>("ImageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PetId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ImageId");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("PetProject.Domain.Pet", b =>
                 {
                     b.Property<int>("PetId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
@@ -129,8 +148,8 @@ namespace PetProject.DataAccess.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TaskTypeId")
                         .HasColumnType("INTEGER");
@@ -259,6 +278,15 @@ namespace PetProject.DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserSocialNetworks");
+                });
+
+            modelBuilder.Entity("PetProject.Domain.Image", b =>
+                {
+                    b.HasOne("PetProject.Domain.Pet", "Pet")
+                        .WithMany("Images")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PetProject.Domain.Pet", b =>

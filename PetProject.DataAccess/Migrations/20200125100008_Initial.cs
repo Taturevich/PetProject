@@ -91,6 +91,7 @@ namespace PetProject.DataAccess.Migrations
                     Name = table.Column<string>(nullable: true),
                     Type = table.Column<int>(nullable: false),
                     VolunteerId = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
                     PetStatusId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -152,6 +153,25 @@ namespace PetProject.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    ImageId = table.Column<int>(nullable: false),
+                    PetId = table.Column<int>(nullable: false),
+                    ImagePath = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.ImageId);
+                    table.ForeignKey(
+                        name: "FK_Images_Pets_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Pets",
+                        principalColumn: "PetId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PetFeatureAssignments",
                 columns: table => new
                 {
@@ -209,7 +229,7 @@ namespace PetProject.DataAccess.Migrations
                 {
                     TaskId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Status = table.Column<string>(nullable: true),
+                    Status = table.Column<int>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
                     TaskTypeId = table.Column<int>(nullable: false),
@@ -297,6 +317,9 @@ namespace PetProject.DataAccess.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Images");
+
             migrationBuilder.DropTable(
                 name: "PetFeatureAssignments");
 
