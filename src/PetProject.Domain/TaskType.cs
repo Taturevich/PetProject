@@ -13,7 +13,7 @@ namespace PetProject.Domain
 
         public string Description { get; set; }
 
-        public DateTime DefaultDuration { get; set; }
+        public int DefaultDurationDays { get; set; }
 
         public ICollection<Task> Tasks { get; set; }
 

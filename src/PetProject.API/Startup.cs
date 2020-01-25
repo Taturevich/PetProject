@@ -492,6 +492,152 @@ namespace PetProject
             AddIfNotExists(context.Users, userVolunteer, user => user.Name == "Светлана");
             AddIfNotExists(context.Users, userUser, user => user.Name == "Мария");
 
+            var userFeature1 = new UserFeature
+            {
+                Category = "Accommodation",
+                Characteristic = "Частный дом"
+            };
+            var userFeature2 = new UserFeature
+            {
+                Category = "Accommodation",
+                Characteristic = "Квартира"
+            };
+            var userFeature3 = new UserFeature
+            {
+                Category = "Accommodation",
+                Characteristic = "Общежитие"
+            };
+            var userFeature4 = new UserFeature
+            {
+                Category = "HouseOwnership",
+                Characteristic = "Собственность"
+            };
+            var userFeature5 = new UserFeature
+            {
+                Category = "HouseOwnership",
+                Characteristic = "Аренда"
+            };
+            var userFeature6 = new UserFeature
+            {
+                Category = "Exprience",
+                Characteristic = "Никогда не было питомца"
+            };
+            var userFeature7 = new UserFeature
+            {
+                Category = "Exprience",
+                Characteristic = "Был питомец"
+            };
+            var userFeature8 = new UserFeature
+            {
+                Category = "Exprience",
+                Characteristic = "Питомец есть сейчас"
+            };
+            var userFeature9 = new UserFeature
+            {
+                Category = "Readiness",
+                Characteristic = "Есть сетки на окнах"
+            };
+            var userFeature10 = new UserFeature
+            {
+                Category = "Readiness",
+                Characteristic = "Есть миска"
+            };
+            var userFeature11 = new UserFeature
+            {
+                Category = "Readiness",
+                Characteristic = "Есть лоток"
+            };
+            var userFeature12 = new UserFeature
+            {
+                Category = "Readiness",
+                Characteristic = "Есть поводок / ошейник"
+            };
+
+            AddIfNotExists(context.UserFeatures, userFeature1, userFeature => userFeature.Characteristic == "Частный дом");
+            AddIfNotExists(context.UserFeatures, userFeature2, userFeature => userFeature.Characteristic == "Квартира");
+            AddIfNotExists(context.UserFeatures, userFeature3, userFeature => userFeature.Characteristic == "Общежитие");
+            AddIfNotExists(context.UserFeatures, userFeature4, userFeature => userFeature.Characteristic == "Собственность");
+            AddIfNotExists(context.UserFeatures, userFeature5, userFeature => userFeature.Characteristic == "Аренда");
+            AddIfNotExists(context.UserFeatures, userFeature6, userFeature => userFeature.Characteristic == "Никогда не было питомца");
+            AddIfNotExists(context.UserFeatures, userFeature7, userFeature => userFeature.Characteristic == "Был питомец");
+            AddIfNotExists(context.UserFeatures, userFeature8, userFeature => userFeature.Characteristic == "Питомец есть сейчас");
+            AddIfNotExists(context.UserFeatures, userFeature9, userFeature => userFeature.Characteristic == "Есть сетки на окнах");
+            AddIfNotExists(context.UserFeatures, userFeature10, userFeature => userFeature.Characteristic == "Есть миска");
+            AddIfNotExists(context.UserFeatures, userFeature11, userFeature => userFeature.Characteristic == "Есть лоток");
+            AddIfNotExists(context.UserFeatures, userFeature12, userFeature => userFeature.Characteristic == "Есть поводок / ошейник");
+
+            var userFeatureAssignment1 = new UserFeatureAssignment
+            {
+                User = FetchEntity(context.Users, user => user.Name == "Мария"),
+                UserFeature = FetchEntity(context.UserFeatures, userFeature => userFeature.Characteristic == "Квартира")
+            };
+            var userFeatureAssignment2 = new UserFeatureAssignment
+            {
+                User = FetchEntity(context.Users, user => user.Name == "Мария"),
+                UserFeature = FetchEntity(context.UserFeatures, userFeature => userFeature.Characteristic == "Аренда")
+            };
+            var userFeatureAssignment3 = new UserFeatureAssignment
+            {
+                User = FetchEntity(context.Users, user => user.Name == "Мария"),
+                UserFeature = FetchEntity(context.UserFeatures, userFeature => userFeature.Characteristic == "Питомец есть сейчас")
+            };
+            var userFeatureAssignment4 = new UserFeatureAssignment
+            {
+                User = FetchEntity(context.Users, user => user.Name == "Мария"),
+                UserFeature = FetchEntity(context.UserFeatures, userFeature => userFeature.Characteristic == "Есть сетки на окнах")
+            };
+            var userFeatureAssignment5 = new UserFeatureAssignment
+            {
+                User = FetchEntity(context.Users, user => user.Name == "Мария"),
+                UserFeature = FetchEntity(context.UserFeatures, userFeature => userFeature.Characteristic == "Есть миска")
+            };
+            var userFeatureAssignment6 = new UserFeatureAssignment
+            {
+                User = FetchEntity(context.Users, user => user.Name == "Мария"),
+                UserFeature = FetchEntity(context.UserFeatures, userFeature => userFeature.Characteristic == "Есть лоток")
+            };
+            var userFeatureAssignment7 = new UserFeatureAssignment
+            {
+                User = FetchEntity(context.Users, user => user.Name == "Мария"),
+                UserFeature = FetchEntity(context.UserFeatures, userFeature => userFeature.Characteristic == "Есть поводок / ошейник")
+            };
+
+            context.UserFeatureAssignments.RemoveRange(context.UserFeatureAssignments);
+
+            AddIfNotExists(context.UserFeatureAssignments, userFeatureAssignment1);
+            AddIfNotExists(context.UserFeatureAssignments, userFeatureAssignment2);
+            AddIfNotExists(context.UserFeatureAssignments, userFeatureAssignment3);
+            AddIfNotExists(context.UserFeatureAssignments, userFeatureAssignment4);
+            AddIfNotExists(context.UserFeatureAssignments, userFeatureAssignment5);
+            AddIfNotExists(context.UserFeatureAssignments, userFeatureAssignment6);
+            AddIfNotExists(context.UserFeatureAssignments, userFeatureAssignment7);
+
+            var taskType1 = new TaskType
+            {
+                Name = "Стать PR агентом питомца",
+                Description = "Испытайте свои таланты и отзывчивость ваших знакомых - возьмитесь за задачу приютить отыскать питомцу дом.",
+                PetPoints = 100,
+                DefaultDurationDays = 30
+            };
+            var taskType2 = new TaskType
+            {
+                Name = "Прокормить питомца",
+                Description = "Волонтёры содержат сотни животных, в этом задании всё просто - нужно купить животному корм на срок от недели.",
+                PetPoints = 50,
+                DefaultDurationDays = 7
+            };
+            var taskType3 = new TaskType
+            {
+                Name = "Свозить питомца в вет. клинику",
+                Description = "Бездомным животным часто нужна мед. помощь - от стерилизации до травм от жестокого обращения.",
+                PetPoints = 100,
+                DefaultDurationDays = 14
+            };
+
+            AddIfNotExists(context.TaskTypes, taskType1, taskType => taskType.Name == "Стать PR агентом питомца");
+            AddIfNotExists(context.TaskTypes, taskType2, taskType => taskType.Name == "Прокормить питомца");
+            AddIfNotExists(context.TaskTypes, taskType3, taskType => taskType.Name == "Свозить питомца в вет. клинику");
+
             await context.SaveChangesAsync();
         }
 
