@@ -22,7 +22,6 @@ export function requestPetsList() : RequestPetsList {
 }
 
 export function receivePetsList(pets: Pet[]) : ReceivePetsList {
-    console.log(pets);
     return {
         type: actionTypes.RECEIVE_PETS_LIST,
         pets
