@@ -638,6 +638,94 @@ namespace PetProject
             AddIfNotExists(context.TaskTypes, taskType2, taskType => taskType.Name == "Прокормить питомца");
             AddIfNotExists(context.TaskTypes, taskType3, taskType => taskType.Name == "Свозить питомца в вет. клинику");
 
+            var petTaskTypeAssignment1 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Барсик"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Стать PR агентом питомца")
+            };
+            var petTaskTypeAssignment2 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Барсик"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Прокормить питомца")
+            };
+            var petTaskTypeAssignment3 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Бэтмен"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Стать PR агентом питомца")
+            };
+            var petTaskTypeAssignment4 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Бэтмен"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Свозить питомца в вет. клинику")
+            };
+            var petTaskTypeAssignment5 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Догго"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Стать PR агентом питомца")
+            };
+            var petTaskTypeAssignment6 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Догго"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Прокормить питомца")
+            };
+            var petTaskTypeAssignment7 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Догго"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Свозить питомца в вет. клинику")
+            };
+            var petTaskTypeAssignment8 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Лопес"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Стать PR агентом питомца")
+            };
+            var petTaskTypeAssignment9 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Лопес"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Свозить питомца в вет. клинику")
+            };
+            var petTaskTypeAssignment10 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Тина"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Стать PR агентом питомца")
+            };
+            var petTaskTypeAssignment11 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Тина"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Свозить питомца в вет. клинику")
+            };
+            var petTaskTypeAssignment12 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Тузик"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Стать PR агентом питомца")
+            };
+            var petTaskTypeAssignment13 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Тузик"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Прокормить питомца")
+            };
+            var petTaskTypeAssignment14 = new PetTaskTypeAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Тузик"),
+                TaskType = FetchEntity(context.TaskTypes, taskType => taskType.Name == "Свозить питомца в вет. клинику")
+            };
+
+            context.PetTaskTypeAssignments.RemoveRange(context.PetTaskTypeAssignments);
+
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment1);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment2);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment3);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment4);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment5);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment6);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment7);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment8);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment9);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment10);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment11);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment12);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment13);
+            AddIfNotExists(context.PetTaskTypeAssignments, petTaskTypeAssignment14);
+
             await context.SaveChangesAsync();
         }
 
