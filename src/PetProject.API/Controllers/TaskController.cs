@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PetProject.DataAccess;
+using PetProject.DTO;
 
 namespace PetProject.Controllers
 {
@@ -7,43 +11,25 @@ namespace PetProject.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-        // GET: api/Task
+        private readonly PetContext _petContext;
+
+        public TaskController(PetContext petContext)
+        {
+            _petContext = petContext;
+        }
+
         [HttpGet]
-        public IActionResult Get()
+        [Route("")]
+        public async Task<IActionResult> GetTasks()
         {
-            var tasks = new List<string>
-            {
-                "task1",
-                "task2",
-                "task3"
-            };
-
-            return Ok(tasks);
+            return Ok(await _petContext.Tasks.AsQueryable().ToListAsync());
         }
 
-        // GET: api/Task/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Task
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("Assign")]
+        public async Task<IActionResult> AssingToTask()
         {
-        }
-
-        // PUT: api/Task/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok(await _petContext.Tasks.AsQueryable().ToListAsync());
         }
     }
 }
