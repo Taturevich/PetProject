@@ -1,6 +1,6 @@
 ﻿namespace PetProject.Domain
 {
-    public class VkGroup
+    public class VkWall
     {
         public string GroupName { get; set; }
     }
