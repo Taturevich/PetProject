@@ -1,0 +1,2 @@
+export const SAMPLE_REQUEST = 'SAMPLE_REQUEST';
+export const SAMPLE_RESPONSE = 'SAMPLE_RESPONSE';

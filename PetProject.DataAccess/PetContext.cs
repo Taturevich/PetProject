@@ -23,7 +23,7 @@ namespace PetProject.DataAccess
 
         public DbSet<UserFeatureAssignment> UserFeatureAssignments { get; set; }
 
-        public DbSet<UserFeature> UserFeature { get; set; }
+        public DbSet<UserFeature> UserFeatures { get; set; }
 
         public DbSet<UserSocialNetwork> UserSocialNetworks { get; set; }
 
