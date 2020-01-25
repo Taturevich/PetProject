@@ -4,13 +4,18 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { rootReducer } from './rootReducer';
 import { PetsListState } from './petsList/state';
+import { FeaturesListState } from './featuresList/state';
 
 export interface AppState {
   pets: PetsListState;
+  features: FeaturesListState;
 }
 
 const initialState: AppState = {
   pets: {
+    data: []
+  },
+  features: {
     data: []
   }
 };
