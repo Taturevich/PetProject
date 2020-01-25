@@ -147,5 +147,35 @@ namespace PetProject.Controllers
             await _petContext.SaveChangesAsync();
             return Ok();
         }
+
+        [HttpPut]
+        [Route("{id}/Valounteer")]
+        public async Task<IActionResult> Valounteer(int id)
+        {
+            var user = await _petContext.Users.FindAsync(id);
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+            user.Role = UserRole.Volunteer;
+            await _petContext.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("{id}/Valounteer")]
+        public async Task<IActionResult> RemoveValounteer(int id)
+        {
+            var user = await _petContext.Users.FindAsync(id);
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+            user.Role = UserRole.User;
+            await _petContext.SaveChangesAsync();
+            return Ok();
+        }
     }
 }
