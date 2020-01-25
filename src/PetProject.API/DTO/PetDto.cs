@@ -6,6 +6,8 @@ namespace PetProject.DTO
     {
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public PetType Type { get; set; }
 
         public int VolunteerId { get; set; }

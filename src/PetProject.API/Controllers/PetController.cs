@@ -12,6 +12,7 @@ using PetProject.DTO;
 namespace PetProject.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class PetController : Controller
     {
         private readonly ILogger<PetController> _logger;
