@@ -201,13 +201,69 @@ namespace PetProject
                 Description = "Цепной пес.",
                 PetStatus = petStatusNotReady
             };
-            
+
+            var pet7 = new Pet
+            {
+                Name = "Шарик",
+                Description = "Мне нужна помощь.",
+                PetStatus = petStatusAdoptionReady
+            };
+
+            var pet8 = new Pet
+            {
+                Name = "Котя",
+                Description = "Бушарик.",
+                PetStatus = petStatusAdoptionReady
+            };
+
+            var pet9 = new Pet
+            {
+                Name = "Леся",
+                Description = "Старая мудрая кошка.",
+                PetStatus = petStatusAdopted
+            };
+
+            var pet10 = new Pet
+            {
+                Name = "Майя",
+                Description = "Пёсель или собакен?",
+                PetStatus = petStatusAdopted
+            };
+
+            var pet11 = new Pet
+            {
+                Name = "Шуберт",
+                Description = "Гений.",
+                PetStatus = petStatusAdoptionReady
+            };
+
+            var pet12 = new Pet
+            {
+                Name = "Одя",
+                Description = "Глуповатый.",
+                PetStatus = petStatusLost
+            };
+
+            var pet13 = new Pet
+            {
+                Name = "Мисти",
+                Description = "Дымная кошечка.",
+                PetStatus = petStatusAdoptionReady
+            };
+
             AddIfNotExists(context.Pets, pet1, pet => pet.Name == "Барсик");
             AddIfNotExists(context.Pets, pet2, pet => pet.Name == "Бэтмен");
             AddIfNotExists(context.Pets, pet3, pet => pet.Name == "Догго");
             AddIfNotExists(context.Pets, pet4, pet => pet.Name == "Лопес");
             AddIfNotExists(context.Pets, pet5, pet => pet.Name == "Тина");
             AddIfNotExists(context.Pets, pet6, pet => pet.Name == "Тузик");
+            AddIfNotExists(context.Pets, pet7, pet => pet.Name == "Шарик");
+            AddIfNotExists(context.Pets, pet8, pet => pet.Name == "Котя");
+            AddIfNotExists(context.Pets, pet9, pet => pet.Name == "Леся");
+            AddIfNotExists(context.Pets, pet10, pet => pet.Name == "Майя");
+            AddIfNotExists(context.Pets, pet11, pet => pet.Name == "Шуберт");
+            AddIfNotExists(context.Pets, pet12, pet => pet.Name == "Одя");
+            AddIfNotExists(context.Pets, pet13, pet => pet.Name == "Мисти");
 
             var image1 = new Image
             {
@@ -239,6 +295,41 @@ namespace PetProject
                 Pet = FetchEntity(context.Pets, pet => pet.Name == "Тузик"),
                 ImagePath = "images/tuzik.png"
             };
+            var image7 = new Image
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шарик"),
+                ImagePath = "images/zhariс.png"
+            };
+            var image8 = new Image
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Котя"),
+                ImagePath = "images/kotja.png"
+            };
+            var image9 = new Image
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Леся"),
+                ImagePath = "images/lesja.png"
+            };
+            var image10 = new Image
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Майя"),
+                ImagePath = "images/maya.png"
+            };
+            var image11 = new Image
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шуберт"),
+                ImagePath = "images/shubert.png"
+            };
+            var image12 = new Image
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Одя"),
+                ImagePath = "images/odja.png"
+            };
+            var image13 = new Image
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Мисти"),
+                ImagePath = "images/misty.png"
+            };
 
             AddIfNotExists(context.Images, image1, image => image.ImagePath == "images/barsik.jpg");
             AddIfNotExists(context.Images, image2, image => image.ImagePath == "images/batman.png");
@@ -246,19 +337,26 @@ namespace PetProject
             AddIfNotExists(context.Images, image4, image => image.ImagePath == "images/lopes.png");
             AddIfNotExists(context.Images, image5, image => image.ImagePath == "images/tina.png");
             AddIfNotExists(context.Images, image6, image => image.ImagePath == "images/tuzik.png");
+            AddIfNotExists(context.Images, image7, image => image.ImagePath == "images/zharik.png");
+            AddIfNotExists(context.Images, image8, image => image.ImagePath == "images/kotja.png");
+            AddIfNotExists(context.Images, image9, image => image.ImagePath == "images/lesja.png");
+            AddIfNotExists(context.Images, image10, image => image.ImagePath == "images/maya.png");
+            AddIfNotExists(context.Images, image11, image => image.ImagePath == "images/shubert.png");
+            AddIfNotExists(context.Images, image12, image => image.ImagePath == "images/odja.png");
+            AddIfNotExists(context.Images, image13, image => image.ImagePath == "images/misty.png");
 
-            var petFeature1 = new PetFeature { Category = "Description", Characteristic = "Пёс" };
-            var petFeature2 = new PetFeature { Category = "Description", Characteristic = "Кот" };
-            var petFeature3 = new PetFeature { Category = "Description", Characteristic = "Девочка" };
-            var petFeature4 = new PetFeature { Category = "Description", Characteristic = "Мальчик" };
-            var petFeature5 = new PetFeature { Category = "Age", Characteristic = "До года" };
-            var petFeature6 = new PetFeature { Category = "Age", Characteristic = "До 3 лет" };
-            var petFeature7 = new PetFeature { Category = "Age", Characteristic = "До 10 лет" };
-            var petFeature8 = new PetFeature { Category = "Fur", Characteristic = "Длинная" };
-            var petFeature9 = new PetFeature { Category = "Fur", Characteristic = "Короткая" };
-            var petFeature10 = new PetFeature { Category = "Fur", Characteristic = "Светлая" };
-            var petFeature11 = new PetFeature { Category = "Fur", Characteristic = "Темная" };
-            var petFeature12 = new PetFeature { Category = "Fur", Characteristic = "Цветная" };
+            var petFeature1 = new PetFeature { Category = "Кто?", Characteristic = "Пёс" };
+            var petFeature2 = new PetFeature { Category = "Кто?", Characteristic = "Кот" };
+            var petFeature3 = new PetFeature { Category = "Кто?", Characteristic = "Девочка" };
+            var petFeature4 = new PetFeature { Category = "Кто?", Characteristic = "Мальчик" };
+            var petFeature5 = new PetFeature { Category = "Возраст", Characteristic = "До года" };
+            var petFeature6 = new PetFeature { Category = "Возраст", Characteristic = "До 3 лет" };
+            var petFeature7 = new PetFeature { Category = "Возраст", Characteristic = "До 10 лет" };
+            var petFeature8 = new PetFeature { Category = "Шуба", Characteristic = "Длинная" };
+            var petFeature9 = new PetFeature { Category = "Шуба", Characteristic = "Короткая" };
+            var petFeature10 = new PetFeature { Category = "Шуба", Characteristic = "Светлая" };
+            var petFeature11 = new PetFeature { Category = "Шуба", Characteristic = "Темная" };
+            var petFeature12 = new PetFeature { Category = "Шуба", Characteristic = "Цветная" };
 
             AddIfNotExists(context.PetFeatures, petFeature1, petFeature => petFeature.Characteristic == "Пёс");
             AddIfNotExists(context.PetFeatures, petFeature2, petFeature => petFeature.Characteristic == "Кот");
@@ -434,6 +532,195 @@ namespace PetProject
                 PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Темная")
             };
 
+
+            var petFeatureAssignment31 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шарик"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Пёс")
+            };
+            var petFeatureAssignment32 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шарик"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Мальчик")
+            };
+            var petFeatureAssignment33 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шарик"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "До 3 лет")
+            };
+            var petFeatureAssignment34 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шарик"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Короткая")
+            };
+            var petFeatureAssignment35 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шарик"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Светлая")
+            };
+
+
+            var petFeatureAssignment36 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Котя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Кот")
+            };
+            var petFeatureAssignment37 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Котя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Мальчик")
+            };
+            var petFeatureAssignment38 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Котя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "До 10 лет")
+            };
+            var petFeatureAssignment39 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Котя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Короткая")
+            };
+            var petFeatureAssignment40 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Котя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Цветная")
+            };
+
+
+            var petFeatureAssignment41 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Леся"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Кот")
+            };
+            var petFeatureAssignment42 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Леся"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Девочка")
+            };
+            var petFeatureAssignment43 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Леся"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "До 10 лет")
+            };
+            var petFeatureAssignment44 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Леся"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Короткая")
+            };
+            var petFeatureAssignment45 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Леся"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Темная")
+            };
+
+
+            var petFeatureAssignment46 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Майя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Пёс")
+            };
+            var petFeatureAssignment47 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Майя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Девочка")
+            };
+            var petFeatureAssignment48 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Майя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "До 10 лет")
+            };
+            var petFeatureAssignment49 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Майя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Короткая")
+            };
+            var petFeatureAssignment50 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Майя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Цветная")
+            };
+
+
+            var petFeatureAssignment51 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шуберт"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Кот")
+            };
+            var petFeatureAssignment52 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шуберт"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Мальчик")
+            };
+            var petFeatureAssignment53 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шуберт"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "До 3 лет")
+            };
+            var petFeatureAssignment54 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шуберт"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Короткая")
+            };
+            var petFeatureAssignment55 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Шуберт"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Светлая")
+            };
+
+
+            var petFeatureAssignment56 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Одя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Кот")
+            };
+            var petFeatureAssignment57 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Одя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Мальчик")
+            };
+            var petFeatureAssignment58 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Одя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "До 3 лет")
+            };
+            var petFeatureAssignment59 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Одя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Короткая")
+            };
+            var petFeatureAssignment60 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Одя"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Цветная")
+            };
+
+
+            var petFeatureAssignment61 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Мисти"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Кот")
+            };
+            var petFeatureAssignment62 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Мисти"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Девочка")
+            };
+            var petFeatureAssignment63 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Мисти"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "До 3 лет")
+            };
+            var petFeatureAssignment64 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Мисти"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Короткая")
+            };
+            var petFeatureAssignment65 = new PetFeatureAssignment
+            {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Мисти"),
+                PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Темная")
+            };
+
             context.PetFeatureAssignments.RemoveRange(context.PetFeatureAssignments);
 
             AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment1);
@@ -466,6 +753,41 @@ namespace PetProject
             AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment28);
             AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment29);
             AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment30);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment31);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment32);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment33);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment34);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment35);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment36);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment37);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment38);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment39);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment40);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment41);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment42);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment43);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment44);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment45);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment46);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment47);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment48);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment49);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment50);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment51);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment52);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment53);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment54);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment55);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment56);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment57);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment58);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment59);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment60);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment61);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment62);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment63);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment64);
+            AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment65);
 
             var userVolunteer = new User
             {
