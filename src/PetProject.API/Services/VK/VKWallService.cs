@@ -1,32 +1,50 @@
-﻿using System.Net.Http;
+﻿using PetProject.DataAccess;
+using System;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace PetProject.Services.VK
 {
     public class VKWallService : VKServiceBase, IVKWallService
     {
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly HttpClient _client;
+        private readonly PetContext _petContext;
 
-        public VKWallService(IHttpClientFactory clientFactory)
+        public VKWallService(IHttpClientFactory clientFactory, PetContext petContext)
         {
-            _clientFactory = clientFactory;
+            _client = clientFactory.CreateClient();
+            _petContext = petContext;
         }
 
         //ToDo VK DBContext
-        public void AddNewGroup(string domain)
+        public async Task AddNewGroup(string domain)
         {
             //ToDO insert into the DB group for the feature event based post inserting
 
-            ParseGroupAndInsert(domain);
+            await ParseGroupAndInsert(domain);
         }
 
-        public void ParseGroup(string domain)
+        public async Task ParseGroup(string domain)
         {
-            ParseGroupAndInsert(domain);
+            await ParseGroupAndInsert(domain);
         }
 
-        private void ParseGroupAndInsert(string domain)
+        private async Task ParseGroupAndInsert(string domain)
         {
             var url = GetURI($"wall.get?domain={domain}");
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var response = await _client.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new InvalidOperationException();
+            }
+
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+          //  var data = await JsonSerializer.DeserializeAsync
+             //   <IEnumerable<GitHubBranch>>(responseStream);         
         }
     }
 }
