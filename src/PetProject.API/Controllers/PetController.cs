@@ -32,7 +32,7 @@ namespace PetProject.Controllers
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             var pet = await _petContext.Pets.FirstOrDefaultAsync(p => p.PetId == id);
             return Ok(pet);
@@ -74,7 +74,7 @@ namespace PetProject.Controllers
         }
 
         [HttpPut("status")]
-        public async Task<IActionResult> Put([FromBody] (int id, PetStatus status) petStatus)
+        public async Task<IActionResult> UpdateStatus([FromBody] (int id, PetStatus status) petStatus)
         {
             try
             {
