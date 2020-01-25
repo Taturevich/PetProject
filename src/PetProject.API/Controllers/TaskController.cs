@@ -25,28 +25,28 @@ namespace PetProject.Controllers
         [Route("")]
         public async Task<IActionResult> GetTasks()
         {
-            return Ok(await _petContext.Tasks.AsQueryable().ToListAsync());
+            return Ok(await _petContext.Tasks.ToListAsync());
         }
 
         [HttpGet]
         [Route("Pet/{id}")]
         public async Task<IActionResult> GetTaskByPet(int id)
         {
-            return Ok(await _petContext.Tasks.AsQueryable().Where(x => x.PetId == id).ToListAsync());
+            return Ok(await _petContext.Tasks.Where(x => x.PetId == id).ToListAsync());
         }
 
         [HttpGet]
         [Route("Type/{id}")]
         public async Task<IActionResult> GetTaskByType(int id)
         {
-            return Ok(await _petContext.Tasks.AsQueryable().Where(x => x.TaskTypeId == id).ToListAsync());
+            return Ok(await _petContext.Tasks.Where(x => x.TaskTypeId == id).ToListAsync());
         }
 
         [HttpGet]
         [Route("User/{id}")]
         public async Task<IActionResult> GetTaskByUser(int id)
         {
-            return Ok(await _petContext.Tasks.AsQueryable().Where(x => x.UserId == id).ToListAsync());
+            return Ok(await _petContext.Tasks.Where(x => x.UserId == id).ToListAsync());
         }
 
         [HttpPost]
@@ -108,7 +108,7 @@ namespace PetProject.Controllers
         }
 
         [HttpPut]
-        [Route("Stop/{typeId}/{petId}/{userId}")]
+        [Route("Stop/{taskId}")]
         public async Task<IActionResult> StopTask(int taskId)
         {
             var task = await _petContext.Tasks.FindAsync(taskId);
@@ -124,7 +124,7 @@ namespace PetProject.Controllers
         }
 
         [HttpPut]
-        [Route("Complete/{typeId}/{petId}/{userId}")]
+        [Route("Complete/{taskId}")]
         public async Task<IActionResult> CompleteTask(int taskId)
         {
             var task = await _petContext.Tasks.FindAsync(taskId);
