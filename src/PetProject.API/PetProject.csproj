@@ -24,6 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\VK\Wall\Get\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\PetProject.DataAccess\PetProject.DataAccess.csproj" />
   </ItemGroup>
 
