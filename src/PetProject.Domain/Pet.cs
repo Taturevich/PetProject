@@ -8,7 +8,7 @@ namespace PetProject.Domain
 
         public string Name { get; set; }
 
-        public string Type { get; set; }
+        public PetType Type { get; set; }
 
         public string Volunteer { get; set; }
 
