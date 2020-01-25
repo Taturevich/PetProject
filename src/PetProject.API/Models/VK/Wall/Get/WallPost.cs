@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using PetProject.Models.VK.Attachments;
 
 namespace PetProject.Models.VK.Wall.Get
 {
@@ -7,7 +8,7 @@ namespace PetProject.Models.VK.Wall.Get
     {
         public int Id { get; set; }
         
-        [JsonProperty("from_id  ")]
+        [JsonProperty("from_id")]
         public int PostOwnerId { get; set; }
 
         [JsonProperty("text")]
