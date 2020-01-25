@@ -40,7 +40,7 @@ namespace PetProject.Controllers
             var pets = await _petContext.Pets
                 .Where(p => p.PetFeatureAssignments
                     .Any(pfa => featureIds.Contains(pfa.PetFeatureId)))
-                .OrderBy(x => x.PetFeatureAssignments.Count())
+                .OrderByDesc(x => x.PetFeatureAssignments.Count())
                 .ToListAsync();
             return Ok(pets);
         }
