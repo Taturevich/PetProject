@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetProject", "src\PetProject.csproj", "{5A9E5E82-009D-4185-88B5-8473E777749B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DB3CA1B3-38FB-496C-B49A-0D3C127FBD52}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetProject", "src\PetProject.API\PetProject.csproj", "{F7CD7EA0-CB7D-44B7-9DB4-BE899261B547}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,16 +13,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5A9E5E82-009D-4185-88B5-8473E777749B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A9E5E82-009D-4185-88B5-8473E777749B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A9E5E82-009D-4185-88B5-8473E777749B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A9E5E82-009D-4185-88B5-8473E777749B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7CD7EA0-CB7D-44B7-9DB4-BE899261B547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7CD7EA0-CB7D-44B7-9DB4-BE899261B547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7CD7EA0-CB7D-44B7-9DB4-BE899261B547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7CD7EA0-CB7D-44B7-9DB4-BE899261B547}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5A9E5E82-009D-4185-88B5-8473E777749B} = {DB3CA1B3-38FB-496C-B49A-0D3C127FBD52}
+		{F7CD7EA0-CB7D-44B7-9DB4-BE899261B547} = {DB3CA1B3-38FB-496C-B49A-0D3C127FBD52}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BBBDF929-BAFC-4CA7-9AF6-1EA9A80DEB61}
