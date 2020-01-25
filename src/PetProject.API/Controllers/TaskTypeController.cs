@@ -14,10 +14,22 @@ namespace PetProject.Controllers
             this.petContext = petContext;
         }
 
-       /* [HttpPost]
-        public IActionResult()
+        [HttpPost]
+        public IActionResult AddType()
         {
+            return Ok();
+        }
 
-        }*/
+        [HttpPut]
+        public IActionResult UpdateType()
+        {
+            return Ok();
+        }
+
+        [HttpDelete]
+        public IActionResult Delete()
+        {
+            return Ok();
+        }
     }
 }
