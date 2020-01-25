@@ -16,5 +16,7 @@ namespace PetProject.Domain
         public DateTime DefaultDuration { get; set; }
 
         public ICollection<Task> Tasks { get; set; }
+
+        public ICollection<PetTaskAssignment> PetTaskAssignments { get; set; }
     }
 }

@@ -11,13 +11,15 @@ namespace PetProject.DataAccess
 
         public DbSet<Pet> Pets { get; set; }
 
-        public DbSet<User> Users { get; set; }
-
         public DbSet<PetStatus> PetStatuses { get; set; }
 
         public DbSet<PetFeature> PetFeatures { get; set; }
 
         public DbSet<PetFeatureAssignment> PetFeatureAssignments { get; set; }
+
+        public DbSet<PetTaskAssignment> PetTaskAssignments { get; set; }
+
+        public DbSet<User> Users { get; set; }
 
         public PetContext(DbContextOptions<PetContext> options)
             : base(options)
@@ -45,6 +47,16 @@ namespace PetProject.DataAccess
                 .HasOne(petFeatureAssignment => petFeatureAssignment.PetFeature)
                 .WithMany(petFeature => petFeature.PetFeatureAssignments)
                 .HasForeignKey(petFeatureAssignment => petFeatureAssignment.PetFeatureId);
+
+            modelBuilder.Entity<PetTaskAssignment>()
+                .HasOne(petTaskAssignment => petTaskAssignment.Pet)
+                .WithMany(pet => pet.PetTaskAssignments)
+                .HasForeignKey(petTaskAssignment => petTaskAssignment.PetId);
+
+            modelBuilder.Entity<PetTaskAssignment>()
+                .HasOne(petTaskAssignment => petTaskAssignment.TaskType)
+                .WithMany(taskType => taskType.PetTaskAssignments)
+                .HasForeignKey(petTaskAssignment => petTaskAssignment.TaskTypeId);
         }
     }
 }
