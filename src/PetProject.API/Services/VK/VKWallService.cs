@@ -1,6 +1,6 @@
 ﻿namespace PetProject.Services.VK
 {
-    public class VKService : IVKService
+    public class VKWallService : IVKWallService
     {
         //ToDo VK DBContext
         public void AddNewGroup(string domain)
