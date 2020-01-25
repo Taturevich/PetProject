@@ -1,8 +1,11 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -12,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PetProject.DataAccess;
 using PetProject.Domain;
@@ -60,6 +64,34 @@ namespace PetProject
                 });
                 c.IncludeXmlComments(XmlCommentsFilePath);
             });
+            var audienceConfig = Configuration.GetSection("Audience");
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(audienceConfig["Secret"]));
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+                })
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, cfg =>
+                {
+                    cfg.SaveToken = true;
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = signingKey,
+                        ValidateIssuer = true,
+                        ValidIssuer = audienceConfig["Iss"],
+                        ValidateAudience = true,
+                        ValidAudience = audienceConfig["Aud"],
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
+                        RequireExpirationTime = true,
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
