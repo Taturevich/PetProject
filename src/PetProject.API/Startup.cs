@@ -110,21 +110,16 @@ namespace PetProject
 
             context.Database.EnsureCreated();
 
-            context.PetStatuses.RemoveRange(context.PetStatuses);
-
             var petStatusAdoptionReady = new PetStatus {Status = "AdoptionReady"};
             var petStatusNotReady = new PetStatus { Status = "NotReady" };
             var petStatusLost = new PetStatus { Status = "Lost" };
             var petStatusAdopted = new PetStatus { Status = "Adopted" };
 
-            AddIfNotExists(context.PetStatuses, new List<PetStatus>
-            {
-                petStatusAdoptionReady,
-                petStatusNotReady,
-                petStatusLost,
-                petStatusAdopted
-            });
-
+            AddIfNotExists(context.PetStatuses, petStatusAdoptionReady, petStatus => petStatus.Status == "AdoptionReady");
+            AddIfNotExists(context.PetStatuses, petStatusNotReady, petStatus => petStatus.Status == "NotReady");
+            AddIfNotExists(context.PetStatuses, petStatusLost, petStatus => petStatus.Status == "Lost");
+            AddIfNotExists(context.PetStatuses, petStatusAdopted, petStatus => petStatus.Status == "Adopted");
+            
             var pet1 = new Pet
             {
                 Name = "Barsik",
@@ -174,6 +169,40 @@ namespace PetProject
             AddIfNotExists(context.Pets, pet5, pet => pet.Name != "Snana");
             AddIfNotExists(context.Pets, pet6, pet => pet.Name != "Sekopina");
 
+            var image1 = new Image
+            {
+                Pet = pet1,
+                ImagePath = "images/barsik.jpg"
+            };
+            var image2 = new Image
+            {
+                Pet = pet2,
+                ImagePath = "images/barsik.jpg"
+            };
+            var image3 = new Image
+            {
+                Pet = pet3,
+                ImagePath = "images/barsik.jpg"
+            };
+            var image4 = new Image
+            {
+                Pet = pet4,
+                ImagePath = "images/barsik.jpg"
+            };
+            var image5 = new Image
+            {
+                Pet = pet5,
+                ImagePath = "images/barsik.jpg"
+            };
+            var image6 = new Image
+            {
+                Pet = pet6,
+                ImagePath = "images/barsik.jpg"
+            };
+
+
+            AddIfNotExists(context.Images, image1, image => image.ImagePath == "images/barsik.jpg");
+
             await context.SaveChangesAsync();
         }
 
@@ -183,18 +212,6 @@ namespace PetProject
             {
                 AddIfNotExists(dbSet, entity);
             }
-        }
-
-            using var imageScope = buildServiceProvider.CreateScope();
-            await using var imagesContext = imageScope.ServiceProvider.GetService<PetContext>();
-            var barsikFromDb = imagesContext.Pets.FirstOrDefault(x => x.Name == "Barsik" && x.Description == "Adopted 10 years ago.");
-            var barsikImage = new Image
-            {
-                PetId = barsikFromDb?.PetId ?? 0,
-                ImagePath = "images/barsik.jpg",
-            };
-            AddIfNotExists(imagesContext.Images, barsikImage, image => image.ImagePath == "images/barsik.jpg");
-            await imagesContext.SaveChangesAsync();
         }
 
         private static EntityEntry<T> AddIfNotExists<T>(
