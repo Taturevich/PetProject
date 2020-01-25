@@ -3,8 +3,17 @@ import thunk, { ThunkAction } from "redux-thunk";
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { rootReducer } from './rootReducer';
+import { PetsListState } from './petsList/state';
 
-const initialState = {};
+export interface AppState {
+  pets: PetsListState;
+}
+
+const initialState: AppState = {
+  pets: {
+    data: []
+  }
+};
 
 export const store = createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(thunk)));
 

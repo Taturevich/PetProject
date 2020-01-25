@@ -107,6 +107,8 @@ namespace PetProject
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseCors(c => c.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseSwagger();
