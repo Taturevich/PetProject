@@ -11,6 +11,8 @@ namespace PetProject.DataAccess
 
         public DbSet<Pet> Pets { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         public DbSet<PetStatus> PetStatuses { get; set; }
 
         public DbSet<PetFeature> PetFeatures { get; set; }

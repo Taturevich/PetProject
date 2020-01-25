@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PetProject.DataAccess;
 using PetProject.Domain;
+using PetProject.DTO;
 
 namespace PetProject.Controllers
 {
@@ -18,10 +21,18 @@ namespace PetProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var pets = _petContext.Pets.ToList();
+            var pets = await _petContext.Pets.ToListAsync();
             return Ok(pets);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(UserDTO user)
+        {
+            await _petContext.Users.AddAsync(Mapper.MapToEntity(user, new User()));
+            await _petContext.SaveChangesAsync();
+            return Ok();
         }
     }
 }

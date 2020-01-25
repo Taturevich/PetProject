@@ -8,7 +8,6 @@ namespace PetProject.Domain
 
         public string Status { get; set; }
 
-
         public ICollection<Pet> Pets { get; set; }
     }
 }

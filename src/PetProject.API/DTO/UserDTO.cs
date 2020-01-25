@@ -1,9 +1,9 @@
-﻿namespace PetProject.Domain
-{
-    public class User
-    {
-        public int UserId { get; set; }
+﻿using PetProject.Domain;
 
+namespace PetProject.DTO
+{
+    public class UserDTO
+    {
         public string Name { get; set; }
 
         public string LastName { get; set; }
