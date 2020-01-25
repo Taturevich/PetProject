@@ -10,14 +10,12 @@ namespace PetProject.Domain
 
         public PetType Type { get; set; }
 
-        public string Volunteer { get; set; }
-
+        public int VolunteerId { get; set; }
 
         public int PetStatusId { get; set; }
 
         public PetStatus PetStatus { get; set; }
 
-        
         public ICollection<PetFeatureAssignment> PetFeatureAssignments { get; set; }
 
         public ICollection<PetTaskAssignment> PetTaskAssignments { get; set; }
