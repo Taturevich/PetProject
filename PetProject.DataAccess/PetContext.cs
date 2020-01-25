@@ -90,6 +90,11 @@ namespace PetProject.DataAccess
                 .HasOne(task => task.Pet)
                 .WithMany(pet => pet.Tasks)
                 .HasForeignKey(task => task.PetId);
+
+            modelBuilder.Entity<Image>()
+                .HasOne(image => image.Pet)
+                .WithMany(pet => pet.Images)
+                .HasForeignKey(image => image.PetId);
         }
     }
 }
