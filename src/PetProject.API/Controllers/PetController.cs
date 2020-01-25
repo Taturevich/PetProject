@@ -43,9 +43,10 @@ namespace PetProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PetDto pet)
         {
+            var petEntity = new Pet();
             try
             {
-                await _petContext.Pets.AddAsync(Mapper.MapToEntity(pet, new Pet()));
+                await _petContext.Pets.AddAsync(Mapper.MapToEntity(pet, petEntity));
                 await _petContext.SaveChangesAsync();
             }
             catch (Exception e)
@@ -53,7 +54,7 @@ namespace PetProject.Controllers
                 _logger.LogError(e, "Error");
             }
 
-            return Ok(pet.PetId);
+            return Ok(petEntity.PetId);
         }
 
         // PUT api/<controller>/5
