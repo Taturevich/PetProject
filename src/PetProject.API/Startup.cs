@@ -128,7 +128,6 @@ namespace PetProject
             var barsikImage = new Image
             {
                 PetId = barsikFromDb?.PetId ?? 0,
-                Pet = barsikFromDb,
                 ImagePath = "images/barsik.jpg",
             };
             AddIfNotExists(imagesContext.Images, barsikImage, image => image.ImagePath == "images/barsik.jpg");

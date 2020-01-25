@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ namespace PetProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var pets = await _petContext.Pets.ToListAsync();
+            var pets = await _petContext.Pets.Include(x => x.Images).ToListAsync();
             return Ok(pets);
         }
 
