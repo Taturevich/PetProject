@@ -93,6 +93,7 @@ namespace PetProject
                         RequireExpirationTime = true,
                     };
                 });
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,7 +108,10 @@ namespace PetProject
                 app.UseExceptionHandler("/Error");
             }
 
-            app.UseCors(c => c.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            app.UseCors(c => c.SetIsOriginAllowed(x => _ = true)
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -206,47 +210,35 @@ namespace PetProject
 
             var image1 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Barsik")
-                    ?? context.Pets.FirstOrDefault(pet => pet.Name == "Barsik"),
                 ImagePath = "images/barsik.jpg"
             };
             var image2 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Murka")
-                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Murka"),
-                ImagePath = "images/batman.jpg"
+                ImagePath = "images/batman.png"
             };
             var image3 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Pinky")
-                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Pinky"),
-                ImagePath = "images/doggo.jpg"
+                ImagePath = "images/doggo.png"
             };
             var image4 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Bayaderka")
-                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Bayaderka"),
-                ImagePath = "images/lopes.jpg"
+                ImagePath = "images/lopes.png"
             };
             var image5 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Snana")
-                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Snana"),
-                ImagePath = "images/tina.jpg"
+                ImagePath = "images/tina.png"
             };
             var image6 = new Image
             {
-                Pet = context.Pets.Local.FirstOrDefault(pet => pet.Name == "Sekopina")
-                      ?? context.Pets.FirstOrDefault(pet => pet.Name == "Sekopina"),
-                ImagePath = "images/tuzik.jpg"
+                ImagePath = "images/tuzik.png"
             };
 
             AddIfNotExists(context.Images, image1, image => image.ImagePath == "images/barsik.jpg");
-            AddIfNotExists(context.Images, image2, image => image.ImagePath == "images/batman.jpg");
-            AddIfNotExists(context.Images, image3, image => image.ImagePath == "images/doggo.jpg");
-            AddIfNotExists(context.Images, image4, image => image.ImagePath == "images/lopes.jpg");
-            AddIfNotExists(context.Images, image5, image => image.ImagePath == "images/tina.jpg");
-            AddIfNotExists(context.Images, image6, image => image.ImagePath == "images/tuzik.jpg");
+            AddIfNotExists(context.Images, image2, image => image.ImagePath == "images/batman.png");
+            AddIfNotExists(context.Images, image3, image => image.ImagePath == "images/doggo.png");
+            AddIfNotExists(context.Images, image4, image => image.ImagePath == "images/lopes.png");
+            AddIfNotExists(context.Images, image5, image => image.ImagePath == "images/tina.png");
+            AddIfNotExists(context.Images, image6, image => image.ImagePath == "images/tuzik.png");
 
             await context.SaveChangesAsync();
         }

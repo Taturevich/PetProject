@@ -52,6 +52,20 @@
     <ProjectReference Include="..\..\PetProject.DataAccess\PetProject.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\images\barsik.jpg" />
+    <None Include="wwwroot\images\batman.png" />
+    <None Include="wwwroot\images\doggo.png" />
+    <None Include="wwwroot\images\kotja.png" />
+    <None Include="wwwroot\images\ksenia.png" />
+    <None Include="wwwroot\images\lesja.png" />
+    <None Include="wwwroot\images\lopes.png" />
+    <None Include="wwwroot\images\polkan.png" />
+    <None Include="wwwroot\images\tina.png" />
+    <None Include="wwwroot\images\tuzik.png" />
+    <None Include="wwwroot\images\zharic.png" />
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

@@ -31,6 +31,6 @@ export function receivePetsList(pets: Pet[]) : ReceivePetsList {
 
 export const requestPetsListData = (): AppThunk => dispatch => {
     dispatch(requestPetsList());
-    axios.get<Pet[]>('localhost:5000/api/pet')
+    axios.get<Pet[]>('http://localhost:5000/api/pet')
         .then(response => dispatch(receivePetsList(response.data)));
   }
