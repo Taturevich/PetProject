@@ -3,9 +3,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 
+// import { HelpWantedPage, PetFoundPage, PetSearchPage } from './';
+// import PetFoundPage from '../petFound/PetFoundPage';
+// import PetSearchPage from '../petSearch/PetSearchPage';
+
 import petSearch from '../../static/images/petSearch.png';
 import petHelp from '../../static/images/petHelp.png';
 import petSaw from '../../static/images/petSaw.png';
+
+import { TitlebarGridList } from '../petSearch/PetSearchPage';
 
 import { LoginModal, RegisterModal } from '../../components/modals';
 
@@ -26,10 +32,6 @@ const images = [
         width: '40%',
     },
 ];
-
-// import HelpWantedPage from '../helpWanted/HelpWantedPage';
-// import PetFoundPage from '../petFound/PetFoundPage';
-// import PetSearchPage from '../petSearch/PetSearchPage';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -140,7 +142,8 @@ export default function MainPage() {
                     </span>
                 </ButtonBase>
             ))}
-            <LoginModal open={true} handleCancel={() => {}} handleLogin={() => {}} />
+            <TitlebarGridList />
+            {/* <LoginModal open={true} handleCancel={() => {}} handleLogin={() => {}} /> */}
             {/* <RegisterModal open={true} handleCancel={() => {}} handleRegister={() => {}} /> */}
         </div>
     );
