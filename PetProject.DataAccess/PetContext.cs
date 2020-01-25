@@ -9,6 +9,8 @@ namespace PetProject.DataAccess
 
         public DbSet<TaskType> TaskTypes { get; set; }
 
+        public DbSet<Pet> Pets { get; set; }
+
         public PetContext(DbContextOptions<PetContext> options)
             : base(options)
         {
