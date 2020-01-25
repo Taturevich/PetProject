@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetProject.DataAccess;
 using PetProject.Domain;
+using PetProject.DTO;
+using Task = PetProject.Domain.Task;
 
 namespace PetProject.Controllers
 {
@@ -49,20 +51,27 @@ namespace PetProject.Controllers
 
         // POST: api/PetFeature
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] PetFeature feature)
+        public async Task<IActionResult> Post([FromBody] PetFeatureDTO petFeatureDto)
         {
-            var petFeature = _petContext.PetFeatures.Add(feature);
-            return Ok(petFeature.Entity.PetFeatureId);
+            var petFeature = new PetFeature
+            {
+                Category = petFeatureDto.Category,
+                Characteristic = petFeatureDto.Characteristic
+            };
+
+            var entry = await _petContext.PetFeatures.AddAsync(petFeature);
+            return Ok(entry.Entity.PetFeatureId);
         }
 
         // PUT: api/PetFeature/5
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] PetFeature updatedPetFeature)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] PetFeatureDTO petFeatureDto)
         {
             try
             {
-                var petFeature = await _petContext.PetFeatures.FindAsync(updatedPetFeature.PetFeatureId);
-                _petContext.Entry(petFeature).CurrentValues.SetValues(updatedPetFeature);
+                var petFeature = await _petContext.PetFeatures.FindAsync(id);
+                petFeature.Category = petFeatureDto.Category;
+                petFeature.Characteristic = petFeatureDto.Characteristic;
                 await _petContext.SaveChangesAsync();
             }
             catch (Exception e)
@@ -71,6 +80,30 @@ namespace PetProject.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> AssignFeatureToPet([FromBody] (int petId, int featureId)[] petFeaturePairs)
+        {
+            try
+            {
+                var assignments =
+                    petFeaturePairs.Select(pfp =>
+                        new PetFeatureAssignment
+                        {
+                            PetId = pfp.petId,
+                            PetFeatureId = pfp.featureId
+                        });
+
+                await _petContext.PetFeatureAssignments.AddRangeAsync(assignments);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error");
+                return Problem();
+            }
         }
     }
 }
