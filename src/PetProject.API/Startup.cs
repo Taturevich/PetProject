@@ -105,17 +105,34 @@ namespace PetProject
 
         private async Task SeedTestData(IServiceCollection serviceCollection)
         {
-            await using var scope = serviceCollection.BuildServiceProvider().GetService<PetContext>();
-            AddIfNotExists(scope.Pets, new Pet
+            var buildServiceProvider = serviceCollection.BuildServiceProvider();
+            using (var petScope = buildServiceProvider.CreateScope())
             {
-                Name = "Barsik",
-                Description = "Adopted 10 years ago.",
-                PetStatus = new PetStatus
+                await using var scope = petScope.ServiceProvider.GetService<PetContext>();
+                var barsik = new Pet
                 {
-                    Status = "Adoption Ready"
-                }
-            }, pet => pet.Name != "Barsik" && pet.Description == "Adopted 10 years ago.");
-            await scope.SaveChangesAsync();
+                    Name = "Barsik",
+                    Description = "Adopted 10 years ago.",
+                    PetStatus = new PetStatus
+                    {
+                        Status = "Adoption Ready"
+                    }
+                };
+                AddIfNotExists(scope.Pets, barsik, pet => pet.Name != "Barsik" && pet.Description != "Adopted 10 years ago.");
+                await scope.SaveChangesAsync();
+            }
+
+            using var imageScope = buildServiceProvider.CreateScope();
+            await using var imagesContext = imageScope.ServiceProvider.GetService<PetContext>();
+            var barsikFromDb = imagesContext.Pets.FirstOrDefault(x => x.Name == "Barsik" && x.Description == "Adopted 10 years ago.");
+            var barsikImage = new Image
+            {
+                PetId = barsikFromDb?.PetId ?? 0,
+                Pet = barsikFromDb,
+                ImagePath = "images/barsik.jpg",
+            };
+            AddIfNotExists(imagesContext.Images, barsikImage, image => image.ImagePath == "images/barsik.jpg");
+            await imagesContext.SaveChangesAsync();
         }
 
         private static EntityEntry<T> AddIfNotExists<T>(
