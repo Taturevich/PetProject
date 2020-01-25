@@ -40,7 +40,6 @@ namespace PetProject.Controllers
             return Ok(petFeature);
         }
 
-
         // POST: api/PetFeature
         [HttpPost]
         [Route("")]
@@ -53,9 +52,8 @@ namespace PetProject.Controllers
 
             var oldFeature = await _petContext
                 .UserFeatures
-                .FirstOrDefaultAsync(x => x.Category == featureDTO.Category && x.Characteristic == featureDTO.Characteristic);
-            
-            if (oldFeature is null)
+                .FirstOrDefaultAsync(x => x.Category == featureDTO.Category && x.Characteristic == featureDTO.Characteristic);    
+            if (oldFeature != null)
             {
                 BadRequest();
             }
@@ -75,7 +73,6 @@ namespace PetProject.Controllers
             }
 
             var oldFeature = await _petContext.UserFeatures.FindAsync(id);
-
             if (oldFeature is null)
             {
                 NotFound();
@@ -83,7 +80,6 @@ namespace PetProject.Controllers
 
             Mapper.MapToEntity(featureDto, oldFeature);
             await _petContext.SaveChangesAsync();
-
             return Ok();
         }
     }
