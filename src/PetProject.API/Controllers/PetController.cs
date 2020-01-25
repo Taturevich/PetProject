@@ -35,9 +35,10 @@ namespace PetProject.Controllers
 
         //GET: api/<controller>
         [HttpGet("byFeatures")]
-        public async Task<IActionResult> GetByFeatureIds(int[] featureIds)
+        public async Task<IActionResult> GetByFeatureIds([FromQuery]int[] featureIds)
         {
             var pets = await _petContext.Pets
+                .Include(x => x.Images)
                 .Where(p => p.PetFeatureAssignments
                     .Any(pfa => featureIds.Contains(pfa.PetFeatureId)))
                 .OrderByDescending(x => x.PetFeatureAssignments.Count())
