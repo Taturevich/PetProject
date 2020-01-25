@@ -116,6 +116,7 @@ namespace PetProject
             });
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
