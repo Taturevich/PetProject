@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,18 @@ namespace PetProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var pets = await _petContext.Pets.ToListAsync();
+            var pets = await _petContext.Pets.Include(x => x.Images).ToListAsync();
+            return Ok(pets);
+        }
+
+        //GET: api/<controller>
+        [HttpGet]
+        public async Task<IActionResult> GetByFeatureIds([FromBody]int[] featureIds)
+        {
+            var pets = await _petContext.Pets
+                .Where(p => p.PetFeatureAssignments
+                    .All(pfa => featureIds.Contains(pfa.PetFeatureId)))
+                .ToListAsync();
             return Ok(pets);
         }
 
@@ -60,12 +72,20 @@ namespace PetProject.Controllers
 
         // PUT api/<controller>/5
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody]Pet updatedPet)
+        public async Task<IActionResult> Put([FromBody]PetUpdateDTO petUpdateDto)
         {
             try
             {
-                var pet = await _petContext.Pets.FindAsync(updatedPet.PetId);
-                _petContext.Entry(pet).CurrentValues.SetValues(pet);
+                var pet = await _petContext.Pets.FindAsync(petUpdateDto.PetId);
+
+                //Pet pet;
+                Mapper.MapToEntity(petUpdateDto, pet);
+                //pet.Name = petUpdateDto.Name;
+                //pet.Description = petUpdateDto.Description;
+                //pet.Type = petUpdateDto.Type;
+                //pet.VolunteerId = petUpdateDto.VolunteerId;
+                //pet.PetStatusId = petUpdateDto.PetStatusId;
+
                 await _petContext.SaveChangesAsync();
             }
             catch (Exception e)
@@ -76,16 +96,16 @@ namespace PetProject.Controllers
             return Ok();
         }
 
-        [HttpPut("status")]
-        public async Task<IActionResult> UpdateStatus([FromBody] (int id, PetStatus status) petStatus)
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody]int petStatusId)
         {
             try
             {
-                var pet = await _petContext.Pets.FindAsync(petStatus.id);
-                pet.PetStatus = petStatus.status;
+                var pet = await _petContext.Pets.FindAsync(id);
+                pet.PetStatusId = petStatusId;
                 await _petContext.SaveChangesAsync();
             }
-            catch (Exception e)
+            catch (Exception e) 
             {
                 _logger.LogError(e, "Error");
             }

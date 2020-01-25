@@ -43,8 +43,9 @@ namespace PetProject.Controllers
         [HttpGet("{petId}")]
         public async Task<IActionResult> GetByPetId(int petId)
         {
-            var pet = await _petContext.Pets.FindAsync(petId);
-            var petFeatures = pet.PetFeatureAssignments.Select(pfa => pfa.PetFeature);
+            var petFeatures = _petContext.PetFeatureAssignments
+                .Where(pfa => pfa.PetId == petId);
+
             return Ok(petFeatures);
         }
 
@@ -59,6 +60,8 @@ namespace PetProject.Controllers
             };
 
             var entry = await _petContext.PetFeatures.AddAsync(petFeature);
+            await _petContext.SaveChangesAsync();
+
             return Ok(entry.Entity.PetFeatureId);
         }
 
@@ -94,7 +97,9 @@ namespace PetProject.Controllers
                             PetFeatureId = featureId
                         });
 
+                _petContext.Pets.Find(petId).PetFeatureAssignments.Clear();
                 await _petContext.PetFeatureAssignments.AddRangeAsync(assignments);
+                await _petContext.SaveChangesAsync();
 
                 return Ok();
             }

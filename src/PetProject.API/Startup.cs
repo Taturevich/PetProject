@@ -81,7 +81,7 @@ namespace PetProject
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pet API V1");
-                c.RoutePrefix = string.Empty;
+                // c.RoutePrefix = string.Empty;
             });
 
             app.UseRouting();
@@ -183,6 +183,18 @@ namespace PetProject
             {
                 AddIfNotExists(dbSet, entity);
             }
+        }
+
+            using var imageScope = buildServiceProvider.CreateScope();
+            await using var imagesContext = imageScope.ServiceProvider.GetService<PetContext>();
+            var barsikFromDb = imagesContext.Pets.FirstOrDefault(x => x.Name == "Barsik" && x.Description == "Adopted 10 years ago.");
+            var barsikImage = new Image
+            {
+                PetId = barsikFromDb?.PetId ?? 0,
+                ImagePath = "images/barsik.jpg",
+            };
+            AddIfNotExists(imagesContext.Images, barsikImage, image => image.ImagePath == "images/barsik.jpg");
+            await imagesContext.SaveChangesAsync();
         }
 
         private static EntityEntry<T> AddIfNotExists<T>(
