@@ -80,7 +80,7 @@ namespace PetProject
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pet API V1");
-                c.RoutePrefix = "swagger";
+                // c.RoutePrefix = string.Empty;
             });
 
             app.UseRouting();
