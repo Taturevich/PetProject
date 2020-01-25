@@ -19,5 +19,9 @@ namespace PetProject.Domain
         public bool IsBlackListed { get; set; }
 
         public ICollection<UserFeatureAssignment> UserFeatureAssignments { get; set; }
+
+        public ICollection<UserSocialNetwork> UserSocialNetworks { get; set; }
+
+        public ICollection<Task> Tasks { get; set; }
     }
 }

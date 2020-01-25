@@ -6,10 +6,6 @@ namespace PetProject.Domain
     {
         public int TaskId { get; set; }
 
-        public int UserID { get; set; }
-
-        public int PetId { get; set; }
-
         /// <summary>
         /// REWORK THIS LATER
         /// </summary>
@@ -22,5 +18,13 @@ namespace PetProject.Domain
         public int TaskTypeId { get; set; }
 
         public TaskType TaskType { get; set; }
+
+        public int UserId { get; set; }
+
+        public User User { get; set; }
+
+        public int PetId { get; set; }
+
+        public Pet Pet { get; set; }
     }
 }

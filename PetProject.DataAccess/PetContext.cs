@@ -17,13 +17,15 @@ namespace PetProject.DataAccess
 
         public DbSet<PetFeatureAssignment> PetFeatureAssignments { get; set; }
 
-        public DbSet<PetTaskAssignment> PetTaskAssignments { get; set; }
+        public DbSet<PetTaskTypeAssignment> PetTaskTypeAssignments { get; set; }
 
         public DbSet<User> Users { get; set; }
 
         public DbSet<UserFeatureAssignment> UserFeatureAssignments { get; set; }
 
         public DbSet<UserFeature> UserFeature { get; set; }
+
+        public DbSet<UserSocialNetwork> UserSocialNetworks { get; set; }
 
         public PetContext(DbContextOptions<PetContext> options)
             : base(options)
@@ -32,22 +34,10 @@ namespace PetProject.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Task>()
-                .HasOne(task => task.TaskType)
-                .WithMany(taskType => taskType.Tasks)
-                .HasForeignKey(task => task.TaskTypeId);
-
             modelBuilder.Entity<Pet>()
                 .HasOne(pet => pet.PetStatus)
                 .WithMany(petStatus => petStatus.Pets)
                 .HasForeignKey(pet => pet.PetStatusId);
-
-            /*
-            modelBuilder.Entity<Pet>()
-                .HasOne(pet => pet.VolunteerId)
-                .WithMany(petStatus => petStatus.V)
-                .HasForeignKey(pet => pet.PetStatusId);
-                */
 
             modelBuilder.Entity<PetFeatureAssignment>()
                 .HasOne(petFeatureAssignment => petFeatureAssignment.Pet)
@@ -59,14 +49,14 @@ namespace PetProject.DataAccess
                 .WithMany(petFeature => petFeature.PetFeatureAssignments)
                 .HasForeignKey(petFeatureAssignment => petFeatureAssignment.PetFeatureId);
 
-            modelBuilder.Entity<PetTaskAssignment>()
+            modelBuilder.Entity<PetTaskTypeAssignment>()
                 .HasOne(petTaskAssignment => petTaskAssignment.Pet)
-                .WithMany(pet => pet.PetTaskAssignments)
+                .WithMany(pet => pet.PetTaskTypeAssignments)
                 .HasForeignKey(petTaskAssignment => petTaskAssignment.PetId);
 
-            modelBuilder.Entity<PetTaskAssignment>()
+            modelBuilder.Entity<PetTaskTypeAssignment>()
                 .HasOne(petTaskAssignment => petTaskAssignment.TaskType)
-                .WithMany(taskType => taskType.PetTaskAssignments)
+                .WithMany(taskType => taskType.PetTaskTypeAssignments)
                 .HasForeignKey(petTaskAssignment => petTaskAssignment.TaskTypeId);
 
             modelBuilder.Entity<UserFeatureAssignment>()
@@ -78,6 +68,26 @@ namespace PetProject.DataAccess
                 .HasOne(userFeatureAssignment => userFeatureAssignment.UserFeature)
                 .WithMany(userFeature => userFeature.UserFeatureAssignments)
                 .HasForeignKey(userFeatureAssignment => userFeatureAssignment.UserFeatureId);
+
+            modelBuilder.Entity<UserSocialNetwork>()
+                .HasOne(userSocialNetwork => userSocialNetwork.User)
+                .WithMany(user => user.UserSocialNetworks)
+                .HasForeignKey(userSocialNetwork => userSocialNetwork.UserId);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(task => task.TaskType)
+                .WithMany(taskType => taskType.Tasks)
+                .HasForeignKey(task => task.TaskTypeId);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(task => task.User)
+                .WithMany(user => user.Tasks)
+                .HasForeignKey(task => task.UserId);
+
+            modelBuilder.Entity<Task>()
+                .HasOne(task => task.Pet)
+                .WithMany(pet => pet.Tasks)
+                .HasForeignKey(task => task.PetId);
         }
     }
 }

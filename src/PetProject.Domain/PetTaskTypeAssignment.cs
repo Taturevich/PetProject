@@ -1,6 +1,6 @@
 ﻿namespace PetProject.Domain
 {
-    public class PetTaskAssignment
+    public class PetTaskTypeAssignment
     {
         public int PetTaskAssignmentId { get; set; }
 

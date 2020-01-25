@@ -18,6 +18,8 @@ namespace PetProject.Domain
 
         public ICollection<PetFeatureAssignment> PetFeatureAssignments { get; set; }
 
-        public ICollection<PetTaskAssignment> PetTaskAssignments { get; set; }
+        public ICollection<PetTaskTypeAssignment> PetTaskTypeAssignments { get; set; }
+
+        public ICollection<Task> Tasks { get; set; }
     }
 }
