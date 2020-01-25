@@ -38,6 +38,13 @@ namespace PetProject.DataAccess
                 .WithMany(petStatus => petStatus.Pets)
                 .HasForeignKey(pet => pet.PetStatusId);
 
+            /*
+            modelBuilder.Entity<Pet>()
+                .HasOne(pet => pet.VolunteerId)
+                .WithMany(petStatus => petStatus.V)
+                .HasForeignKey(pet => pet.PetStatusId);
+                */
+
             modelBuilder.Entity<PetFeatureAssignment>()
                 .HasOne(petFeatureAssignment => petFeatureAssignment.Pet)
                 .WithMany(pet => pet.PetFeatureAssignments)
