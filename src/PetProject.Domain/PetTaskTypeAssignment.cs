@@ -2,7 +2,7 @@
 {
     public class PetTaskTypeAssignment
     {
-        public int PetTaskAssignmentId { get; set; }
+        public int PetTaskTypeAssignmentId { get; set; }
 
         public int PetId { get; set; }
 
