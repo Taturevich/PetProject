@@ -1,9 +1,11 @@
-﻿namespace PetProject.Services.VK
+﻿using System.Threading.Tasks;
+
+namespace PetProject.Services.VK
 {
     public interface IVKWallService
     {
-        void AddNewGroup(string domain);
+        Task AddNewGroup(string domain);
 
-        void ParseGroup(string domain);
+        Task ParseGroup(string domain);
     }
 }

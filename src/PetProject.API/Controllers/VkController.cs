@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetProject.Models;
 using PetProject.Services.VK;
+using System.Threading.Tasks;
 
 namespace PetProject.Controllers
 {
@@ -17,15 +18,17 @@ namespace PetProject.Controllers
 
         [HttpPost]       
         [Route("Wall")]
-        public IActionResult AddNewWall([FromBody]VKWallRequest group)
+        public async Task<IActionResult> AddNewWall([FromBody]VKWallRequest group)
         {
+            await vkService.AddNewGroup(group.Domain);
             return Ok();
         }
 
         [HttpPost]
         [Route("Wall/Parse")]
-        public IActionResult ParseWall([FromBody]VKWallRequest group)
+        public async Task<IActionResult> ParseWall([FromBody]VKWallRequest group)
         {
+            await vkService.AddNewGroup(group.Domain);
             return Ok();
         }
     }
