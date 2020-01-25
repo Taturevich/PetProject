@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using PetProject.Models;
+using PetProject.Services.VK;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace PetProject.Controllers
 {
@@ -11,5 +9,27 @@ namespace PetProject.Controllers
     [ApiController]
     public class VkController : ControllerBase
     {
+        private readonly IVKWallService vkService;
+
+        public VkController(IVKWallService vkService)
+        {
+            this.vkService = vkService;
+        }
+
+        [HttpPost]       
+        [Route("Wall")]
+        public async Task<IActionResult> AddNewWall([FromBody]VKWallRequest group)
+        {
+            await vkService.AddNewGroup(group.Domain);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("Wall/Parse")]
+        public async Task<IActionResult> ParseWall([FromBody]VKWallRequest group)
+        {
+            await vkService.AddNewGroup(group.Domain);
+            return Ok();
+        }
     }
 }
