@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetProject.DataAccess;
+using PetProject.Domain;
 
 namespace PetProject.Controllers
 {
@@ -20,7 +22,7 @@ namespace PetProject.Controllers
             _petContext = petContext;
         }
 
-        // GET: api/PetChar
+        // GET: api/PetFeature
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -28,29 +30,47 @@ namespace PetProject.Controllers
             return Ok(petFeatures);
         }
 
-        // GET: api/PetChar/5
+        // GET: api/PetFeature/5
         [HttpGet("{id}")]
-        public string GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return "value";
+            var petFeature = await _petContext.PetFeatures.FindAsync(id);
+            return Ok(petFeature);
+        }
+
+        // GET: api/PetFeature/5
+        [HttpGet("{petId}")]
+        public async Task<IActionResult> GetByPetId(int petId)
+        {
+            var pet = await _petContext.Pets.FindAsync(petId);
+            var petFeatures = pet.PetFeatureAssignments.Select(pfa => pfa.PetFeature);
+            return Ok(petFeatures);
         }
 
         // POST: api/PetFeature
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] PetFeature feature)
         {
+            var petFeature = _petContext.PetFeatures.Add(feature);
+            return Ok(petFeature.Entity.PetFeatureId);
         }
 
         // PUT: api/PetFeature/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] PetFeature updatedPetFeature)
         {
-        }
+            try
+            {
+                var petFeature = await _petContext.PetFeatures.FindAsync(updatedPetFeature.PetFeatureId);
+                _petContext.Entry(petFeature).CurrentValues.SetValues(updatedPetFeature);
+                await _petContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error");
+            }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok();
         }
     }
 }
