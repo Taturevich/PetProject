@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetProject.DataAccess;
 using PetProject.Domain;
-using Task = PetProject.Domain.Task;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -64,6 +63,23 @@ namespace PetProject.Controllers
             {
                 var pet = await _petContext.Pets.FindAsync(updatedPet.PetId);
                 _petContext.Entry(pet).CurrentValues.SetValues(pet);
+                await _petContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error");
+            }
+
+            return Ok();
+        }
+
+        [HttpPut("status")]
+        public async Task<IActionResult> Put([FromBody] (int id, PetStatus status) petStatus)
+        {
+            try
+            {
+                var pet = await _petContext.Pets.FindAsync(petStatus.id);
+                pet.PetStatus = petStatus.status;
                 await _petContext.SaveChangesAsync();
             }
             catch (Exception e)
