@@ -1,4 +1,6 @@
-﻿namespace PetProject.Domain
+﻿using System.Collections.Generic;
+
+namespace PetProject.Domain
 {
     public class User
     {
@@ -15,5 +17,7 @@
         public int PetPoints { get; set; }
 
         public bool IsBlackListed { get; set; }
+
+        public ICollection<UserFeatureAssignment> UserFeatureAssignments { get; set; }
     }
 }
