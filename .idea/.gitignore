@@ -1,3 +1,6 @@
 ﻿# Default ignored files
 /.idea.PetProject.dir/.idea/workspace.xml
 /.idea.PetProject/.idea/workspace.xml
+# Datasource local storage ignored files
+/.idea.PetProject/.idea/dataSources.local.xml
+/.idea.PetProject/.idea/dataSources/
