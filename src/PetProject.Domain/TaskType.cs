@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PetProject.Domain
 {
@@ -13,5 +14,7 @@ namespace PetProject.Domain
         public string Description { get; set; }
 
         public DateTime DefaultDuration { get; set; }
+
+        public ICollection<Task> Tasks { get; set; }
     }
 }
