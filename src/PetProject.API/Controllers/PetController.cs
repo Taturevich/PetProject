@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetProject.DataAccess;
 using PetProject.Domain;
+using PetProject.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,11 +41,11 @@ namespace PetProject.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]Pet pet)
+        public async Task<IActionResult> Post([FromBody] PetDto pet)
         {
             try
             {
-                await _petContext.Pets.AddAsync(pet);
+                await _petContext.Pets.AddAsync(Mapper.MapToEntity(pet, new Pet()));
                 await _petContext.SaveChangesAsync();
             }
             catch (Exception e)
