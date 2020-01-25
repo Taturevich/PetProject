@@ -28,8 +28,8 @@ namespace PetProject.DataAccess.Migrations
                     b.Property<int>("PetStatusId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Volunteer")
                         .HasColumnType("TEXT");
@@ -197,6 +197,44 @@ namespace PetProject.DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("PetProject.Domain.UserFeature", b =>
+                {
+                    b.Property<int>("UserFeatureId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Characteristic")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("UserFeatureId");
+
+                    b.ToTable("UserFeature");
+                });
+
+            modelBuilder.Entity("PetProject.Domain.UserFeatureAssignment", b =>
+                {
+                    b.Property<int>("UserFeatureAssignmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserFeatureId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("UserFeatureAssignmentId");
+
+                    b.HasIndex("UserFeatureId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFeatureAssignments");
+                });
+
             modelBuilder.Entity("PetProject.Domain.Pet", b =>
                 {
                     b.HasOne("PetProject.Domain.PetStatus", "PetStatus")
@@ -241,6 +279,21 @@ namespace PetProject.DataAccess.Migrations
                     b.HasOne("PetProject.Domain.TaskType", "TaskType")
                         .WithMany("Tasks")
                         .HasForeignKey("TaskTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetProject.Domain.UserFeatureAssignment", b =>
+                {
+                    b.HasOne("PetProject.Domain.UserFeature", "UserFeature")
+                        .WithMany("UserFeatureAssignments")
+                        .HasForeignKey("UserFeatureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetProject.Domain.User", "User")
+                        .WithMany("UserFeatureAssignments")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
