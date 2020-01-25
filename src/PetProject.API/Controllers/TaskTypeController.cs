@@ -92,6 +92,6 @@ namespace PetProject.Controllers
             _petContext.TaskTypes.Remove(dbTaskType);
             await _petContext.SaveChangesAsync();
             return Ok();
-        }
+        }      
     }
 }
