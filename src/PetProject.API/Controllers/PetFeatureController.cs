@@ -29,7 +29,7 @@ namespace PetProject.Controllers
         }
 
         // GET: api/PetChar/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public string GetById(int id)
         {
             return "value";
