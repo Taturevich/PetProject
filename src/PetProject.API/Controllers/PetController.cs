@@ -59,12 +59,20 @@ namespace PetProject.Controllers
 
         // PUT api/<controller>/5
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody]Pet updatedPet)
+        public async Task<IActionResult> Put([FromBody]PetUpdateDTO petUpdateDto)
         {
             try
             {
-                var pet = await _petContext.Pets.FindAsync(updatedPet.PetId);
-                _petContext.Entry(pet).CurrentValues.SetValues(pet);
+                var pet = await _petContext.Pets.FindAsync(petUpdateDto.PetId);
+
+                //Pet pet;
+                Mapper.MapToEntity(petUpdateDto, pet);
+                //pet.Name = petUpdateDto.Name;
+                //pet.Description = petUpdateDto.Description;
+                //pet.Type = petUpdateDto.Type;
+                //pet.VolunteerId = petUpdateDto.VolunteerId;
+                //pet.PetStatusId = petUpdateDto.PetStatusId;
+
                 await _petContext.SaveChangesAsync();
             }
             catch (Exception e)
@@ -75,13 +83,13 @@ namespace PetProject.Controllers
             return Ok();
         }
 
-        [HttpPut("status")]
-        public async Task<IActionResult> UpdateStatus([FromBody] (int id, PetStatus status) petStatus)
+        [HttpPut("{id}/status")]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody]int petStatusId)
         {
             try
             {
-                var pet = await _petContext.Pets.FindAsync(petStatus.id);
-                pet.PetStatus = petStatus.status;
+                var pet = await _petContext.Pets.FindAsync(id);
+                pet.PetStatusId = petStatusId;
                 await _petContext.SaveChangesAsync();
             }
             catch (Exception e)
