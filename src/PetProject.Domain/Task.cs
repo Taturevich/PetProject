@@ -11,7 +11,7 @@ namespace PetProject.Domain
         /// </summary>
         public TaskStatus Status { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public DateTime StartDate { get; set; }
 
