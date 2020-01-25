@@ -92,7 +92,7 @@ namespace PetProject.Controllers
                 pet.PetStatusId = petStatusId;
                 await _petContext.SaveChangesAsync();
             }
-            catch (Exception e)
+            catch (Exception e) 
             {
                 _logger.LogError(e, "Error");
             }
