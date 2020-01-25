@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 
 import { store } from './store/appState';
-import { Header } from './components/header/Header';
+import Header from './components/header/header';
 import { Footer } from './components/footer/Footer';
 
 import MainPage from './pages/mainPage/MainPage';
@@ -13,7 +13,7 @@ import { Switch, Route } from 'react-router-dom'
 const Layout = () => (
     <main>
         <Switch>
-            <Route exact path='/' component={MainPage} />
+            <Route path='/' component={MainPage} />
             <Route path='/WantToHelp' component={HelpWantedPage} />
             <Route path='/PetFound' component={PetFoundPage} />
         </Switch>
@@ -26,7 +26,7 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <Header></Header>
-                <Layout />
+                <MainPage />
                 <Footer></Footer>
             </Provider>
         );
