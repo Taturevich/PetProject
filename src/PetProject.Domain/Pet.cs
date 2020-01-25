@@ -1,4 +1,6 @@
-﻿namespace PetProject.Domain
+﻿using System.Collections.Generic;
+
+namespace PetProject.Domain
 {
     public class Pet
     {
@@ -10,6 +12,12 @@
 
         public string Volunteer { get; set; }
 
-        public int StatusId { get; set; }
+
+        public int PetStatusId { get; set; }
+
+        public PetStatus PetStatus { get; set; }
+
+        
+        public ICollection<PetFeatureAssignment> PetFeatureAssignments { get; set; }
     }
 }
