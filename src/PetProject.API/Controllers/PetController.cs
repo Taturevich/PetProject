@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,17 @@ namespace PetProject.Controllers
         public async Task<IActionResult> Get()
         {
             var pets = await _petContext.Pets.ToListAsync();
+            return Ok(pets);
+        }
+
+        //GET: api/<controller>
+        [HttpGet]
+        public async Task<IActionResult> GetByFeatureIds([FromBody]int[] featureIds)
+        {
+            var pets = await _petContext.Pets
+                .Where(p => p.PetFeatureAssignments
+                    .All(pfa => featureIds.Contains(pfa.PetFeatureId)))
+                .ToListAsync();
             return Ok(pets);
         }
 
