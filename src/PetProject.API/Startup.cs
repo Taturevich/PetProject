@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -105,17 +106,81 @@ namespace PetProject
 
         private async Task SeedTestData(IServiceCollection serviceCollection)
         {
-            await using var scope = serviceCollection.BuildServiceProvider().GetService<PetContext>();
-            AddIfNotExists(scope.Pets, new Pet
+            await using var context = serviceCollection.BuildServiceProvider().GetService<PetContext>();
+
+            context.PetStatuses.RemoveRange(context.PetStatuses);
+
+            var petStatusAdoptionReady = new PetStatus {Status = "AdoptionReady"};
+            var petStatusNotReady = new PetStatus { Status = "NotReady" };
+            var petStatusLost = new PetStatus { Status = "Lost" };
+            var petStatusAdopted = new PetStatus { Status = "Adopted" };
+
+            AddIfNotExists(context.PetStatuses, new List<PetStatus>
+            {
+                petStatusAdoptionReady,
+                petStatusNotReady,
+                petStatusLost,
+                petStatusAdopted
+            });
+
+            var pet1 = new Pet
             {
                 Name = "Barsik",
-                Description = "Adopted 10 years ago.",
-                PetStatus = new PetStatus
-                {
-                    Status = "Adoption Ready"
-                }
-            }, pet => pet.Name != "Barsik" && pet.Description == "Adopted 10 years ago.");
-            await scope.SaveChangesAsync();
+                Description = "Sweet meow.",
+                PetStatus = petStatusAdopted
+            };
+
+            var pet2 = new Pet
+            {
+                Name = "Murka",
+                Description = "Poor homeless cat.",
+                PetStatus = petStatusAdoptionReady
+            };
+
+            var pet3 = new Pet
+            {
+                Name = "Pinky",
+                Description = "Lost boi.",
+                PetStatus = petStatusLost
+            };
+
+            var pet4 = new Pet
+            {
+                Name = "Bayaderka",
+                Description = "Dangerous cat.",
+                PetStatus = petStatusAdopted
+            };
+
+            var pet5 = new Pet
+            {
+                Name = "Snana",
+                Description = "No moustache, otherwise healthy kitty.",
+                PetStatus = petStatusAdoptionReady
+            };
+
+            var pet6 = new Pet
+            {
+                Name = "Sekopina",
+                Description = "Street cat.",
+                PetStatus = petStatusNotReady
+            };
+            
+            AddIfNotExists(context.Pets, pet1, pet => pet.Name != "Barsik");
+            AddIfNotExists(context.Pets, pet2, pet => pet.Name != "Murka");
+            AddIfNotExists(context.Pets, pet3, pet => pet.Name != "Pinky");
+            AddIfNotExists(context.Pets, pet4, pet => pet.Name != "Bayaderka");
+            AddIfNotExists(context.Pets, pet5, pet => pet.Name != "Snana");
+            AddIfNotExists(context.Pets, pet6, pet => pet.Name != "Sekopina");
+
+            await context.SaveChangesAsync();
+        }
+
+        private static void AddIfNotExists<T>(DbSet<T> dbSet, IEnumerable<T> entities) where T : class, new()
+        {
+            foreach (var entity in entities)
+            {
+                AddIfNotExists(dbSet, entity);
+            }
         }
 
         private static EntityEntry<T> AddIfNotExists<T>(
