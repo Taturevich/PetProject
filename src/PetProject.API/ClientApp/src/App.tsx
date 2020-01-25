@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 
 import { store } from './store/appState';
-import Header from './components/header/header';
+import Header from './components/header/Header';
 import { Footer } from './components/footer/Footer';
 
 import MainPage from './pages/mainPage/MainPage';

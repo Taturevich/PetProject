@@ -8,5 +8,5 @@ export interface TokenData {
 }
 
 export interface TokenState {
-    token: '';
+    token: string;
 }
