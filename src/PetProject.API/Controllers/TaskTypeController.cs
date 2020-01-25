@@ -17,7 +17,6 @@ namespace PetProject.Controllers
             _petContext = petContext;
         }
 
-
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetTypes()

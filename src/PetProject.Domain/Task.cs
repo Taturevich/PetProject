@@ -13,7 +13,7 @@ namespace PetProject.Domain
         /// <summary>
         /// REWORK THIS LATER
         /// </summary>
-        public string Status { get; set; }
+        public TaskStatus Status { get; set; }
 
         public DateTime EndDate { get; set; }
 
