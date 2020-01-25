@@ -1,16 +1,21 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using PetProject.DataAccess;
+using PetProject.Domain;
+using Task = System.Threading.Tasks.Task;
 
 namespace PetProject
 {
@@ -38,6 +43,7 @@ namespace PetProject
         {
             services.AddDbContext<PetContext>(options => options
                 .UseSqlite("Data Source=Pet.db"));
+            SeedTestData(services).GetAwaiter().GetResult();
 
             services.AddControllersWithViews();
 
@@ -95,6 +101,31 @@ namespace PetProject
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+        }
+
+        private async Task SeedTestData(IServiceCollection serviceCollection)
+        {
+            await using var scope = serviceCollection.BuildServiceProvider().GetService<PetContext>();
+            AddIfNotExists(scope.Pets, new Pet
+            {
+                Name = "Barsik",
+                Description = "Adopted 10 years ago.",
+                PetStatus = new PetStatus
+                {
+                    Status = "Adoption Ready"
+                }
+            }, pet => pet.Name != "Barsik" && pet.Description == "Adopted 10 years ago.");
+            await scope.SaveChangesAsync();
+        }
+
+        private static EntityEntry<T> AddIfNotExists<T>(
+            DbSet<T> dbSet,
+            T entity,
+            Expression<Func<T, bool>> predicate = null)
+            where T : class, new()
+        {
+            var exists = predicate != null ? dbSet.Any(predicate) : dbSet.Any();
+            return !exists ? dbSet.Add(entity) : null;
         }
     }
 }
