@@ -32,4 +32,12 @@ export const requestPetsListData = (): AppThunk => dispatch => {
     dispatch(requestPetsList());
     axios.get<Pet[]>('http://localhost:5000/api/pet')
         .then(response => dispatch(receivePetsList(response.data)));
-  }
+}
+
+export const requestPetsListFilteredData = (ids: string[]): AppThunk => dispatch => {
+    dispatch(requestPetsList());
+    axios.get<Pet[]>(
+        ids.length > 0 ? 'http://localhost:5000/api/petfeature' : 'http://localhost:5000/api/pet'
+        ,{ params: '?' + ids.map(id => `featureIds=${id}`).join('&')})
+        .then(response => dispatch(receivePetsList(response.data)));
+}

@@ -35,7 +35,7 @@ namespace PetProject.Controllers
 
         //GET: api/<controller>
         [HttpGet("byFeatures")]
-        public async Task<IActionResult> GetByFeatureIds([FromBody]int[] featureIds)
+        public async Task<IActionResult> GetByFeatureIds(int[] featureIds)
         {
             var pets = await _petContext.Pets
                 .Where(p => p.PetFeatureAssignments
