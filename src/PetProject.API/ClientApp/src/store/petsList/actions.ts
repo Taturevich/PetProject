@@ -37,7 +37,6 @@ export const requestPetsListData = (): AppThunk => dispatch => {
 export const requestPetsListFilteredData = (ids: string[]): AppThunk => dispatch => {
     dispatch(requestPetsList());
     const query = '?' + ids.map(id => `featureIds=${id}`).join('&');
-    console.log(query);
     axios.get<Pet[]>(ids.length > 0 ? 'http://localhost:5000/api/pet/byFeatures' + query : 'http://localhost:5000/api/pet')
         .then(response => dispatch(receivePetsList(response.data)));
 }

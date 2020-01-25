@@ -111,13 +111,14 @@ const PetSearchPageStyled = withStyles(styles)(
                                     <FormLabel component="legend">{key}</FormLabel>
                                     <FormGroup>
                                         {grouped[key].map(f => {
+                                            const checked = this.state.features.find(feature => f.petFeatureId == feature.id)?.checked;
                                             return (
-                                                <FormControlLabel
+                                                <FormControlLabel key={`${f.petFeatureId}_${f.characteristic}`}
                                                     control={
                                                         <Checkbox
-                                                            checked={this.state.features.find(feature => f.petFeatureId == feature.id)?.checked}
                                                             onChange={() => this.changeFeatureCheckbox(f.petFeatureId)}
-                                                            name={f.petFeatureId}
+                                                            key={`${f.petFeatureId}_${f.category}`}
+                                                            value={checked}
                                                         />
                                                     }
                                                     label={f.characteristic}
