@@ -22,7 +22,7 @@ namespace PetProject.Controllers
             _petContext = petContext;
         }
 
-        // GET: api/<controller>
+        //GET: api/<controller>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -31,7 +31,7 @@ namespace PetProject.Controllers
         }
 
         // GET api/<controller>/5
-        [HttpGet("{id}")]
+        [HttpGet("id")]
         public async Task<IActionResult> GetById(int id)
         {
             var pet = await _petContext.Pets.FirstOrDefaultAsync(p => p.PetId == id);
