@@ -201,12 +201,12 @@ namespace PetProject
                 PetStatus = petStatusNotReady
             };
             
-            AddIfNotExists(context.Pets, pet1, pet => pet.Name != "Барсик");
-            AddIfNotExists(context.Pets, pet2, pet => pet.Name != "Бэтмен");
-            AddIfNotExists(context.Pets, pet3, pet => pet.Name != "Догго");
-            AddIfNotExists(context.Pets, pet4, pet => pet.Name != "Лопес");
-            AddIfNotExists(context.Pets, pet5, pet => pet.Name != "Тина");
-            AddIfNotExists(context.Pets, pet6, pet => pet.Name != "Тузик");
+            AddIfNotExists(context.Pets, pet1, pet => pet.Name == "Барсик");
+            AddIfNotExists(context.Pets, pet2, pet => pet.Name == "Бэтмен");
+            AddIfNotExists(context.Pets, pet3, pet => pet.Name == "Догго");
+            AddIfNotExists(context.Pets, pet4, pet => pet.Name == "Лопес");
+            AddIfNotExists(context.Pets, pet5, pet => pet.Name == "Тина");
+            AddIfNotExists(context.Pets, pet6, pet => pet.Name == "Тузик");
 
             var image1 = new Image
             {
@@ -465,6 +465,31 @@ namespace PetProject
             AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment28);
             AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment29);
             AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment30);
+
+            var userVolunteer = new User
+            {
+                Name = "Светлана",
+                LastName = "Лаппо",
+                IsBlackListed = false,
+                Password = "111",
+                PetPoints = 50,
+                Phone = "+375 93 279-47-21",
+                Role = UserRole.Volunteer
+            };
+            
+            var userUser = new User
+            {
+                Name = "Мария",
+                LastName = "Коцупалова",
+                IsBlackListed = false,
+                Password = "12345678",
+                PetPoints = 50,
+                Phone = "+375 11 668-45-89",
+                Role = UserRole.User
+            };
+
+            AddIfNotExists(context.Users, userVolunteer, user => user.Name == "Светлана");
+            AddIfNotExists(context.Users, userUser, user => user.Name == "Мария");
 
             await context.SaveChangesAsync();
         }
