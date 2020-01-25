@@ -108,7 +108,7 @@ namespace PetProject.Controllers
         }
 
         [HttpPut]
-        [Route("Stop/{typeId}/{petId}/{userId}")]
+        [Route("Stop/{taskId}")]
         public async Task<IActionResult> StopTask(int taskId)
         {
             var task = await _petContext.Tasks.FindAsync(taskId);
@@ -124,7 +124,7 @@ namespace PetProject.Controllers
         }
 
         [HttpPut]
-        [Route("Complete/{typeId}/{petId}/{userId}")]
+        [Route("Complete/{taskId}")]
         public async Task<IActionResult> CompleteTask(int taskId)
         {
             var task = await _petContext.Tasks.FindAsync(taskId);

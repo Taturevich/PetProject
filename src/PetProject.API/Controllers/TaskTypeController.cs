@@ -40,10 +40,10 @@ namespace PetProject.Controllers
         }
 
         [HttpGet]
-        [Route("{name}")]
-        public async Task<IActionResult> GetType(string name)
+        [Route("{taskId}")]
+        public async Task<IActionResult> GetType(int taskId)
         {
-            return Ok(await _petContext.TaskTypes.AsQueryable().FirstOrDefaultAsync(x => x.Name == name));
+            return Ok(await _petContext.TaskTypes.FindAsync(taskId));
         }
 
         [HttpPut]
