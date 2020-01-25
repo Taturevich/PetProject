@@ -56,6 +56,7 @@ namespace PetProject.Controllers
             var existsAssigment = await _petContext
                 .PetTaskTypeAssignments
                 .FirstOrDefaultAsync(x => x.PetId == petId && x.TaskTypeId == typeId );
+
             if (existsAssigment != null)
             {
                 return BadRequest();
@@ -89,7 +90,7 @@ namespace PetProject.Controllers
 
             if (existsTask != null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var task = new Domain.Task
@@ -110,13 +111,14 @@ namespace PetProject.Controllers
         [Route("Stop/{typeId}/{petId}/{userId}")]
         public async Task<IActionResult> StopTask(int taskId)
         {
-            var existsAssigment = await _petContext.Tasks.FindAsync(taskId);
-            if (existsAssigment is null)
+            var task = await _petContext.Tasks.FindAsync(taskId);
+            if (task is null)
             {
                 return NotFound();
             }
 
-            existsAssigment.Status = Domain.TaskStatus.Failed;
+            task.Status = Domain.TaskStatus.Failed;
+            task.EndDate = DateTime.UtcNow;
             await _petContext.SaveChangesAsync();
             return Ok();
         }
@@ -125,13 +127,14 @@ namespace PetProject.Controllers
         [Route("Complete/{typeId}/{petId}/{userId}")]
         public async Task<IActionResult> CompleteTask(int taskId)
         {
-            var existsAssigment = await _petContext.Tasks.FindAsync(taskId);
-            if (existsAssigment is null)
+            var task = await _petContext.Tasks.FindAsync(taskId);
+            if (task is null)
             {
                 return NotFound();
             }
 
-            existsAssigment.Status = Domain.TaskStatus.Completed;
+            task.Status = Domain.TaskStatus.Completed;
+            task.EndDate = DateTime.UtcNow;
             await _petContext.SaveChangesAsync();
             return Ok();
         }

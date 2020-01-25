@@ -24,13 +24,6 @@ namespace PetProject.Controllers
             return Ok(await _petContext.TaskTypes.AsQueryable().ToListAsync());
         }
 
-        [HttpGet]
-        [Route("{name}")]
-        public async Task<IActionResult> GetType(string name)
-        {
-            return Ok(await _petContext.TaskTypes.AsQueryable().FirstOrDefaultAsync(x => x.Name == name));
-        }
-
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> AddType([FromBody] TaskTypeDTO taskType)
@@ -40,39 +33,36 @@ namespace PetProject.Controllers
                 return BadRequest();
             }
 
-            await _petContext.TaskTypes.AddAsync(new Domain.TaskType
-            {
-                Name = taskType.Name,
-                Description = taskType.Description,
-                PetPoints = taskType.PetPoints,
-                DefaultDuration = taskType.DefaultDuration
-            });
+            await _petContext.TaskTypes.AddAsync(Mapper.MapToEntity(taskType, new Domain.TaskType()));
 
             await _petContext.SaveChangesAsync();
             return Ok();
         }
 
-        [HttpPut]
+        [HttpGet]
         [Route("{name}")]
-        public async Task<IActionResult> UpdateType(string name, [FromBody] TaskTypeDTO taskType)
+        public async Task<IActionResult> GetType(string name)
+        {
+            return Ok(await _petContext.TaskTypes.AsQueryable().FirstOrDefaultAsync(x => x.Name == name));
+        }
+
+        [HttpPut]
+        [Route("{taskId}")]
+        public async Task<IActionResult> UpdateType(int taskId, [FromBody] TaskTypeDTO taskType)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            var dbTaskType = await _petContext.TaskTypes.AsQueryable().FirstOrDefaultAsync(x => x.Name == name);
+            var entity = await _petContext.TaskTypes.FindAsync(taskId);
 
-            if (dbTaskType is null)
+            if (entity is null)
             {
                 return NotFound();
             }
 
-            dbTaskType.Name = taskType.Name;
-            dbTaskType.Description = taskType.Description;
-            dbTaskType.PetPoints = taskType.PetPoints;
-            dbTaskType.DefaultDuration = taskType.DefaultDuration;
-
+            Mapper.MapToEntity(taskType, entity);
             await _petContext.SaveChangesAsync();
 
             return Ok();
@@ -80,9 +70,9 @@ namespace PetProject.Controllers
 
         [HttpDelete]
         [Route("{name}")]
-        public async Task<IActionResult> Delete(string name)
+        public async Task<IActionResult> Delete(int taskId)
         {
-            var dbTaskType = await _petContext.TaskTypes.AsQueryable().FirstOrDefaultAsync(x => x.Name == name);
+            var dbTaskType = await _petContext.TaskTypes.FindAsync(taskId);
 
             if (dbTaskType is null)
             {
@@ -92,6 +82,6 @@ namespace PetProject.Controllers
             _petContext.TaskTypes.Remove(dbTaskType);
             await _petContext.SaveChangesAsync();
             return Ok();
-        }      
+        }
     }
 }
