@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import { sampleReducer } from './sample/reducer';
+import { petsListReducer } from './petsList/reducer';
 
 export const rootReducer = combineReducers({
-    sample: sampleReducer,
+    pets: petsListReducer,
 });

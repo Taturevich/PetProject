@@ -60,6 +60,7 @@ namespace PetProject
                 });
                 c.IncludeXmlComments(XmlCommentsFilePath);
             });
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +75,8 @@ namespace PetProject
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseCors(c => c.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseSwagger();
@@ -83,7 +86,7 @@ namespace PetProject
                 // c.RoutePrefix = string.Empty;
             });
 
-            app.UseRouting();
+            app.UseRouting();            
 
             app.UseEndpoints(endpoints =>
             {

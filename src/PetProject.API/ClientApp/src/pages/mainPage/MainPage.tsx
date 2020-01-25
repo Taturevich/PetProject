@@ -11,7 +11,7 @@ import petSearch from '../../static/images/petSearch.png';
 import petHelp from '../../static/images/petHelp.png';
 import petSaw from '../../static/images/petSaw.png';
 
-import { TitlebarGridList } from '../petSearch/PetSearchPage';
+import { PetSearchPageConnected } from '../petSearch/PetSearchPage';
 
 import { LoginModal, RegisterModal } from '../../components/modals';
 
@@ -142,7 +142,7 @@ export default function MainPage() {
                     </span>
                 </ButtonBase>
             ))}
-            <TitlebarGridList />
+            <PetSearchPageConnected />
             {/* <LoginModal open={true} handleCancel={() => {}} handleLogin={() => {}} /> */}
             {/* <RegisterModal open={true} handleCancel={() => {}} handleRegister={() => {}} /> */}
         </div>
