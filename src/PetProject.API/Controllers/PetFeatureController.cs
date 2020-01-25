@@ -45,6 +45,7 @@ namespace PetProject.Controllers
         {
             var pet = await _petContext.Pets.FindAsync(petId);
             var petFeatures = pet.PetFeatureAssignments.Select(pfa => pfa.PetFeature);
+
             return Ok(petFeatures);
         }
 
@@ -59,6 +60,8 @@ namespace PetProject.Controllers
             };
 
             var entry = await _petContext.PetFeatures.AddAsync(petFeature);
+            await _petContext.SaveChangesAsync();
+
             return Ok(entry.Entity.PetFeatureId);
         }
 
@@ -95,6 +98,7 @@ namespace PetProject.Controllers
                         });
 
                 await _petContext.PetFeatureAssignments.AddRangeAsync(assignments);
+                await _petContext.SaveChangesAsync();
 
                 return Ok();
             }
