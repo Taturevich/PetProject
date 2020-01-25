@@ -94,6 +94,7 @@ const PetSearchPageStyled = withStyles(styles)(
                     features: features
                 });
             }
+            this.props.loadPetsFilteredList(this.state.features.filter(f => f.checked).map(f => f.id));
         }
 
         render() {
