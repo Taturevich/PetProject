@@ -1,17 +1,8 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +11,13 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PetProject.DataAccess;
 using PetProject.Domain;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Text;
 using Task = System.Threading.Tasks.Task;
 
 namespace PetProject
@@ -50,7 +48,9 @@ namespace PetProject
                 .UseSqlite("Data Source=Pet.db"));
             SeedTestData(services).GetAwaiter().GetResult();
 
-            services.AddControllersWithViews();
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -61,7 +61,8 @@ namespace PetProject
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Pet API", Version = "v1"
+                    Title = "Pet API",
+                    Version = "v1"
                 });
                 c.IncludeXmlComments(XmlCommentsFilePath);
             });
@@ -149,7 +150,7 @@ namespace PetProject
 
             context.Database.EnsureCreated();
 
-            var petStatusAdoptionReady = new PetStatus {Status = "Готов к новым хозяевам"};
+            var petStatusAdoptionReady = new PetStatus { Status = "Готов к новым хозяевам" };
             var petStatusNotReady = new PetStatus { Status = "Не готов к новым хозяевам" };
             var petStatusLost = new PetStatus { Status = "Потерянное животное" };
             var petStatusAdopted = new PetStatus { Status = "У нового хозяина" };
@@ -158,7 +159,7 @@ namespace PetProject
             AddIfNotExists(context.PetStatuses, petStatusNotReady, petStatus => petStatus.Status == "Не готов к новым хозяевам");
             AddIfNotExists(context.PetStatuses, petStatusLost, petStatus => petStatus.Status == "Потерянное животное");
             AddIfNotExists(context.PetStatuses, petStatusAdopted, petStatus => petStatus.Status == "У нового хозяина");
-            
+
             var pet1 = new Pet
             {
                 Name = "Барсик",
@@ -201,12 +202,12 @@ namespace PetProject
                 PetStatus = petStatusNotReady
             };
             
-            AddIfNotExists(context.Pets, pet1, pet => pet.Name != "Барсик");
-            AddIfNotExists(context.Pets, pet2, pet => pet.Name != "Бэтмен");
-            AddIfNotExists(context.Pets, pet3, pet => pet.Name != "Догго");
-            AddIfNotExists(context.Pets, pet4, pet => pet.Name != "Лопес");
-            AddIfNotExists(context.Pets, pet5, pet => pet.Name != "Тина");
-            AddIfNotExists(context.Pets, pet6, pet => pet.Name != "Тузик");
+            AddIfNotExists(context.Pets, pet1, pet => pet.Name == "Барсик");
+            AddIfNotExists(context.Pets, pet2, pet => pet.Name == "Бэтмен");
+            AddIfNotExists(context.Pets, pet3, pet => pet.Name == "Догго");
+            AddIfNotExists(context.Pets, pet4, pet => pet.Name == "Лопес");
+            AddIfNotExists(context.Pets, pet5, pet => pet.Name == "Тина");
+            AddIfNotExists(context.Pets, pet6, pet => pet.Name == "Тузик");
 
             var image1 = new Image
             {
@@ -216,27 +217,27 @@ namespace PetProject
             var image2 = new Image
             {
                 Pet = FetchEntity(context.Pets, pet => pet.Name == "Бэтмен"),
-                ImagePath = "images/batman.jpg"
+                ImagePath = "images/batman.png"
             };
             var image3 = new Image
             {
                 Pet = FetchEntity(context.Pets, pet => pet.Name == "Догго"),
-                ImagePath = "images/doggo.jpg"
+                ImagePath = "images/doggo.png"
             };
             var image4 = new Image
             {
                 Pet = FetchEntity(context.Pets, pet => pet.Name == "Лопес"),
-                ImagePath = "images/lopes.jpg"
+                ImagePath = "images/lopes.png"
             };
             var image5 = new Image
             {
                 Pet = FetchEntity(context.Pets, pet => pet.Name == "Тина"),
-                ImagePath = "images/tina.jpg"
+                ImagePath = "images/tina.png"
             };
             var image6 = new Image
             {
                 Pet = FetchEntity(context.Pets, pet => pet.Name == "Тузик"),
-                ImagePath = "images/tuzik.jpg"
+                ImagePath = "images/tuzik.png"
             };
 
             AddIfNotExists(context.Images, image1, image => image.ImagePath == "images/barsik.jpg");
@@ -246,18 +247,18 @@ namespace PetProject
             AddIfNotExists(context.Images, image5, image => image.ImagePath == "images/tina.png");
             AddIfNotExists(context.Images, image6, image => image.ImagePath == "images/tuzik.png");
 
-            var petFeature1 = new PetFeature {Category = "Description", Characteristic = "Пёс"};
-            var petFeature2 = new PetFeature {Category = "Description", Characteristic = "Кот"};
-            var petFeature3 = new PetFeature {Category = "Description", Characteristic = "Девочка"};
-            var petFeature4 = new PetFeature {Category = "Description", Characteristic = "Мальчик"};
-            var petFeature5 = new PetFeature {Category = "Age", Characteristic = "До года"};
-            var petFeature6 = new PetFeature {Category = "Age", Characteristic = "До 3 лет"};
-            var petFeature7 = new PetFeature {Category = "Age", Characteristic = "До 10 лет"};
-            var petFeature8 = new PetFeature {Category = "Fur", Characteristic = "Длинная"};
-            var petFeature9 = new PetFeature {Category = "Fur", Characteristic = "Короткая"};
-            var petFeature10 = new PetFeature {Category = "Fur", Characteristic = "Светлая"};
-            var petFeature11 = new PetFeature {Category = "Fur", Characteristic = "Темная"};
-            var petFeature12 = new PetFeature {Category = "Fur", Characteristic = "Цветная"};
+            var petFeature1 = new PetFeature { Category = "Description", Characteristic = "Пёс" };
+            var petFeature2 = new PetFeature { Category = "Description", Characteristic = "Кот" };
+            var petFeature3 = new PetFeature { Category = "Description", Characteristic = "Девочка" };
+            var petFeature4 = new PetFeature { Category = "Description", Characteristic = "Мальчик" };
+            var petFeature5 = new PetFeature { Category = "Age", Characteristic = "До года" };
+            var petFeature6 = new PetFeature { Category = "Age", Characteristic = "До 3 лет" };
+            var petFeature7 = new PetFeature { Category = "Age", Characteristic = "До 10 лет" };
+            var petFeature8 = new PetFeature { Category = "Fur", Characteristic = "Длинная" };
+            var petFeature9 = new PetFeature { Category = "Fur", Characteristic = "Короткая" };
+            var petFeature10 = new PetFeature { Category = "Fur", Characteristic = "Светлая" };
+            var petFeature11 = new PetFeature { Category = "Fur", Characteristic = "Темная" };
+            var petFeature12 = new PetFeature { Category = "Fur", Characteristic = "Цветная" };
 
             AddIfNotExists(context.PetFeatures, petFeature1, petFeature => petFeature.Characteristic == "Пёс");
             AddIfNotExists(context.PetFeatures, petFeature2, petFeature => petFeature.Characteristic == "Кот");
@@ -274,7 +275,7 @@ namespace PetProject
 
             var petFeatureAssignment1 = new PetFeatureAssignment
             {
-                Pet = FetchEntity(context.Pets, pet => pet.Name == "Барсик"), 
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Барсик"),
                 PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Кот")
             };
             var petFeatureAssignment2 = new PetFeatureAssignment
@@ -301,7 +302,7 @@ namespace PetProject
 
             var petFeatureAssignment6 = new PetFeatureAssignment
             {
-                Pet = FetchEntity(context.Pets, pet => pet.Name == "Бэтмен"), 
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Бэтмен"),
                 PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Кот")
             };
             var petFeatureAssignment7 = new PetFeatureAssignment
@@ -328,7 +329,7 @@ namespace PetProject
 
             var petFeatureAssignment11 = new PetFeatureAssignment
             {
-                Pet = FetchEntity(context.Pets, pet => pet.Name == "Догго"), 
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Догго"),
                 PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Пёс")
             };
             var petFeatureAssignment12 = new PetFeatureAssignment
@@ -355,7 +356,7 @@ namespace PetProject
 
             var petFeatureAssignment16 = new PetFeatureAssignment
             {
-                Pet = FetchEntity(context.Pets, pet => pet.Name == "Лопес"), 
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Лопес"),
                 PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Кот")
             };
             var petFeatureAssignment17 = new PetFeatureAssignment
@@ -382,7 +383,7 @@ namespace PetProject
 
             var petFeatureAssignment21 = new PetFeatureAssignment
             {
-                Pet = FetchEntity(context.Pets, pet => pet.Name == "Тина"), 
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Тина"),
                 PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Пёс")
             };
             var petFeatureAssignment22 = new PetFeatureAssignment
@@ -409,7 +410,7 @@ namespace PetProject
 
             var petFeatureAssignment26 = new PetFeatureAssignment
             {
-                Pet = FetchEntity(context.Pets, pet => pet.Name == "Тузик"), 
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Тузик"),
                 PetFeature = FetchEntity(context.PetFeatures, feature => feature.Characteristic == "Пёс")
             };
             var petFeatureAssignment27 = new PetFeatureAssignment
@@ -466,10 +467,35 @@ namespace PetProject
             AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment29);
             AddIfNotExists(context.PetFeatureAssignments, petFeatureAssignment30);
 
+            var userVolunteer = new User
+            {
+                Name = "Светлана",
+                LastName = "Лаппо",
+                IsBlackListed = false,
+                Password = "111",
+                PetPoints = 50,
+                Phone = "+375 93 279-47-21",
+                Role = UserRole.Volunteer
+            };
+            
+            var userUser = new User
+            {
+                Name = "Мария",
+                LastName = "Коцупалова",
+                IsBlackListed = false,
+                Password = "12345678",
+                PetPoints = 50,
+                Phone = "+375 11 668-45-89",
+                Role = UserRole.User
+            };
+
+            AddIfNotExists(context.Users, userVolunteer, user => user.Name == "Светлана");
+            AddIfNotExists(context.Users, userUser, user => user.Name == "Мария");
+
             await context.SaveChangesAsync();
         }
 
-        private T FetchEntity<T>(DbSet<T> dbSet, Expression<Func<T, bool>> predicate) where T: class, new()
+        private T FetchEntity<T>(DbSet<T> dbSet, Expression<Func<T, bool>> predicate) where T : class, new()
         {
             return dbSet.Local.FirstOrDefault(predicate.Compile())
                 ?? dbSet.FirstOrDefault(predicate);
