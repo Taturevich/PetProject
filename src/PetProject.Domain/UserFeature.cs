@@ -8,7 +8,7 @@ namespace PetProject.Domain
 
         public string Category { get; set; }
 
-        public int Characteristic { get; set; }
+        public string Characteristic { get; set; }
 
         public ICollection<UserFeatureAssignment> UserFeatureAssignments { get; set; }
     }

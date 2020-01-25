@@ -21,7 +21,7 @@ namespace PetProject.Controllers
         [Route("")]
         public async Task<IActionResult> GetTypes()
         {
-            return Ok(await _petContext.TaskTypes.AsQueryable().ToListAsync());
+            return Ok(await _petContext.TaskTypes.ToListAsync());
         }
 
         [HttpPost]

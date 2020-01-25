@@ -25,28 +25,28 @@ namespace PetProject.Controllers
         [Route("")]
         public async Task<IActionResult> GetTasks()
         {
-            return Ok(await _petContext.Tasks.AsQueryable().ToListAsync());
+            return Ok(await _petContext.Tasks.ToListAsync());
         }
 
         [HttpGet]
         [Route("Pet/{id}")]
         public async Task<IActionResult> GetTaskByPet(int id)
         {
-            return Ok(await _petContext.Tasks.AsQueryable().Where(x => x.PetId == id).ToListAsync());
+            return Ok(await _petContext.Tasks.Where(x => x.PetId == id).ToListAsync());
         }
 
         [HttpGet]
         [Route("Type/{id}")]
         public async Task<IActionResult> GetTaskByType(int id)
         {
-            return Ok(await _petContext.Tasks.AsQueryable().Where(x => x.TaskTypeId == id).ToListAsync());
+            return Ok(await _petContext.Tasks.Where(x => x.TaskTypeId == id).ToListAsync());
         }
 
         [HttpGet]
         [Route("User/{id}")]
         public async Task<IActionResult> GetTaskByUser(int id)
         {
-            return Ok(await _petContext.Tasks.AsQueryable().Where(x => x.UserId == id).ToListAsync());
+            return Ok(await _petContext.Tasks.Where(x => x.UserId == id).ToListAsync());
         }
 
         [HttpPost]
