@@ -1,5 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using PetProject.DataAccess;
 using PetProject.Domain;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,32 +15,45 @@ namespace PetProject.Controllers
     [Route("api/[controller]")]
     public class PetController : Controller
     {
-        private List<Pet> _pets = new List<Pet>
+        private readonly ILogger<PetController> _logger;
+        private readonly PetContext _petContext;
+
+        public PetController(ILogger<PetController> logger, PetContext petContext)
         {
-            new Pet { Name = "Murka" },
-            new Pet { Name = "Tuzik" },
-            new Pet { Name = "Sharik" }
-        };
+            _logger = logger;
+            _petContext = petContext;
+        }
 
         // GET: api/<controller>
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_pets);
+            var pets = await _petContext.Pets.ToListAsync();
+            return Ok(pets);
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return _pets[id];
+            var pet = await _petContext.Pets.FirstOrDefaultAsync(p => p.PetId == id);
+            return Ok(pet);
         }
 
         // POST api/<controller>
         [HttpPost]
-        public IActionResult Post([FromBody]string value)
+        public async Task<IActionResult> Post([FromBody]Pet pet)
         {
-            _pets.Add(value);
+            try
+            {
+                await _petContext.Pets.AddAsync(pet);
+                await _petContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error");
+            }
+
             return Ok();
         }
 
