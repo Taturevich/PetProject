@@ -39,7 +39,8 @@ namespace PetProject.Controllers
         {
             var pets = await _petContext.Pets
                 .Where(p => p.PetFeatureAssignments
-                    .All(pfa => featureIds.Contains(pfa.PetFeatureId)))
+                    .Any(pfa => featureIds.Contains(pfa.PetFeatureId)))
+                .OrderBy(x => x.PetFeatureAssignments.Count())
                 .ToListAsync();
             return Ok(pets);
         }
@@ -105,7 +106,7 @@ namespace PetProject.Controllers
                 pet.PetStatusId = petStatusId;
                 await _petContext.SaveChangesAsync();
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 _logger.LogError(e, "Error");
             }
