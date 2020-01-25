@@ -210,27 +210,33 @@ namespace PetProject
 
             var image1 = new Image
             {
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Барсик"),
                 ImagePath = "images/barsik.jpg"
             };
             var image2 = new Image
             {
-                ImagePath = "images/batman.png"
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Бэтмен"),
+                ImagePath = "images/batman.jpg"
             };
             var image3 = new Image
             {
-                ImagePath = "images/doggo.png"
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Догго"),
+                ImagePath = "images/doggo.jpg"
             };
             var image4 = new Image
             {
-                ImagePath = "images/lopes.png"
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Лопес"),
+                ImagePath = "images/lopes.jpg"
             };
             var image5 = new Image
             {
-                ImagePath = "images/tina.png"
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Тина"),
+                ImagePath = "images/tina.jpg"
             };
             var image6 = new Image
             {
-                ImagePath = "images/tuzik.png"
+                Pet = FetchEntity(context.Pets, pet => pet.Name == "Тузик"),
+                ImagePath = "images/tuzik.jpg"
             };
 
             AddIfNotExists(context.Images, image1, image => image.ImagePath == "images/barsik.jpg");
