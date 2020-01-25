@@ -13,5 +13,13 @@ namespace PetProject.DataAccess
             : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Task>()
+                .HasOne<TaskType>(task => task.TaskType)
+                .WithMany(taskType => taskType.Tasks)
+                .HasForeignKey(task => task.TaskTypeId);
+        }
     }
 }
