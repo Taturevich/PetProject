@@ -8,9 +8,9 @@ namespace PetProject.Controllers
     [ApiController]
     public class VkController : ControllerBase
     {
-        private readonly IVKWallService vkService;
+        private readonly IVKService vkService;
 
-        public VkController(IVKWallService vkService)
+        public VkController(IVKService vkService)
         {
             this.vkService = vkService;
         }

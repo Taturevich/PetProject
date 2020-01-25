@@ -1,6 +1,6 @@
 ﻿namespace PetProject.Services.VK
 {
-    public interface IVKService
+    public interface IVKWallService
     {
         void AddNewGroup(string domain);
 
