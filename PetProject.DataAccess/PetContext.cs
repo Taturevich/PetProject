@@ -39,6 +39,11 @@ namespace PetProject.DataAccess
                 .WithMany(petStatus => petStatus.Pets)
                 .HasForeignKey(pet => pet.PetStatusId);
 
+            modelBuilder.Entity<Image>()
+                .HasOne(image => image.Pet)
+                .WithMany(pet => pet.Images)
+                .HasForeignKey(image => image.ImageId);
+
             modelBuilder.Entity<PetFeatureAssignment>()
                 .HasOne(petFeatureAssignment => petFeatureAssignment.Pet)
                 .WithMany(pet => pet.PetFeatureAssignments)

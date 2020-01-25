@@ -17,7 +17,6 @@ namespace PetProject.Controllers
             _petContext = petContext;
         }
 
-
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetTypes()
@@ -49,6 +48,7 @@ namespace PetProject.Controllers
                 DefaultDuration = taskType.DefaultDuration
             });
 
+            await _petContext.SaveChangesAsync();
             return Ok();
         }
 
@@ -82,6 +82,15 @@ namespace PetProject.Controllers
         [Route("{name}")]
         public async Task<IActionResult> Delete(string name)
         {
+            var dbTaskType = await _petContext.TaskTypes.AsQueryable().FirstOrDefaultAsync(x => x.Name == name);
+
+            if (dbTaskType is null)
+            {
+                return NotFound();
+            }
+
+            _petContext.TaskTypes.Remove(dbTaskType);
+            await _petContext.SaveChangesAsync();
             return Ok();
         }
     }
