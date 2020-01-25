@@ -21,14 +21,16 @@ namespace PetProject.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        [Route("GetUsers")]
+        public async Task<IActionResult> GetUsers()
         {
             var pets = await _petContext.Pets.ToListAsync();
             return Ok(pets);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(UserDTO user)
+        [Route("PostUsers")]
+        public async Task<IActionResult> PostUser(UserDTO user)
         {
             await _petContext.Users.AddAsync(Mapper.MapToEntity(user, new User()));
             await _petContext.SaveChangesAsync();
