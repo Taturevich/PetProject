@@ -43,6 +43,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Pet.db-wal" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\PetProject.DataAccess\PetProject.DataAccess.csproj" />
   </ItemGroup>
 

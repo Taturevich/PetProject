@@ -108,6 +108,8 @@ namespace PetProject
         {
             await using var context = serviceCollection.BuildServiceProvider().GetService<PetContext>();
 
+            context.Database.EnsureCreated();
+
             context.PetStatuses.RemoveRange(context.PetStatuses);
 
             var petStatusAdoptionReady = new PetStatus {Status = "AdoptionReady"};
