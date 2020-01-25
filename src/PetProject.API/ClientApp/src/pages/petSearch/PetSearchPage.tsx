@@ -38,7 +38,7 @@ interface PetSearchState {
 
 };
 
-const PetSearchPageStyled = withStyles(styles)(
+ const PetSearchPageStyled = withStyles(styles)(
 class PetSearchPage extends React.Component<PetSearchProps, PetSearchState> {
     constructor(props: PetSearchProps) {
         super(props);
