@@ -29,7 +29,7 @@ namespace PetProject.DataAccess
 
         public DbSet<Image> Images { get; set; }
 
-        public DbSet<Adopt> Adopts { get; set; }
+        public DbSet<Adoption> Adoptions { get; set; }
         
         public PetContext(DbContextOptions<PetContext> options)
             : base(options)
@@ -97,6 +97,16 @@ namespace PetProject.DataAccess
                 .HasOne(image => image.Pet)
                 .WithMany(pet => pet.Images)
                 .HasForeignKey(image => image.PetId);
+
+            modelBuilder.Entity<Adoption>()
+                .HasOne(adoption => adoption.Pet)
+                .WithMany(pet => pet.Adoptions)
+                .HasForeignKey(adoption => adoption.PetId);
+
+            modelBuilder.Entity<Adoption>()
+                .HasOne(adoption => adoption.User)
+                .WithMany(user => user.Adoptions)
+                .HasForeignKey(adoption => adoption.UserId);
         }
     }
 }
