@@ -64,7 +64,7 @@
     <None Include="wwwroot\images\polkan.png" />
     <None Include="wwwroot\images\tina.png" />
     <None Include="wwwroot\images\tuzik.png" />
-    <None Include="wwwroot\images\zharic.png" />
+    <None Include="wwwroot\images\sharik.png" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
