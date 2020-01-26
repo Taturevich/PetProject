@@ -25,5 +25,7 @@ namespace PetProject.Domain
         public ICollection<UserSocialNetwork> UserSocialNetworks { get; set; }
 
         public ICollection<Task> Tasks { get; set; }
+
+        public ICollection<Adoption> Adoptions { get; set; }
     }
 }

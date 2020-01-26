@@ -25,5 +25,7 @@ namespace PetProject.Domain
         public ICollection<PetTaskTypeAssignment> PetTaskTypeAssignments { get; set; }
 
         public ICollection<Task> Tasks { get; set; }
+
+        public ICollection<Adoption> Adoptions { get; set; }
     }
 }
