@@ -203,7 +203,7 @@ export default function Header() {
                         </span>
                     </ButtonBase>
                 ))}
-                <TaskTypesModal open={open} handleSubmit={() => {}} handleCancel={() => {}}/>
+                <TaskTypesModal open={open} handleSubmit={() => {}} handleCancel={() => {setIsOpen(false)}}/>
             </div>
         );
     }
