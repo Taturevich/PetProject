@@ -19,32 +19,58 @@ interface TaskTypesModalProps {
     loadTaskTypesData: () => void;
 }
 
+interface TaskTypeCheckbox {
+    id: string;
+    checked: boolean;
+}
+
 interface TaskTypesModalState {
-    name: string;
-    description: string;
+    taskTypes: TaskTypeCheckbox[];
 }
 
 class TaskTypesModal extends Component<TaskTypesModalProps, TaskTypesModalState> {
     constructor(props: TaskTypesModalProps) {
         super(props);
         this.state = {
-            name: '',
-            description: '',
+            taskTypes: []
         };
     }
 
     componentDidMount() {
-        console.log(111);
         this.props.loadTaskTypesData();
-      }
+    }
+
+    componentDidUpdate() {
+        if (this.state.taskTypes.length !== this.props.taskTypes.length) {
+            this.state = {
+                taskTypes: this.props.taskTypes.map(f => {
+                    return {
+                        id: f.taskTypeId,
+                        checked: false,
+                    };
+                }),
+            };
+        }
+    }
 
     setInput = (fieldName: string, newValue: string) => {
         this.setState({ ...this.state, [fieldName]: newValue });
     }
 
+    changeTaskTypeCheckbox = (id: string) => {
+        const { taskTypes } = this.state;
+        const taskType = taskTypes.find(f => f.id === id);
+        if (taskType !== undefined) {
+            const checked = !taskType.checked;
+            taskType.checked = checked;
+            this.setState({
+                taskTypes: taskTypes
+            });
+        }
+    }
+
     render() {
         const { open, handleSubmit, handleCancel, taskTypes } = this.props;
-        const { name, description } = this.state;
         return (
             <div>
                 <Dialog open={open} onClose={handleCancel} aria-labelledby="form-dialog-title">
@@ -53,11 +79,17 @@ class TaskTypesModal extends Component<TaskTypesModalProps, TaskTypesModalState>
                         <FormControl component="fieldset">
                             <FormGroup>
                                 {taskTypes.map(tt => {
+                                    const checked = this.state.taskTypes.find(t => tt.taskTypeId == t.id)?.checked;
                                     return (
                                         <>
-                                            <FormControlLabel 
-                                                control={<Checkbox value="pr-agent" />} 
-                                                label={tt.name} 
+                                            <FormControlLabel
+                                                control={
+                                                <Checkbox 
+                                                    value="pr-agent" 
+                                                    checked={checked}
+                                                    onChange={() => this.changeTaskTypeCheckbox(tt.taskTypeId)}
+                                                />}
+                                                label={tt.name}
                                             />
                                             <FormHelperText style={{ fontSize: '15px' }}>
                                                 {tt.description}

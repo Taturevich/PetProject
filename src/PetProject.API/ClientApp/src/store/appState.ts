@@ -7,6 +7,7 @@ import { PetsListState } from './petsList/state';
 import { FeaturesListState } from './featuresList/state';
 import { UserFeaturesListState } from './userFeaturesList/state';
 import { TaskTypesListState } from './taskTypesList/state';
+import { TaskTypesFiltersListState } from './taskTypesFilters/state';
 import { UserInfoListState } from './userInfo/state';
 
 export interface AppState {
@@ -15,6 +16,7 @@ export interface AppState {
   userFeatures: UserFeaturesListState;
   usersInfo: UserInfoListState;
   taskTypes: TaskTypesListState;
+  taskTypesFilters: TaskTypesFiltersListState;
 }
 
 const initialState: AppState = {
@@ -28,6 +30,9 @@ const initialState: AppState = {
     data: []
   },
   taskTypes: {
+    data: []
+  },
+  taskTypesFilters: {
     data: []
   },
   usersInfo: {
