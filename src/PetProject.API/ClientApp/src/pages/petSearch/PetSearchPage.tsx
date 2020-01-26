@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { groupBy } from 'lodash';
 import { Theme, createStyles, WithStyles, withStyles } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -29,7 +30,7 @@ const styles = (theme: Theme) => createStyles({
         backgroundColor: theme.palette.background.paper,
     },
     gridList: {
-        width: 500,
+        // width: 500,
         // height: 450,
     },
     icon: {
@@ -71,7 +72,7 @@ const PetSearchPageStyled = withStyles(styles)(
             this.props.loadFeaturesList();
         }
 
-        componentDidUpdate(prevProps: PetSearchProps, prevState: PetSearchState) {
+        componentDidUpdate() {
             if (this.state.features.length !== this.props.features.length) {
                 this.state = {
                     features: this.props.features.map(f => {
@@ -104,47 +105,53 @@ const PetSearchPageStyled = withStyles(styles)(
             const { pets, classes } = this.props;
             return (
                 <div className={classes.root}>
-                    <FormControl component="fieldset" className={classes.formControl}>
-                        {Object.keys(grouped).map(key => {
-                            return (
-                                <>
-                                    <FormLabel component="legend">{key}</FormLabel>
-                                    <FormGroup>
-                                        {grouped[key].map(f => {
-                                            const checked = this.state.features.find(feature => f.petFeatureId == feature.id)?.checked;
-                                            return (
-                                                <FormControlLabel key={`${f.petFeatureId}_${f.characteristic}`}
-                                                    control={
-                                                        <Checkbox
-                                                            onChange={() => this.changeFeatureCheckbox(f.petFeatureId)}
-                                                            key={`${f.petFeatureId}_${f.category}`}
-                                                            value={checked}
-                                                        />
-                                                    }
-                                                    label={f.characteristic}
-                                                />);
-                                        })}
-                                    </FormGroup>
-                                </>
-                            );
-                        })}
-                    </FormControl>
-                    <GridList cellHeight={180} className={classes.gridList}>
-                        {pets.map(pet => (
-                            <GridListTile key={pet.petId}>
-                                <img src={pet.images[0].imagePath} alt={pet.name} />
-                                <GridListTileBar
-                                    title={pet.name}
-                                    subtitle={<span>by: {pet.description}</span>}
-                                    actionIcon={
-                                        <IconButton aria-label={`info about ${pet.name}`} className={classes.icon}>
-                                            <InfoIcon />
-                                        </IconButton>
-                                    }
-                                />
-                            </GridListTile>
-                        ))}
-                    </GridList>
+                    <Grid container spacing={3}>
+                        <Grid item xs={2}>
+                            <FormControl component="fieldset" className={classes.formControl}>
+                                {Object.keys(grouped).map(key => {
+                                    return (
+                                        <>
+                                            <FormLabel component="legend">{key}</FormLabel>
+                                            <FormGroup>
+                                                {grouped[key].map(f => {
+                                                    const checked = this.state.features.find(feature => f.petFeatureId == feature.id)?.checked;
+                                                    return (
+                                                        <FormControlLabel key={`${f.petFeatureId}_${f.characteristic}`}
+                                                            control={
+                                                                <Checkbox
+                                                                    onChange={() => this.changeFeatureCheckbox(f.petFeatureId)}
+                                                                    key={`${f.petFeatureId}_${f.category}`}
+                                                                    value={checked}
+                                                                />
+                                                            }
+                                                            label={f.characteristic}
+                                                        />);
+                                                })}
+                                            </FormGroup>
+                                        </>
+                                    );
+                                })}
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={10}>
+                            <GridList cellHeight={180} className={classes.gridList} cols={4}>
+                                {pets.map(pet => (
+                                    <GridListTile key={pet.petId}>
+                                        <img src={pet.images[0].imagePath} alt={pet.name} />
+                                        <GridListTileBar
+                                            title={pet.name}
+                                            subtitle={<span>{pet.description}</span>}
+                                            actionIcon={
+                                                <IconButton aria-label={`info about ${pet.name}`} className={classes.icon}>
+                                                    <InfoIcon />
+                                                </IconButton>
+                                            }
+                                        />
+                                    </GridListTile>
+                                ))}
+                            </GridList>
+                        </Grid>
+                    </Grid>
                 </div>
             );
         }
