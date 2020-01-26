@@ -10,6 +10,8 @@ import { FormControl, FormGroup, FormControlLabel, Checkbox, FormHelperText } fr
 import { AppState } from '../../../store/appState';
 import { TaskType } from '../../../store/taskTypesList/state';
 import { requestTaskTypesListData } from '../../../store/taskTypesList/actions';
+import { receiveTaskTypesList } from '../../../store/taskTypesFilters/actions';
+import { TaskTypeFilter } from '../../../store/taskTypesFilters/state';
 
 interface TaskTypesModalProps {
     open: boolean;
@@ -17,10 +19,12 @@ interface TaskTypesModalProps {
     handleCancel: () => void;
     handleSubmit: () => void;
     loadTaskTypesData: () => void;
+    setTaskTypesFilters: (taskTypes: TaskTypeFilter[]) => void;
 }
 
 interface TaskTypeCheckbox {
     id: string;
+    name: string;
     checked: boolean;
 }
 
@@ -46,6 +50,7 @@ class TaskTypesModal extends Component<TaskTypesModalProps, TaskTypesModalState>
                 taskTypes: this.props.taskTypes.map(f => {
                     return {
                         id: f.taskTypeId,
+                        name: f.name,
                         checked: false,
                     };
                 }),
@@ -69,8 +74,20 @@ class TaskTypesModal extends Component<TaskTypesModalProps, TaskTypesModalState>
         }
     }
 
+    handleSuccess = () => {
+        const taskTypesFilters = this.state.taskTypes.map(tt => {
+            return {
+                taskTypeId: tt.id,
+                name: tt.name,
+                checked: tt.checked
+            }
+        });
+        this.props.setTaskTypesFilters(taskTypesFilters);
+        this.props.handleSubmit();
+    }
+
     render() {
-        const { open, handleSubmit, handleCancel, taskTypes } = this.props;
+        const { open, handleCancel, taskTypes } = this.props;
         return (
             <div>
                 <Dialog open={open} onClose={handleCancel} aria-labelledby="form-dialog-title">
@@ -107,7 +124,7 @@ class TaskTypesModal extends Component<TaskTypesModalProps, TaskTypesModalState>
                         <Button onClick={handleCancel} color="secondary">
                             Отмена
                     </Button>
-                        <Button onClick={handleSubmit} color="primary">
+                        <Button onClick={() => this.handleSuccess()} color="primary">
                             Найти подопечного
                   </Button>
                     </DialogActions>
@@ -122,6 +139,7 @@ export const TaskTypesModalConnected = connect(
         taskTypes: appState.taskTypes.data
     }),
     {
-        loadTaskTypesData: requestTaskTypesListData
+        loadTaskTypesData: requestTaskTypesListData,
+        setTaskTypesFilters: receiveTaskTypesList
     }
 )(TaskTypesModal);
