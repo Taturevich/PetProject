@@ -40,4 +40,4 @@ export const sendLoginRequest = (loginData: LoginData): AppThunk => dispatch => 
     dispatch(sendLoginDetails(loginData));
     axios.post('http://localhost:5000/api/account/token', loginData)
         .then(response => dispatch(receiveToken(response.data)));
-  }
+}

@@ -1,17 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 import petSearch from '../../static/images/petSearch.png';
 import petHelp from '../../static/images/petHelp.png';
 import petSaw from '../../static/images/petSaw.png';
+import { signInListInitialState } from '../../store/signIn/reducer';
+import {TaskTypesModal} from "../modals/taskTypesModal/TaskTypes";
 
-import { LoginModal, RegisterModal } from '../../components/modals';
-
-const images = [
+const notVolonteerImages = [
     {
         url: petSearch,
         title: 'Ищу питомца',
+        width: '30%',
+        id: "searching-pet",
+    },
+    {
+        url: petHelp,
+        title: 'Хочу помочь',
+        width: '30%',
+        id: "help-pet",
+    },
+    {
+        url: petSaw,
+        title: 'Нашел бездомного питомца',
+        width: '40%',
+        id: "found-pet",
+    },
+];
+
+const volonteerImages = [
+    {
+        url: petSearch,
+        title: '',
         width: '30%',
     },
     {
@@ -102,11 +123,88 @@ const useStyles = makeStyles(theme => ({
 
 export default function Header() {
     const classes = useStyles();
-
-    return (
-        <div className={classes.root}>
-            {/* <LoginModal open={true} handleCancel={() => {}} handleLogin={() => {}} /> */}
-            {/* <RegisterModal open={true} handleCancel={() => {}} handleRegister={() => {}} /> */}
-        </div>
-    );
+    const [open,setIsOpen] = useState(false);
+    if (!!signInListInitialState.token) {
+        return (
+            <div className={classes.root}>
+                {notVolonteerImages.map(image => (
+                    <ButtonBase
+                        focusRipple
+                        key={image.title}
+                        onClick={() => {
+                            if (image.id === "help-pet"){
+                                setIsOpen(!open);
+                            }
+                        }}
+                        className={classes.image}
+                        focusVisibleClassName={classes.focusVisible}
+                        style={{
+                            width: image.width,
+                        }}
+                    >
+                        <span
+                            className={classes.imageSrc}
+                            style={{
+                                backgroundImage: `url(${image.url})`,
+                            }}
+                        />
+                        <span className={classes.imageBackdrop} />
+                        <span className={classes.imageButton}>
+                            <Typography
+                                component="span"
+                                variant="subtitle1"
+                                color="inherit"
+                                className={classes.imageTitle}
+                            >
+                                {image.title}
+                                <span className={classes.imageMarked} />
+                            </Typography>
+                        </span>
+                    </ButtonBase>
+                ))}
+            </div>
+        );
+    }
+    else {
+        return (
+            <div className={classes.root}>
+                {notVolonteerImages.map(image => (
+                    <ButtonBase
+                        focusRipple
+                        key={image.title}
+                        className={classes.image}
+                        onClick={() => {
+                            if (image.id === "help-pet"){
+                                setIsOpen(!open);
+                            }
+                        }}
+                        focusVisibleClassName={classes.focusVisible}
+                        style={{
+                            width: image.width,
+                        }}
+                    >
+                        <span
+                            className={classes.imageSrc}
+                            style={{
+                                backgroundImage: `url(${image.url})`,
+                            }}
+                        />
+                        <span className={classes.imageBackdrop} />
+                        <span className={classes.imageButton}>
+                            <Typography
+                                component="span"
+                                variant="subtitle1"
+                                color="inherit"
+                                className={classes.imageTitle}
+                            >
+                                {image.title}
+                                <span className={classes.imageMarked} />
+                            </Typography>
+                        </span>
+                    </ButtonBase>
+                ))}
+                <TaskTypesModal open={open} handleSubmit={() => {}} handleCancel={() => {}}/>
+            </div>
+        );
+    }
 }

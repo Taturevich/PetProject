@@ -2,11 +2,11 @@ import * as actionTypes from './actionTypes';
 import { LoginRequestActionTypes } from './actions';
 import { TokenState } from './state';
 
-export const petsListInitialState: TokenState = {
+export const signInListInitialState: TokenState = {
     token: ''
 };
 
-export function petsListReducer(state = petsListInitialState, action: LoginRequestActionTypes) {
+export function petsListReducer(state = signInListInitialState, action: LoginRequestActionTypes) {
     switch (action.type) {
         case actionTypes.SEND_LOGIN_REQUEST: {
             return {

@@ -298,7 +298,7 @@ namespace PetProject
             var image7 = new Image
             {
                 Pet = FetchEntity(context.Pets, pet => pet.Name == "Шарик"),
-                ImagePath = "images/zhariс.png"
+                ImagePath = "images/sharik.png"
             };
             var image8 = new Image
             {
@@ -337,7 +337,7 @@ namespace PetProject
             AddIfNotExists(context.Images, image4, image => image.ImagePath == "images/lopes.png");
             AddIfNotExists(context.Images, image5, image => image.ImagePath == "images/tina.png");
             AddIfNotExists(context.Images, image6, image => image.ImagePath == "images/tuzik.png");
-            AddIfNotExists(context.Images, image7, image => image.ImagePath == "images/zharik.png");
+            AddIfNotExists(context.Images, image7, image => image.ImagePath == "images/sharik.png");
             AddIfNotExists(context.Images, image8, image => image.ImagePath == "images/kotja.png");
             AddIfNotExists(context.Images, image9, image => image.ImagePath == "images/lesja.png");
             AddIfNotExists(context.Images, image10, image => image.ImagePath == "images/maya.png");
