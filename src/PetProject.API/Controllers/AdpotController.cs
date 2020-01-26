@@ -12,17 +12,18 @@ namespace PetProject.Controllers
     [ApiController]
     public class AdpotController : ControllerBase
     {
-        private readonly PetContext petContext;
+        private readonly PetContext _petContext;
 
         public AdpotController(PetContext petContext)
         {
-            this.petContext = petContext;
+            _petContext = petContext;
         }
 
         [HttpPost]
         [Route("{userId}/{petId}")]
         public IActionResult AdoptPetrequest(int userId, int petId)
         {
+            //_petContext.Adopts.u
             return Ok();
         }
 
