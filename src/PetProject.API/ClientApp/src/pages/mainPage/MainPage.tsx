@@ -9,7 +9,7 @@ import petSaw from '../../static/images/petSaw.png';
 
 import { PetSearchPageConnected } from '../petSearch/PetSearchPage';
 
-import { LoginModal, RegisterModal, UserInfoModal } from '../../components/modals';
+import { LoginModal, RegisterModal, UserInfoModal, AdoptModal } from '../../components/modals';
 import {TaskTypesModal} from "../../components/modals/taskTypesModal/TaskTypes";
 
 
@@ -101,6 +101,7 @@ export default function MainPage() {
             {/* <UserInfoModal open={true} handleOk={() => {}} handleChange={() => {}} /> */}
             {/* <LoginModal open={true} handleCancel={() => {}} handleLogin={() => {}} /> */}
             {/* <RegisterModal open={true} handleCancel={() => {}} handleRegister={() => {}} /> */}
+            { <AdoptModal open={true} handleAdopt={() => {}} /> }
         </div>
     );
 }
