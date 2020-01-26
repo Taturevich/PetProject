@@ -97,7 +97,6 @@ export default function MainPage() {
     return (
         <div className={classes.root}>
             <PetSearchPageConnected />
-            <TaskTypesModal open={false} handleSubmit={() => {}} handleCancel={() => {}}/>
             {/* <UserInfoModal open={true} handleOk={() => {}} handleChange={() => {}} /> */}
             {/* <LoginModal open={true} handleCancel={() => {}} handleLogin={() => {}} /> */}
             {/* <RegisterModal open={true} handleCancel={() => {}} handleRegister={() => {}} /> */}
