@@ -79,6 +79,26 @@ class UserInfoModal extends Component<UserInfoModalProps, UserInfoModalState> {
     // this.props.loadPetsFilteredList(this.state.features.filter(f => f.checked).map(f => f.id));
   }
 
+  localizeCategoryToRussian = (category: string) => {
+    if (category === "Accommodation"){
+      return "Проживание";
+    }
+
+    if (category === "HouseOwnership"){
+      return "Владение домом";
+    }
+
+    if (category === "Exprience"){
+      return "Опыт с животными";
+    }
+
+    if (category === "Readiness"){
+      return "Готовность";
+    }
+
+    return category;
+}
+
   changeFeatureRadio = (category: string, id: string) => {
     const { userFeatures } = this.state;
     const categoryItems = this.props.userFeatures.filter(f => f.category === category).map(f => f.userFeatureId);
@@ -108,7 +128,7 @@ class UserInfoModal extends Component<UserInfoModalProps, UserInfoModalState> {
                 if (key === 'Readiness') {
                   return (
                     <>
-                      <FormLabel component="legend">{key}</FormLabel>
+                      <FormLabel component="legend">{this.localizeCategoryToRussian(key)}</FormLabel>
                       <FormGroup row>
                         {grouped[key].map(f => {
                           const checked = this.state.userFeatures.find(feature => f.userFeatureId == feature.id)?.checked;
@@ -131,7 +151,7 @@ class UserInfoModal extends Component<UserInfoModalProps, UserInfoModalState> {
                 }
                 return (
                   <>
-                    <FormLabel component="legend">{key}</FormLabel>
+                    <FormLabel component="legend">{this.localizeCategoryToRussian(key)}</FormLabel>
                     <RadioGroup defaultValue={grouped[key][0].characteristic} aria-label={key} row>
                       {grouped[key].map(f => {
                         return (
