@@ -6,6 +6,7 @@ import { rootReducer } from './rootReducer';
 import { PetsListState } from './petsList/state';
 import { FeaturesListState } from './featuresList/state';
 import { UserFeaturesListState } from './userFeaturesList/state';
+import { TaskTypesListState } from './taskTypesList/state';
 import { UserInfoListState } from './userInfo/state';
 
 export interface AppState {
@@ -13,6 +14,7 @@ export interface AppState {
   features: FeaturesListState;
   userFeatures: UserFeaturesListState;
   usersInfo: UserInfoListState;
+  taskTypes: TaskTypesListState;
 }
 
 const initialState: AppState = {
@@ -23,6 +25,9 @@ const initialState: AppState = {
     data: []
   },
   userFeatures: {
+    data: []
+  },
+  taskTypes: {
     data: []
   },
   usersInfo: {
