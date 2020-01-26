@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Typography, Theme, createStyles, WithStyles, withStyles } from '@material-ui/core';
+import { Typography, Theme, createStyles, WithStyles, withStyles, Grid } from '@material-ui/core';
 
 const styles = (theme: Theme) => createStyles({
   root: {
@@ -48,73 +48,30 @@ export const AdoptModalStyled = withStyles(styles)(
         const { open, handleAdopt, classes } = this.props;
 
         return (
-              <Dialog open={open} aria-labelledby="form-dialog-title">
+              <Dialog 
+                  open={open} 
+                  aria-labelledby="form-dialog-title"
+                  fullWidth={true}
+                  maxWidth = {'lg'}>
                 <DialogTitle id="form-dialog-title">О питомце</DialogTitle>
                 <DialogContent>
-
-                  <div className={classes.root}>
-                    <img src="images/barsik.jpg" alt="Барсик" />
-                    <div>
-                      <Typography
-                          component="span"
-                          variant="subtitle1"
-                          color="inherit"
-                      >
-                          Барсик
-                      </Typography>
-                      <Typography
-                          component="span"
-                          variant="subtitle1"
-                          color="inherit"
-                      >
-                          Пирожок.
-                      </Typography>
-                    </div>
-                    <div>
-                      <Typography
-                          component="span"
-                          variant="subtitle1"
-                          color="inherit"
-                      >
-                          Кот
-                      </Typography>
-                      <Typography
-                          component="span"
-                          variant="subtitle1"
-                          color="inherit"
-                      >
-                          Мальчик
-                      </Typography>
-                      <Typography
-                          component="span"
-                          variant="subtitle1"
-                          color="inherit"
-                      >
-                          До 3 лет
-                      </Typography>
-                      <Typography
-                          component="span"
-                          variant="subtitle1"
-                          color="inherit"
-                      >
-                          Шерсть:
-                      </Typography>
-                      <Typography
-                          component="span"
-                          variant="subtitle1"
-                          color="inherit"
-                      >
-                          Короткая
-                      </Typography>
-                      <Typography
-                          component="span"
-                          variant="subtitle1"
-                          color="inherit"
-                      >
-                          Темная
-                      </Typography>
-                    </div>
-                  </div>
+                  <Grid container spacing={3}>
+                    <Grid item xs={3}>
+                      <img src="images/barsik.jpg" alt="Барсик" />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography>Барсик</Typography>>
+                      <Typography>Пирожок.</Typography>>
+                    </Grid>
+                    <Grid item xs={5}>                      
+                      <Typography>Кот</Typography>>
+                      <Typography>Мальчик</Typography>>
+                      <Typography>До 3 лет</Typography>>
+                      <Typography>Шерсть:</Typography>>
+                      <Typography>Короткая</Typography>>
+                      <Typography>Темная</Typography>>
+                    </Grid>
+                  </Grid>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleAdopt} color="primary">
