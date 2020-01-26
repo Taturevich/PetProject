@@ -39,14 +39,14 @@ namespace PetProject.Controllers
                 return NotFound();
             }
 
-            var adoptRequest = new Adopt
+            var adoptRequest = new Adoption
             {
                 PetId = petId,
                 UserId = userId,
                 Status = AdoptStatus.Requested
             };
 
-            await _petContext.Adopts.AddAsync(adoptRequest);
+            await _petContext.Adoptions.AddAsync(adoptRequest);
             await _petContext.SaveChangesAsync();
             return Ok();
         }
@@ -55,13 +55,13 @@ namespace PetProject.Controllers
         [Route("{userId}/{petId}")]
         public async Task<IActionResult> AcceptPetAddopting(int userId, int petId)
         {
-            var acceptedAdopts = await _petContext.Adopts.AnyAsync(x => x.PetId == petId && x.Status == AdoptStatus.Accepted);
-            if (acceptedAdopts != null)
+            var isExistsAcceptedAdoptions = await _petContext.Adoptions.AnyAsync(x => x.PetId == petId && x.Status == AdoptStatus.Accepted);
+            if (isExistsAcceptedAdoptions)
             {
                 return NotFound();
             }
 
-            var existsAdopt = await _petContext.Adopts.FirstOrDefaultAsync(x => x.PetId == petId && x.UserId == userId);
+            var existsAdopt = await _petContext.Adoptions.FirstOrDefaultAsync(x => x.PetId == petId && x.UserId == userId);
             if (existsAdopt is null)
             {
                 return NotFound();
@@ -76,7 +76,7 @@ namespace PetProject.Controllers
         [Route("{userId}/{petId}")]
         public async Task<IActionResult> DeclinePetAddopting(int userId, int petId)
         {
-            var existsAdopt = await _petContext.Adopts.FirstOrDefaultAsync(x => x.PetId == petId && x.UserId == userId);
+            var existsAdopt = await _petContext.Adoptions.FirstOrDefaultAsync(x => x.PetId == petId && x.UserId == userId);
             if (existsAdopt is null)
             {
                 return NotFound();
