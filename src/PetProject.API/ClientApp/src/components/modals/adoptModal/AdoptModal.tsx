@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Typography, Theme, createStyles, WithStyles, withStyles, Grid } from '@material-ui/core';
+import { Typography, Theme, createStyles, WithStyles, withStyles, Grid, Divider } from '@material-ui/core';
 
 const styles = (theme: Theme) => createStyles({  
   root: {
@@ -12,13 +12,16 @@ const styles = (theme: Theme) => createStyles({
   },
   image: {
     width: 300,
-    height: 300,
+    height: 200,
   },
   img: {
     margin: 'auto',
     display: 'block',
     maxWidth: '100%',
     maxHeight: '100%',
+  },
+  divider: {
+    margin: '8px 0'
   }
 });
 
@@ -70,16 +73,21 @@ export const AdoptModalStyled = withStyles(styles)(
                         </div>
                       </Grid>
                       <Grid item xs>
-                        <Typography>Барсик</Typography>
-                        <Typography>Пирожок.</Typography>
+                        <Typography variant={"h5"}>Барсик</Typography>
+                        <Divider className={classes.divider} />
+                        <Typography>Сладкий бушарик с блестящей шерсткой ищет любящих хозяев. Приучен к лотку, ловит мышей. Лащится, спит с вами в кровати, поет песни.</Typography>
                       </Grid>
                       <Grid item xs>                      
+                        <Typography variant={"h6"}>Кто?</Typography>
                         <Typography>Кот</Typography>
                         <Typography>Мальчик</Typography>
+                        <Divider className={classes.divider} />
+                        <Typography variant={"h6"}>Возраст</Typography>
                         <Typography>До 3 лет</Typography>
-                        <Typography>Шерсть:</Typography>
+                        <Divider className={classes.divider} />
+                        <Typography variant={"h6"}>Шуба</Typography>
                         <Typography>Короткая</Typography>
-                        <Typography>Темная</Typography>
+                        <Typography>Цветная</Typography>
                       </Grid>
                     </Grid>
                   </div>
