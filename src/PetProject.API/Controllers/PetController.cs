@@ -40,7 +40,7 @@ namespace PetProject.Controllers
         {
             var pets = await _petContext.Pets
                 .Include(x => x.Images)
-                .Where(p => taskTypeIds == null || p.PetTaskTypeAssignments
+                .Where(p => taskTypeIds == null || !taskTypeIds.Any() || p.PetTaskTypeAssignments
                                 .Any(tta => taskTypeIds.Contains(tta.TaskTypeId)))
                 .Where(p => p.PetFeatureAssignments
                     .Any(pfa => featureIds.Contains(pfa.PetFeatureId)))
