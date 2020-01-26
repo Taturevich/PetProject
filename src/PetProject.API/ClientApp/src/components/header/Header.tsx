@@ -6,7 +6,7 @@ import petSearch from '../../static/images/petSearch.png';
 import petHelp from '../../static/images/petHelp.png';
 import petSaw from '../../static/images/petSaw.png';
 import { signInListInitialState } from '../../store/signIn/reducer';
-import {TaskTypesModal} from "../modals/taskTypesModal/TaskTypes";
+import { TaskTypesModalConnected } from "../modals/taskTypesModal/TaskTypes";
 
 const notVolonteerImages = [
     {
@@ -203,7 +203,7 @@ export default function Header() {
                         </span>
                     </ButtonBase>
                 ))}
-                <TaskTypesModal open={open} handleSubmit={() => {}} handleCancel={() => {setIsOpen(false)}}/>
+                <TaskTypesModalConnected open={open} handleSubmit={() => {}} handleCancel={() => {setIsOpen(false)}}/>
             </div>
         );
     }

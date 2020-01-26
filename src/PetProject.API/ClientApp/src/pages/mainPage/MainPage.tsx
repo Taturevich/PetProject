@@ -11,7 +11,6 @@ import { PetSearchPageConnected } from '../petSearch/PetSearchPage';
 
 import { UserInfoModalConnected } from '../../components/modals/userInfoModal/UserInfoModal';
 import { LoginModal, RegisterModal, AdoptModalStyled } from '../../components/modals';
-import {TaskTypesModal} from "../../components/modals/taskTypesModal/TaskTypes";
 
 
 // import HelpWantedPage from '../helpWanted/HelpWantedPage';
