@@ -1122,7 +1122,7 @@ namespace PetProject
             Expression<Func<T, bool>> predicate = null)
             where T : class, new()
         {
-            var exists = predicate != null ? dbSet.Any(predicate) : dbSet.Any();
+            var exists = predicate != null && dbSet.Any(predicate);
             if (!exists)
             {
                 dbSet.Add(entity);
