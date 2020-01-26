@@ -1,150 +1,195 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { useSelector, useDispatch } from 'react-redux'
+import { groupBy } from 'lodash';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+
 import { AppState } from '../../../store/appState';
+import { UserFeature } from '../../../store/userFeaturesList/state';
+import { requestUserFeaturesListData } from '../../../store/userFeaturesList/actions';
 
 interface UserInfoModalProps {
-    open: boolean;
-    handleOk: () => void;
-    handleChange: () => void;
+  userFeatures: UserFeature[];
+  open: boolean;
+  loadUserFeaturesList: () => void;
+  handleClose: () => void;
+  handleSuccess: () => void;
+}
+
+interface UserFeatureCheckbox {
+  id: string;
+  checked: boolean;
 }
 
 interface UserInfoModalState {
-    accommodation: number;
-    isRented: boolean;
-    experience: number;
-    additionalOptions: number[];
+  userFeatures: UserFeatureCheckbox[];
 }
 
-export class UserInfoModal extends Component<UserInfoModalProps, UserInfoModalState> {
-    constructor(props: UserInfoModalProps){
-        super(props);
-        this.state = {
-            accommodation: 0,
-            isRented: true,
-            experience: 0,
-            additionalOptions: []
-        };
-    }
-
-    render() {
-        const { open, handleOk } = this.props;
-        const { accommodation, experience, additionalOptions } = this.state;
-        return (
-            <div>
-              <Dialog open={open} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Расскажите о себе</DialogTitle>
-                <DialogContent>
-                  <FormControl>
-                    <FormLabel component="legend" >Жилье</FormLabel>
-                    <RadioGroup aria-label="Жилье" name="accommodation" row>
-                      <FormControlLabel
-                        value="0"
-                        control={<Radio color="primary" />}
-                        checked={true}
-                        labelPlacement="end"
-                        label="Частный дом"/>
-                      <FormControlLabel
-                        value="1"
-                        control={<Radio color="primary" />}
-                        labelPlacement="end"
-                        label="Квартира"/>
-                      <FormControlLabel
-                        value="2"
-                        control={<Radio color="primary" />}
-                        labelPlacement="end"
-                        label="Общежитие"/>
-                    </RadioGroup>
-                    <RadioGroup aria-label="Жилье" name="isRented" row>
-                      <FormControlLabel
-                        value="0"
-                        control={<Radio color="primary" />}
-                        labelPlacement="end"
-                        label="Собственность"/>
-                      <FormControlLabel
-                        value="1"
-                        control={<Radio color="primary" />}
-                        labelPlacement="end"
-                        label="Аренда"/>
-                    </RadioGroup>
-                  </FormControl>
-                  <Divider/>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend" >Опыт</FormLabel>
-                    <RadioGroup aria-label="Опыт" name="experience" row>
-                      <FormControlLabel
-                        value="0"
-                        control={<Radio color="primary" value='0'/>}
-                        checked={true}
-                        labelPlacement="end"
-                        label="Никогда не было питомца"/>
-                      <FormControlLabel
-                        value="1"
-                        control={<Radio color="primary" value='1'/>}
-                        labelPlacement="end"
-                        label="Был питомец"/>
-                      <FormControlLabel
-                        value="2"
-                        control={<Radio color="primary" value='2'/>}
-                        labelPlacement="end"
-                        label="Питомец есть сейчас"/>
-                    </RadioGroup>
-                  </FormControl>
-                  <Divider/>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend" >Готовы?</FormLabel>
-                    <RadioGroup aria-label="Опыт" name="experience" row>
-                      <FormControlLabel
-                        value="0"
-                        control={<Checkbox value="0" />}
-                        labelPlacement="end"
-                        label="Никогда не было питомца"/>
-                      <FormControlLabel
-                        value="1"
-                        control={<Checkbox value="1" />}
-                        labelPlacement="end"
-                        label="Был питомец"/>
-                      <FormControlLabel
-                        value="2"
-                        control={<Checkbox value="2" />}
-                        labelPlacement="end"
-                        label="Питомец есть сейчас"/>
-                    </RadioGroup>
-                  </FormControl>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleOk} color="primary">
-                    Готово!
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </div>
-          );
-    }
+class UserInfoModal extends Component<UserInfoModalProps, UserInfoModalState> {
+  constructor(props: UserInfoModalProps) {
+    super(props);
+    this.state = {
+      userFeatures: []
+    };
   }
 
-//   export const UserInfoModalConnected = connect(
-//     (appState: AppState) => ({
-//         pets: appState.pets.data,
-//         features: appState.features.data
-//     }),
-//     {
-//         loadPetsList: requestPetsListData,
-//         loadFeaturesList: requestFeaturesListData,
-//         loadPetsFilteredList: requestPetsListFilteredData
-//     }
-// )(PetSearchPageStyled);
+  componentDidMount() {
+    this.props.loadUserFeaturesList();
+  }
+
+  componentDidUpdate() {
+    if (this.state.userFeatures.length !== this.props.userFeatures.length) {
+      const grouped = groupBy(this.props.userFeatures, f => f.category);
+      const checkedItems = Object.keys(grouped).map(key => {
+        return key !== 'Readiness' ? grouped[key][0].userFeatureId : -1;
+      });
+      const userFeatures = this.props.userFeatures.map(f => {
+        return {
+          id: f.userFeatureId,
+          checked: checkedItems.includes(f.userFeatureId),
+        }
+      });
+      this.state = {
+        userFeatures: userFeatures
+      };
+    };
+  }
+
+  changeFeatureCheckbox = (id: string) => {
+    const { userFeatures } = this.state;
+    const feature = userFeatures.find(f => f.id === id);
+    if (feature !== undefined) {
+      const checked = !feature.checked;
+      feature.checked = checked;
+      this.setState({
+        userFeatures: userFeatures
+      });
+    }
+    // this.props.loadPetsFilteredList(this.state.features.filter(f => f.checked).map(f => f.id));
+  }
+
+  localizeCategoryToRussian = (category: string) => {
+    if (category === "Accommodation"){
+      return "Проживание";
+    }
+
+    if (category === "HouseOwnership"){
+      return "Владение домом";
+    }
+
+    if (category === "Exprience"){
+      return "Опыт с животными";
+    }
+
+    if (category === "Readiness"){
+      return "Готовность";
+    }
+
+    return category;
+}
+
+  changeFeatureRadio = (category: string, id: string) => {
+    const { userFeatures } = this.state;
+    const categoryItems = this.props.userFeatures.filter(f => f.category === category).map(f => f.userFeatureId);
+    userFeatures.filter(f => categoryItems.includes(f.id)).forEach(f => f.checked = false);
+    const feature = userFeatures.find(f => f.id === id);
+    if (feature !== undefined) {
+      const checked = !feature.checked;
+      feature.checked = checked;
+      this.setState({
+        userFeatures: userFeatures
+      });
+    }
+    // this.props.loadPetsFilteredList(this.state.features.filter(f => f.checked).map(f => f.id));
+  }
+
+  render() {
+    const { userFeatures, open, handleClose, handleSuccess } = this.props;
+    const grouped = groupBy(userFeatures, f => f.category);
+
+    return (
+      <div>
+        <Dialog open={open} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Расскажите о себе</DialogTitle>
+          <DialogContent>
+            <FormControl component="fieldset">
+              {Object.keys(grouped).map(key => {
+                if (key === 'Readiness') {
+                  return (
+                    <>
+                      <FormLabel component="legend">{this.localizeCategoryToRussian(key)}</FormLabel>
+                      <FormGroup row>
+                        {grouped[key].map(f => {
+                          const checked = this.state.userFeatures.find(feature => f.userFeatureId == feature.id)?.checked;
+                          return (
+                            <FormControlLabel key={`${f.userFeatureId}_${f.characteristic}`}
+                              control={
+                                <Checkbox
+                                  onChange={() => this.changeFeatureCheckbox(f.userFeatureId)}
+                                  key={`${f.userFeatureId}_${f.category}`}
+                                  value={checked}
+                                  color="primary"
+                                />
+                              }
+                              label={f.characteristic}
+                            />);
+                        })}
+                      </FormGroup>
+                    </>
+                  );
+                }
+                return (
+                  <>
+                    <FormLabel component="legend">{this.localizeCategoryToRussian(key)}</FormLabel>
+                    <RadioGroup defaultValue={grouped[key][0].characteristic} aria-label={key} row>
+                      {grouped[key].map(f => {
+                        return (
+                          <FormControlLabel value={f.characteristic} key={`${f.userFeatureId}_${f.characteristic}`}
+                            control={
+                              <Radio
+                                onChange={() => this.changeFeatureRadio(f.category, f.userFeatureId)}
+                                key={`${f.userFeatureId}_${f.category}`}
+                                color="primary"
+                              />
+                            }
+                            label={f.characteristic}
+                          />);
+                      })}
+                    </RadioGroup>
+                  </>
+                );
+              })}
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="secondary">
+              Отмена
+            </Button>
+            <Button onClick={handleSuccess} color="primary">
+              Готово
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
+}
+
+export const UserInfoModalConnected = connect(
+  (appState: AppState) => ({
+    userFeatures: appState.userFeatures.data
+  }),
+  {
+    loadUserFeaturesList: requestUserFeaturesListData
+  }
+)(UserInfoModal);

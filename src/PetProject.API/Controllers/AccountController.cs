@@ -34,7 +34,6 @@ namespace PetProject.Controllers
             _petContext = petContext;
         }
 
-
         /// <summary>
         /// Get JWT token fo requested client.
         /// </summary>

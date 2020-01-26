@@ -41,6 +41,8 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
+    <Content Include="ClientApp\public\favicon.ico" />
+    <Content Include="ClientApp\public\logo512.ico" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
@@ -64,7 +66,7 @@
     <None Include="wwwroot\images\polkan.png" />
     <None Include="wwwroot\images\tina.png" />
     <None Include="wwwroot\images\tuzik.png" />
-    <None Include="wwwroot\images\zharic.png" />
+    <None Include="wwwroot\images\sharik.png" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

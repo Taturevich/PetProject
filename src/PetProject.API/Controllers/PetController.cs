@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using PetProject.DataAccess;
 using PetProject.Domain;
 using PetProject.DTO;
+using Task = PetProject.Domain.Task;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,10 +36,12 @@ namespace PetProject.Controllers
 
         //GET: api/<controller>
         [HttpGet("byFeatures")]
-        public async Task<IActionResult> GetByFeatureIds([FromQuery]int[] featureIds)
+        public async Task<IActionResult> GetByFeatureIds([FromQuery]int[] featureIds, [FromQuery]int[] taskTypeIds = null)
         {
             var pets = await _petContext.Pets
                 .Include(x => x.Images)
+                .Where(p => taskTypeIds == null || !taskTypeIds.Any() || p.PetTaskTypeAssignments
+                                .Any(tta => taskTypeIds.Contains(tta.TaskTypeId)))
                 .Where(p => p.PetFeatureAssignments
                     .Any(pfa => featureIds.Contains(pfa.PetFeatureId)))
                 .OrderByDescending(x => x.PetFeatureAssignments.Count())
