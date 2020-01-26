@@ -21,6 +21,9 @@ import { requestPetsListData, requestPetsListFilteredData } from '../../store/pe
 import { Feature } from '../../store/featuresList/state';
 import { requestFeaturesListData } from '../../store/featuresList/actions';
 
+import { TakeCareModal } from '../../components/modals/takeCare/TakeCareModal';
+import { UserInfoModalConnected } from '../../components/modals/userInfoModal/UserInfoModal';
+
 const styles = (theme: Theme) => createStyles({
     root: {
         display: 'flex',
@@ -56,6 +59,9 @@ interface FeatureCheckbox {
 
 interface PetSearchState {
     features: FeatureCheckbox[];
+    takeCareOpen: boolean;
+    userInfoOpen: boolean;
+    petName: string;
 };
 
 const PetSearchPageStyled = withStyles(styles)(
@@ -63,7 +69,10 @@ const PetSearchPageStyled = withStyles(styles)(
         constructor(props: PetSearchProps) {
             super(props);
             this.state = {
-                features: []
+                features: [],
+                takeCareOpen: false,
+                userInfoOpen: false,
+                petName: ''
             };
         }
 
@@ -80,7 +89,10 @@ const PetSearchPageStyled = withStyles(styles)(
                             id: f.petFeatureId,
                             checked: false,
                         };
-                    })
+                    }),
+                    takeCareOpen: false,
+                    userInfoOpen: false,
+                    petName: ''
                 };
             }
         }
@@ -98,11 +110,46 @@ const PetSearchPageStyled = withStyles(styles)(
             this.props.loadPetsFilteredList(this.state.features.filter(f => f.checked).map(f => f.id));
         }
 
+        openPetDetails = (petName: string) => {
+            this.setState({
+                takeCareOpen: true,
+                petName
+            });
+        }
+
+        closePetDetails = () => {
+            this.setState({
+                takeCareOpen: false,
+                petName: ''
+            })
+        }
+
+        successPetDetails = () => {
+            this.setState({
+                takeCareOpen: false,
+                userInfoOpen: true,
+                petName: ''
+            })
+        }
+
+        closeUserInfo = () => {
+            this.setState({
+                userInfoOpen: false
+            })
+        }
+
+        successUserInfo = () => {
+            this.setState({
+                userInfoOpen: false
+            })
+        }
+
         render() {
             const { features } = this.props;
             const grouped = groupBy(features, f => f.category);
 
             const { pets, classes } = this.props;
+            const { takeCareOpen, userInfoOpen, petName } = this.state;
             return (
                 <div className={classes.root}>
                     <Grid container spacing={3}>
@@ -136,7 +183,7 @@ const PetSearchPageStyled = withStyles(styles)(
                         <Grid item xs={10}>
                             <GridList cellHeight={180} className={classes.gridList} cols={4}>
                                 {pets.map(pet => (
-                                    <GridListTile key={pet.petId}>
+                                    <GridListTile key={pet.petId} onClick={() => this.openPetDetails(pet.name)}>
                                         <img src={pet.images[0].imagePath} alt={pet.name} />
                                         <GridListTileBar
                                             title={pet.name}
@@ -152,6 +199,17 @@ const PetSearchPageStyled = withStyles(styles)(
                             </GridList>
                         </Grid>
                     </Grid>
+                    <TakeCareModal 
+                        open={takeCareOpen} 
+                        petName={petName} 
+                        handleClose={this.closePetDetails} 
+                        handleSuccess={this.successPetDetails}
+                    />
+                    <UserInfoModalConnected 
+                        open={userInfoOpen}
+                        handleClose={this.closeUserInfo} 
+                        handleSuccess={this.successUserInfo}
+                    />
                 </div>
             );
         }

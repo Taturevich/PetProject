@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +9,9 @@ import petSaw from '../../static/images/petSaw.png';
 
 import { PetSearchPageConnected } from '../petSearch/PetSearchPage';
 
-import { LoginModal, RegisterModal, UserInfoModal } from '../../components/modals';
+import { LoginModal, RegisterModal } from '../../components/modals';
+import { UserInfoModalConnected } from '../../components/modals/userInfoModal/UserInfoModal';
+import { TakeCareModal } from '../../components/modals/takeCare/TakeCareModal';
 
 const images = [
     {
@@ -109,6 +111,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function MainPage() {
     const classes = useStyles();
+    const [takeCareOpened, setTakeCareOpened] = useState(false);
+    const [petName, setPetName] = useState("");
 
     return (
         <div className={classes.root}>
@@ -143,7 +147,8 @@ export default function MainPage() {
                 </ButtonBase>
             ))}
             <PetSearchPageConnected />
-            {/* <UserInfoModal open={true} handleOk={() => {}} handleChange={() => {}} /> */}
+            {/* <UserInfoModalConnected open={userInfoOpened} /> */}
+            {/* open={true} handleOk={() => {}} handleChange={() => {}}*/}
             {/* <LoginModal open={true} handleCancel={() => {}} handleLogin={() => {}} /> */}
             {/* <RegisterModal open={true} handleCancel={() => {}} handleRegister={() => {}} /> */}
         </div>
