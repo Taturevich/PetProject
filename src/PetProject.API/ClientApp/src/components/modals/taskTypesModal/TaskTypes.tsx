@@ -56,12 +56,12 @@ export class TaskTypesModal extends Component<TaskTypesModalProps, TaskTypesModa
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleSubmit} color="primary">
-                    Найти подопечного
-                  </Button>
-                    <Button onClick={handleCancel} color="primary">
+                    <Button onClick={handleCancel} color="secondary">
                         Отмена
                     </Button>
+                    <Button onClick={handleSubmit} color="primary">
+                    Найти подопечного
+                  </Button>
                 </DialogActions>
               </Dialog>
             </div>

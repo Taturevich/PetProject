@@ -22,6 +22,7 @@ import { Feature } from '../../store/featuresList/state';
 import { requestFeaturesListData } from '../../store/featuresList/actions';
 
 import { TakeCareModal } from '../../components/modals/takeCare/TakeCareModal';
+import { CareSuccessModal } from '../../components/modals/careSuccessModal/CareSuccessModal';
 import { UserInfoModalConnected } from '../../components/modals/userInfoModal/UserInfoModal';
 
 const styles = (theme: Theme) => createStyles({
@@ -61,6 +62,7 @@ interface PetSearchState {
     features: FeatureCheckbox[];
     takeCareOpen: boolean;
     userInfoOpen: boolean;
+    successCareOpen: boolean;
     petName: string;
 };
 
@@ -72,6 +74,7 @@ const PetSearchPageStyled = withStyles(styles)(
                 features: [],
                 takeCareOpen: false,
                 userInfoOpen: false,
+                successCareOpen: false,
                 petName: ''
             };
         }
@@ -92,6 +95,7 @@ const PetSearchPageStyled = withStyles(styles)(
                     }),
                     takeCareOpen: false,
                     userInfoOpen: false,
+                    successCareOpen: false,
                     petName: ''
                 };
             }
@@ -140,7 +144,20 @@ const PetSearchPageStyled = withStyles(styles)(
 
         successUserInfo = () => {
             this.setState({
-                userInfoOpen: false
+                userInfoOpen: false,
+                successCareOpen: true
+            })
+        }
+
+        closeSuccessCare = () => {
+            this.setState({
+                successCareOpen: false
+            })
+        }
+
+        successSuccessCare = () => {
+            this.setState({
+                successCareOpen: false
             })
         }
 
@@ -149,7 +166,7 @@ const PetSearchPageStyled = withStyles(styles)(
             const grouped = groupBy(features, f => f.category);
 
             const { pets, classes } = this.props;
-            const { takeCareOpen, userInfoOpen, petName } = this.state;
+            const { takeCareOpen, userInfoOpen, petName, successCareOpen } = this.state;
             return (
                 <div className={classes.root}>
                     <Grid container spacing={3}>
@@ -209,6 +226,12 @@ const PetSearchPageStyled = withStyles(styles)(
                         open={userInfoOpen}
                         handleClose={this.closeUserInfo} 
                         handleSuccess={this.successUserInfo}
+                    />
+                    <CareSuccessModal 
+                        open={successCareOpen} 
+                        petName={petName} 
+                        handleClose={this.closeSuccessCare} 
+                        handleSuccess={this.successSuccessCare}
                     />
                 </div>
             );
