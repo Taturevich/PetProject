@@ -21,7 +21,7 @@ import { requestPetsListData, requestPetsListFilteredData } from '../../store/pe
 import { Feature } from '../../store/featuresList/state';
 import { requestFeaturesListData } from '../../store/featuresList/actions';
 
-import { TakeCareModal } from '../../components/modals/takeCare/TakeCareModal';
+import { AdoptModalStyled } from '../../components/modals/adoptModal/AdoptModal';
 import { CareSuccessModal } from '../../components/modals/careSuccessModal/CareSuccessModal';
 import { UserInfoModalConnected } from '../../components/modals/userInfoModal/UserInfoModal';
 
@@ -132,7 +132,6 @@ const PetSearchPageStyled = withStyles(styles)(
             this.setState({
                 takeCareOpen: false,
                 userInfoOpen: true,
-                petName: ''
             })
         }
 
@@ -216,11 +215,10 @@ const PetSearchPageStyled = withStyles(styles)(
                             </GridList>
                         </Grid>
                     </Grid>
-                    <TakeCareModal 
+                    <AdoptModalStyled 
                         open={takeCareOpen} 
-                        petName={petName} 
                         handleClose={this.closePetDetails} 
-                        handleSuccess={this.successPetDetails}
+                        handleSuccess={this.successPetDetails} 
                     />
                     <UserInfoModalConnected 
                         open={userInfoOpen}
