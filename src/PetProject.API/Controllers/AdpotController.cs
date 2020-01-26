@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -23,8 +24,13 @@ namespace PetProject.Controllers
 
         [HttpPost]
         [Route("{userId}/{petId}")]
-        public async Task<IActionResult> AdoptPetrequest(int userId, int petId)
+        public async Task<IActionResult> AdoptRequest(int petId)
         {
+            if(!int.TryParse(HttpContext.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.Sid).Value, out var userId))
+            {
+                return BadRequest();
+            }
+
             var user = await _petContext.Users.FirstOrDefaultAsync(x => x.UserId == userId);
             var pet = await _petContext.Pets.FirstOrDefaultAsync(x => x.PetId == petId);
 
