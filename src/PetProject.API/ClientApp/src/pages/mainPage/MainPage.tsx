@@ -10,7 +10,6 @@ import petSaw from '../../static/images/petSaw.png';
 import { PetSearchPageConnected } from '../petSearch/PetSearchPage';
 
 import { UserInfoModalConnected } from '../../components/modals/userInfoModal/UserInfoModal';
-import { TakeCareModal } from '../../components/modals/takeCare/TakeCareModal';
 import { LoginModal, RegisterModal, AdoptModalStyled } from '../../components/modals';
 import {TaskTypesModal} from "../../components/modals/taskTypesModal/TaskTypes";
 

@@ -18,7 +18,8 @@ const styles = (theme: Theme) => createStyles({
 
 interface AdoptModalProps extends WithStyles<typeof styles> {
     open: boolean;
-    handleAdopt: () => void;
+    handleClose: () => void;
+    handleSuccess: () => void;
 }
 
 interface AdoptModalState {
@@ -45,7 +46,7 @@ export const AdoptModalStyled = withStyles(styles)(
     }
 
     render() {
-        const { open, handleAdopt, classes } = this.props;
+        const { open, handleClose, handleSuccess, classes } = this.props;
 
         return (
               <Dialog 
@@ -74,7 +75,10 @@ export const AdoptModalStyled = withStyles(styles)(
                   </Grid>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleAdopt} color="primary">
+                  <Button onClick={handleClose} color="secondary">
+                    Отмена
+                  </Button>
+                  <Button onClick={handleSuccess} color="primary">
                     Приютить!
                   </Button>
                 </DialogActions>
