@@ -29,6 +29,8 @@ namespace PetProject.DataAccess
 
         public DbSet<Image> Images { get; set; }
 
+        public DbSet<Adopt> Adopts { get; set; }
+        
         public PetContext(DbContextOptions<PetContext> options)
             : base(options)
         {
