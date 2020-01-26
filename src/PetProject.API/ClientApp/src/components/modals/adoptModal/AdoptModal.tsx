@@ -27,14 +27,14 @@ const styles = (theme: Theme) => createStyles({
 
 interface AdoptModalProps extends WithStyles<typeof styles> {
     open: boolean;
+    name: string;
+    imagePath: string;
+    description: string;
     handleClose: () => void;
     handleSuccess: () => void;
 }
 
 interface AdoptModalState {
-    name: string;
-    description: string;
-    imagePath: string;
     descriptionFeatures: string[];
     ageFeatures: string[];
     furFeatures: string[];
@@ -45,9 +45,6 @@ export const AdoptModalStyled = withStyles(styles)(
     constructor(props: AdoptModalProps){
         super(props);
         this.state = {
-            name: "",
-            description: "",
-            imagePath: "",
             descriptionFeatures: [],
             ageFeatures: [],
             furFeatures: []
@@ -55,7 +52,7 @@ export const AdoptModalStyled = withStyles(styles)(
     }
 
     render() {
-        const { open, handleClose, handleSuccess, classes } = this.props;
+        const { open, handleClose, handleSuccess, classes, name, description, imagePath } = this.props;
 
         return (
               <Dialog 
@@ -69,13 +66,13 @@ export const AdoptModalStyled = withStyles(styles)(
                     <Grid container spacing={3}>
                       <Grid item xs>
                         <div className={classes.image}>
-                          <img className={classes.img} alt="complex" src="images/barsik.jpg" />
+                          <img className={classes.img} alt="complex" src={imagePath} />
                         </div>
                       </Grid>
                       <Grid item xs>
-                        <Typography variant={"h5"}>Барсик</Typography>
+                        <Typography variant={"h5"}>{name}</Typography>
                         <Divider className={classes.divider} />
-                        <Typography>Сладкий бушарик с блестящей шерсткой ищет любящих хозяев. Приучен к лотку, ловит мышей. Лащится, спит с вами в кровати, поет песни.</Typography>
+                        <Typography>{description}</Typography>
                       </Grid>
                       <Grid item xs>                      
                         <Typography variant={"h6"}>Кто?</Typography>

@@ -40,7 +40,7 @@ namespace PetProject.Controllers
         }
 
         // GET: api/PetFeature/5
-        [HttpGet("{petId}")]
+        [HttpGet("byPetId/{petId}")]
         public async Task<IActionResult> GetByPetId(int petId)
         {
             var petFeatures = _petContext.PetFeatureAssignments

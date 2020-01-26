@@ -63,7 +63,9 @@ interface PetSearchState {
     takeCareOpen: boolean;
     userInfoOpen: boolean;
     successCareOpen: boolean;
-    petName: string;
+    name: string;
+    imagePath: string;
+    description: string;
 };
 
 const PetSearchPageStyled = withStyles(styles)(
@@ -75,7 +77,9 @@ const PetSearchPageStyled = withStyles(styles)(
                 takeCareOpen: false,
                 userInfoOpen: false,
                 successCareOpen: false,
-                petName: ''
+                name: '',
+                imagePath: '',
+                description: ''
             };
         }
 
@@ -96,7 +100,9 @@ const PetSearchPageStyled = withStyles(styles)(
                     takeCareOpen: false,
                     userInfoOpen: false,
                     successCareOpen: false,
-                    petName: ''
+                    name: '',
+                    imagePath: '',
+                    description: ''
                 };
             }
         }
@@ -114,17 +120,18 @@ const PetSearchPageStyled = withStyles(styles)(
             this.props.loadPetsFilteredList(this.state.features.filter(f => f.checked).map(f => f.id));
         }
 
-        openPetDetails = (petName: string) => {
+        openPetDetails = (petName: string, description: string, imagePath: string) => {
             this.setState({
                 takeCareOpen: true,
-                petName
+                name: petName,
+                description,
+                imagePath
             });
         }
 
         closePetDetails = () => {
             this.setState({
-                takeCareOpen: false,
-                petName: ''
+                takeCareOpen: false
             })
         }
 
@@ -165,7 +172,7 @@ const PetSearchPageStyled = withStyles(styles)(
             const grouped = groupBy(features, f => f.category);
 
             const { pets, classes } = this.props;
-            const { takeCareOpen, userInfoOpen, petName, successCareOpen } = this.state;
+            const { takeCareOpen, userInfoOpen, name, description, imagePath, successCareOpen } = this.state;
             return (
                 <div className={classes.root}>
                     <Grid container spacing={3}>
@@ -199,7 +206,7 @@ const PetSearchPageStyled = withStyles(styles)(
                         <Grid item xs={10}>
                             <GridList cellHeight={180} className={classes.gridList} cols={4}>
                                 {pets.map(pet => (
-                                    <GridListTile key={pet.petId} onClick={() => this.openPetDetails(pet.name)}>
+                                    <GridListTile key={pet.petId} onClick={() => this.openPetDetails(pet.name, pet.description, pet.images[0].imagePath)}>
                                         <img src={pet.images[0].imagePath} alt={pet.name} />
                                         <GridListTileBar
                                             title={pet.name}
@@ -216,7 +223,10 @@ const PetSearchPageStyled = withStyles(styles)(
                         </Grid>
                     </Grid>
                     <AdoptModalStyled 
-                        open={takeCareOpen} 
+                        open={takeCareOpen}
+                        name={name}
+                        description={description}
+                        imagePath={imagePath}
                         handleClose={this.closePetDetails} 
                         handleSuccess={this.successPetDetails} 
                     />
@@ -227,7 +237,7 @@ const PetSearchPageStyled = withStyles(styles)(
                     />
                     <CareSuccessModal 
                         open={successCareOpen} 
-                        petName={petName} 
+                        petName={name} 
                         handleClose={this.closeSuccessCare} 
                         handleSuccess={this.successSuccessCare}
                     />
