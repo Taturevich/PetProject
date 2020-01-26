@@ -143,7 +143,7 @@ export default function MainPage() {
                 </ButtonBase>
             ))}
             <PetSearchPageConnected />
-            <UserInfoModal open={true} handleOk={() => {}} />
+            {/* <UserInfoModal open={true} handleOk={() => {}} handleChange={() => {}} /> */}
             {/* <LoginModal open={true} handleCancel={() => {}} handleLogin={() => {}} /> */}
             {/* <RegisterModal open={true} handleCancel={() => {}} handleRegister={() => {}} /> */}
         </div>
