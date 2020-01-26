@@ -19,6 +19,7 @@ import { AppState } from '../../store/appState';
 import { Pet } from '../../store/petsList/state';
 import { requestPetsListData, requestPetsListFilteredData } from '../../store/petsList/actions';
 import { Feature } from '../../store/featuresList/state';
+import { TaskTypeFilter } from '../../store/taskTypesFilters/state';
 import { requestFeaturesListData } from '../../store/featuresList/actions';
 
 import { AdoptModalStyled } from '../../components/modals/adoptModal/AdoptModal';
@@ -48,9 +49,10 @@ const styles = (theme: Theme) => createStyles({
 interface PetSearchProps extends WithStyles<typeof styles> {
     pets: Pet[];
     features: Feature[];
+    taskTypesFilters: TaskTypeFilter[];
     loadPetsList: () => void;
     loadFeaturesList: () => void;
-    loadPetsFilteredList: (ids: string[]) => void;
+    loadPetsFilteredList: (ids: string[], taskTypesIds: string[]) => void;
 };
 
 interface FeatureCheckbox {
@@ -60,6 +62,7 @@ interface FeatureCheckbox {
 
 interface PetSearchState {
     features: FeatureCheckbox[];
+    taskTypes: TaskTypeFilter[];
     takeCareOpen: boolean;
     userInfoOpen: boolean;
     successCareOpen: boolean;
@@ -72,6 +75,7 @@ const PetSearchPageStyled = withStyles(styles)(
             super(props);
             this.state = {
                 features: [],
+                taskTypes: [],
                 takeCareOpen: false,
                 userInfoOpen: false,
                 successCareOpen: false,
@@ -85,12 +89,19 @@ const PetSearchPageStyled = withStyles(styles)(
         }
 
         componentDidUpdate() {
-            if (this.state.features.length !== this.props.features.length) {
+            if (this.props.features.length > 0 || this.props.taskTypesFilters.length > 0) {
                 this.state = {
                     features: this.props.features.map(f => {
                         return {
                             id: f.petFeatureId,
                             checked: false,
+                        };
+                    }),
+                    taskTypes: this.props.taskTypesFilters.map(f => {
+                        return {
+                            taskTypeId: f.taskTypeId,
+                            checked: f.checked,
+                            name: f.name
                         };
                     }),
                     takeCareOpen: false,
@@ -99,6 +110,12 @@ const PetSearchPageStyled = withStyles(styles)(
                     petName: ''
                 };
             }
+        }
+
+        searchPets = () => {
+            this.props.loadPetsFilteredList(
+                this.state.features.filter(f => f.checked).map(f => f.id),
+                this.props.taskTypesFilters.filter(f => f.checked).map(f => f.taskTypeId));
         }
 
         changeFeatureCheckbox = (id: string) => {
@@ -111,7 +128,20 @@ const PetSearchPageStyled = withStyles(styles)(
                     features: features
                 });
             }
-            this.props.loadPetsFilteredList(this.state.features.filter(f => f.checked).map(f => f.id));
+            this.searchPets();
+        }
+
+        changeTaskTypeFilterCheckbox = (id: string) => {
+            const { taskTypes } = this.state;
+            const taskType = taskTypes.find(f => f.taskTypeId === id);
+            if (taskType !== undefined) {
+                const checked = !taskType.checked;
+                taskType.checked = checked;
+                this.setState({
+                    taskTypes: taskTypes
+                });
+            }
+            this.searchPets();
         }
 
         openPetDetails = (petName: string) => {
@@ -160,6 +190,34 @@ const PetSearchPageStyled = withStyles(styles)(
             })
         }
 
+        renderTaskTypesFilters = () => {
+            if (this.props.taskTypesFilters.length === 0) {
+                return null;
+            }
+
+            return (
+                <>
+                    <FormLabel component="legend">Возможная помощь</FormLabel>
+                    <FormGroup>
+                        {this.props.taskTypesFilters.map(tt => {
+                            return (
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            onChange={() => this.changeTaskTypeFilterCheckbox(tt.taskTypeId)}
+                                            checked={tt.checked}
+                                        />
+                                    }
+                                    label={tt.name}
+                                />);
+                        }
+                        )
+                        }
+                    </FormGroup>
+                </>
+            );
+        }
+
         render() {
             const { features } = this.props;
             const grouped = groupBy(features, f => f.category);
@@ -171,6 +229,7 @@ const PetSearchPageStyled = withStyles(styles)(
                     <Grid container spacing={3}>
                         <Grid item xs={2}>
                             <FormControl component="fieldset" className={classes.formControl}>
+                                {this.renderTaskTypesFilters()}
                                 {Object.keys(grouped).map(key => {
                                     return (
                                         <>
@@ -215,20 +274,20 @@ const PetSearchPageStyled = withStyles(styles)(
                             </GridList>
                         </Grid>
                     </Grid>
-                    <AdoptModalStyled 
-                        open={takeCareOpen} 
-                        handleClose={this.closePetDetails} 
-                        handleSuccess={this.successPetDetails} 
+                    <AdoptModalStyled
+                        open={takeCareOpen}
+                        handleClose={this.closePetDetails}
+                        handleSuccess={this.successPetDetails}
                     />
-                    <UserInfoModalConnected 
+                    <UserInfoModalConnected
                         open={userInfoOpen}
-                        handleClose={this.closeUserInfo} 
+                        handleClose={this.closeUserInfo}
                         handleSuccess={this.successUserInfo}
                     />
-                    <CareSuccessModal 
-                        open={successCareOpen} 
-                        petName={petName} 
-                        handleClose={this.closeSuccessCare} 
+                    <CareSuccessModal
+                        open={successCareOpen}
+                        petName={petName}
+                        handleClose={this.closeSuccessCare}
                         handleSuccess={this.successSuccessCare}
                     />
                 </div>
@@ -240,7 +299,8 @@ const PetSearchPageStyled = withStyles(styles)(
 export const PetSearchPageConnected = connect(
     (appState: AppState) => ({
         pets: appState.pets.data,
-        features: appState.features.data
+        features: appState.features.data,
+        taskTypesFilters: appState.taskTypesFilters.data
     }),
     {
         loadPetsList: requestPetsListData,
