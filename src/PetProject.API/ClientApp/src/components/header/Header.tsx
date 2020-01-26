@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
@@ -6,22 +6,26 @@ import petSearch from '../../static/images/petSearch.png';
 import petHelp from '../../static/images/petHelp.png';
 import petSaw from '../../static/images/petSaw.png';
 import { signInListInitialState } from '../../store/signIn/reducer';
+import {TaskTypesModal} from "../modals/taskTypesModal/TaskTypes";
 
 const notVolonteerImages = [
     {
         url: petSearch,
         title: 'Ищу питомца',
         width: '30%',
+        id: "searching-pet",
     },
     {
         url: petHelp,
         title: 'Хочу помочь',
         width: '30%',
+        id: "help-pet",
     },
     {
         url: petSaw,
         title: 'Нашел бездомного питомца',
         width: '40%',
+        id: "found-pet",
     },
 ];
 
@@ -119,6 +123,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Header() {
     const classes = useStyles();
+    const [open,setIsOpen] = useState(false);
     if (!!signInListInitialState.token) {
         return (
             <div className={classes.root}>
@@ -126,6 +131,11 @@ export default function Header() {
                     <ButtonBase
                         focusRipple
                         key={image.title}
+                        onClick={() => {
+                            if (image.id === "help-pet"){
+                                setIsOpen(!open);
+                            }
+                        }}
                         className={classes.image}
                         focusVisibleClassName={classes.focusVisible}
                         style={{
@@ -163,6 +173,11 @@ export default function Header() {
                         focusRipple
                         key={image.title}
                         className={classes.image}
+                        onClick={() => {
+                            if (image.id === "help-pet"){
+                                setIsOpen(!open);
+                            }
+                        }}
                         focusVisibleClassName={classes.focusVisible}
                         style={{
                             width: image.width,
@@ -188,6 +203,7 @@ export default function Header() {
                         </span>
                     </ButtonBase>
                 ))}
+                <TaskTypesModal open={open} handleSubmit={() => {}} handleCancel={() => {}}/>
             </div>
         );
     }
