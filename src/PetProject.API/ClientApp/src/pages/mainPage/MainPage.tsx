@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +9,9 @@ import petSaw from '../../static/images/petSaw.png';
 
 import { PetSearchPageConnected } from '../petSearch/PetSearchPage';
 
-import { LoginModal, RegisterModal, UserInfoModal, AdoptModalStyled } from '../../components/modals';
+import { UserInfoModalConnected } from '../../components/modals/userInfoModal/UserInfoModal';
+import { TakeCareModal } from '../../components/modals/takeCare/TakeCareModal';
+import { LoginModal, RegisterModal, AdoptModalStyled } from '../../components/modals';
 import {TaskTypesModal} from "../../components/modals/taskTypesModal/TaskTypes";
 
 
@@ -97,7 +99,6 @@ export default function MainPage() {
     return (
         <div className={classes.root}>
             <PetSearchPageConnected />
-            {/* <UserInfoModal open={true} handleOk={() => {}} handleChange={() => {}} /> */}
             {/* <LoginModal open={true} handleCancel={() => {}} handleLogin={() => {}} /> */}
             {/* <RegisterModal open={true} handleCancel={() => {}} handleRegister={() => {}} /> */}
             {/* <AdoptModalStyled open={true} handleAdopt={() => {}} /> */}
