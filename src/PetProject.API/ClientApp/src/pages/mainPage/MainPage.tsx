@@ -10,24 +10,8 @@ import petSaw from '../../static/images/petSaw.png';
 import { PetSearchPageConnected } from '../petSearch/PetSearchPage';
 
 import { LoginModal, RegisterModal, UserInfoModal } from '../../components/modals';
+import {TaskTypesModal} from "../../components/modals/taskTypesModal/TaskTypes";
 
-const images = [
-    {
-        url: petSearch,
-        title: 'Ищу питомца',
-        width: '30%',
-    },
-    {
-        url: petHelp,
-        title: 'Хочу помочь',
-        width: '30%',
-    },
-    {
-        url: petSaw,
-        title: 'Нашел бездомного питомца',
-        width: '40%',
-    },
-];
 
 // import HelpWantedPage from '../helpWanted/HelpWantedPage';
 // import PetFoundPage from '../petFound/PetFoundPage';
@@ -112,37 +96,8 @@ export default function MainPage() {
 
     return (
         <div className={classes.root}>
-            {images.map(image => (
-                <ButtonBase
-                    focusRipple
-                    key={image.title}
-                    className={classes.image}
-                    focusVisibleClassName={classes.focusVisible}
-                    style={{
-                        width: image.width,
-                    }}
-                >
-                    <span
-                        className={classes.imageSrc}
-                        style={{
-                            backgroundImage: `url(${image.url})`,
-                        }}
-                    />
-                    <span className={classes.imageBackdrop} />
-                    <span className={classes.imageButton}>
-                        <Typography
-                            component="span"
-                            variant="subtitle1"
-                            color="inherit"
-                            className={classes.imageTitle}
-                        >
-                            {image.title}
-                            <span className={classes.imageMarked} />
-                        </Typography>
-                    </span>
-                </ButtonBase>
-            ))}
             <PetSearchPageConnected />
+            <TaskTypesModal open={false} handleSubmit={() => {}} handleCancel={() => {}}/>
             {/* <UserInfoModal open={true} handleOk={() => {}} handleChange={() => {}} /> */}
             {/* <LoginModal open={true} handleCancel={() => {}} handleLogin={() => {}} /> */}
             {/* <RegisterModal open={true} handleCancel={() => {}} handleRegister={() => {}} /> */}
