@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetProject.DataAccess;
@@ -17,6 +14,7 @@ namespace PetProject.Controllers
     {
         private readonly PetContext _petContext;
 
+        /// <inheritdoc />
         public AdpotController(PetContext petContext)
         {
             _petContext = petContext;
@@ -52,7 +50,7 @@ namespace PetProject.Controllers
         }
 
         [HttpPut]
-        [Route("{userId}/{petId}")]
+        [Route("{userId:int}/{petId:int}")]
         public async Task<IActionResult> AcceptPetAddopting(int userId, int petId)
         {
             var isExistsAcceptedAdoptions = await _petContext.Adoptions.AnyAsync(x => x.PetId == petId && x.Status == AdoptStatus.Accepted);

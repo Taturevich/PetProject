@@ -359,8 +359,8 @@ const AssignedTaskPageStyled = withStyles(styles)(
                             count={rows.length}
                             rowsPerPage={this.state.rowsPerPage}
                             page={this.state.page}
-                            onChangePage={handleChangePage}
-                            onChangeRowsPerPage={handleChangeRowsPerPage}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
                         />
                     </Paper>
                 </div>

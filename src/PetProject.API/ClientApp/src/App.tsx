@@ -9,14 +9,14 @@ import MainPage from './pages/mainPage/MainPage';
 import { HelpWantedPage } from './pages/helpWanted/HelpWantedPage';
 import { PetFoundPage } from './pages/petFound/PetFoundPage';
 
-import { Switch, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 const Layout = () => (
     <main>
-        <Switch>
-            <Route path='/' component={MainPage} />
-            <Route path='/WantToHelp' component={HelpWantedPage} />
-            <Route path='/PetFound' component={PetFoundPage} />
-        </Switch>
+        <Routes>
+            <Route path='/' element={<MainPage/>} />
+            <Route path='/WantToHelp' element={<HelpWantedPage/>} />
+            <Route path='/PetFound' element={<PetFoundPage/>} />
+        </Routes>
     </main>
 )
 
